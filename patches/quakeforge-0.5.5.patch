@@ -1,0 +1,434 @@
+diff -pruN a/libs/console/Makefile.am b/libs/console/Makefile.am
+--- a/libs/console/Makefile.am	2004-01-19 07:47:37.000000000 +0000
++++ b/libs/console/Makefile.am	2007-01-23 23:01:53.000000000 +0000
+@@ -14,7 +14,7 @@ EXTRA_PROGRAMS=  console_server.la conso
+ 
+ common_sources= \
+ 	buffer.c complete.c console.c inputline.c list.c filelist.c view.c
+-client_sources= client.c menu.c
++client_sources= client.c menu.c pr_keys.c r_progs.c
+ server_sources= server.c
+ 
+ libQFconsole_la_LDFLAGS=	-version-info 1:0:0 -rpath $(libdir) -no-undefined
+diff -pruN a/libs/console/Makefile.in b/libs/console/Makefile.in
+--- a/libs/console/Makefile.in	2004-05-02 21:51:46.000000000 +0100
++++ b/libs/console/Makefile.in	2007-01-23 23:01:29.000000000 +0000
+@@ -65,7 +65,7 @@ am_libQFconsole_la_OBJECTS = $(am__objec
+ libQFconsole_la_OBJECTS = $(am_libQFconsole_la_OBJECTS)
+ pluginPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
+ PROGRAMS = $(noinst_PROGRAMS) $(plugin_PROGRAMS)
+-am__objects_2 = client.lo menu.lo
++am__objects_2 = client.lo menu.lo pr_keys.lo r_progs.lo
+ am_console_client_la_OBJECTS = $(am__objects_2)
+ console_client_la_OBJECTS = $(am_console_client_la_OBJECTS)
+ console_client_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+diff -pruN a/libs/console/pr_keys.c b/libs/console/pr_keys.c
+--- a/libs/console/pr_keys.c	1970-01-01 01:00:00.000000000 +0100
++++ b/libs/console/pr_keys.c	2007-01-23 23:00:59.000000000 +0000
+@@ -0,0 +1,146 @@
++/*
++	bi_keys.c
++
++	CSQC key-api builtins
++
++	Copyright (C) 1996-1997  Id Software, Inc.
++
++	This program is free software; you can redistribute it and/or
++	modify it under the terms of the GNU General Public License
++	as published by the Free Software Foundation; either version 2
++	of the License, or (at your option) any later version.
++
++	This program is distributed in the hope that it will be useful,
++	but WITHOUT ANY WARRANTY; without even the implied warranty of
++	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++
++	See the GNU General Public License for more details.
++
++	You should have received a copy of the GNU General Public License
++	along with this program; if not, write to:
++
++		Free Software Foundation, Inc.
++		59 Temple Place - Suite 330
++		Boston, MA  02111-1307, USA
++
++*/
++#ifdef HAVE_CONFIG_H
++# include "config.h"
++#endif
++
++static __attribute__ ((unused)) const char rcsid[] = 
++	"$Id: pr_keys.c,v 1.5 2004/01/06 05:51:08 taniwha Exp $";
++
++#ifdef HAVE_STRING_H
++# include <string.h>
++#endif
++#ifdef HAVE_STRINGS_H
++# include <strings.h>
++#endif
++
++#include "QF/csqc.h"
++#include "QF/keys.h"
++#include "QF/progs.h"
++#include "QF/zone.h"
++
++/*
++    bi_Key_SetBinding
++    
++    QC-Function for set a binding
++*/
++static void
++bi_Key_SetBinding (progs_t *pr)
++{
++	int	        target  = P_INT (pr, 0);
++	int         keynum  = P_INT (pr, 1);
++	const char *binding = P_GSTRING (pr, 2);
++
++	if(strlen(binding) == 0 || binding[0] == '\0') {
++		binding = NULL;	/* unbind a binding */
++	}
++
++	Key_SetBinding (target, keynum, binding);
++}
++
++/*
++    bi_Key_LookupBinding
++    
++    Perform a reverse-binding-lookup
++*/
++static void
++bi_Key_LookupBinding (progs_t *pr)
++{
++	int	        target  = P_INT (pr, 0);
++	int	        bindnum = P_INT (pr, 1);
++	const char *binding = P_GSTRING (pr, 2);
++	int i;
++	knum_t keynum = -1;
++	const char *keybind = NULL;
++
++	for (i = 0; i < QFK_LAST; i++) {
++		keybind = keybindings[target][i].str;
++		if(keybind == NULL) { continue; }
++		if(strcmp(keybind, binding) == 0) {
++			bindnum--;
++			if(bindnum == 0) {
++				keynum = i;
++				break;
++			}
++		}
++	}
++
++	R_INT (pr) = keynum;	
++};
++
++/*
++    bi_Key_CountBinding
++    
++    Counts how often a binding is assigned to a key
++*/
++static void
++bi_Key_CountBinding (progs_t *pr)
++{
++	int	        target  = P_INT (pr, 0);
++	const char *binding = P_GSTRING (pr, 1);
++	int i, res = 0;
++	const char *keybind = NULL;
++
++	for (i = 0; i < QFK_LAST; i++) {
++		keybind = keybindings[target][i].str;
++		if(keybind == NULL) { continue; }
++		if(strcmp(keybind, binding) == 0) {
++			res++;
++		}
++	}
++
++	R_INT (pr) = res;	
++};
++
++
++/*
++    bi_Key_LookupBinding
++    
++    Convertes a keynum to a string
++*/
++static void
++bi_Key_KeynumToString (progs_t *pr)
++{
++	int	        keynum  = P_INT (pr, 0);
++
++	RETURN_STRING (pr, Key_KeynumToString (keynum));
++};
++
++static builtin_t builtins[] = {
++	{"Key_SetBinding",		bi_Key_SetBinding,		-1},
++	{"Key_LookupBinding",	bi_Key_LookupBinding,	-1},
++	{"Key_CountBinding",	bi_Key_CountBinding,	-1},
++	{"Key_KeynumToString",	bi_Key_KeynumToString,	-1},
++// NEED THIS ?//	{"Key_StringToKeynum",	bi_Key_KeynumToString,	-1},
++	{0}
++};
++
++void
++Key_Progs_Init (progs_t *pr)
++{
++	PR_RegisterBuiltins (pr, builtins);
++}
+diff -pruN a/libs/console/r_progs.c b/libs/console/r_progs.c
+--- a/libs/console/r_progs.c	1970-01-01 01:00:00.000000000 +0100
++++ b/libs/console/r_progs.c	2007-01-23 23:00:50.000000000 +0000
+@@ -0,0 +1,256 @@
++/*
++	r_progs.c
++
++	QC interface to the renderer
++
++	Copyright (C) 1996-1997  Id Software, Inc.
++
++	This program is free software; you can redistribute it and/or
++	modify it under the terms of the GNU General Public License
++	as published by the Free Software Foundation; either version 2
++	of the License, or (at your option) any later version.
++
++	This program is distributed in the hope that it will be useful,
++	but WITHOUT ANY WARRANTY; without even the implied warranty of
++	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++
++	See the GNU General Public License for more details.
++
++	You should have received a copy of the GNU General Public License
++	along with this program; if not, write to:
++
++		Free Software Foundation, Inc.
++		59 Temple Place - Suite 330
++		Boston, MA  02111-1307, USA
++
++*/
++#ifdef HAVE_CONFIG_H
++# include "config.h"
++#endif
++
++static __attribute__ ((unused)) const char rcsid[] = 
++	"$Id: r_progs.c,v 1.13 2004/02/13 23:16:32 taniwha Exp $";
++
++#ifdef HAVE_STRING_H
++# include <string.h>
++#endif
++#ifdef HAVE_STRINGS_H
++# include <strings.h>
++#endif
++#include <stdlib.h>
++
++#include "QF/console.h"
++#include "QF/draw.h"
++#include "QF/hash.h"
++#include "QF/progs.h"
++#include "QF/render.h"
++
++typedef struct {
++	int         width;
++	int         height;
++	qpic_t     *pic;
++} bi_qpic_t;
++
++typedef struct qpic_res_s {
++	char       *name;
++	bi_qpic_t  *pic;
++} qpic_res_t;
++
++typedef struct {
++	hashtab_t  *pic_hash;
++} draw_resources_t;
++
++static qpic_t *
++get_qpic (progs_t *pr, int arg, const char *func)
++{
++	bi_qpic_t  *pic;
++
++	if (arg <= ((pr_type_t *) pr->zone - pr->pr_globals)
++		|| arg >= pr->globals_size)
++		PR_RunError (pr, "%s: Invalid qpic_t: %d %d", func, arg, pr->globals_size);
++
++	pic = (bi_qpic_t *)(pr->pr_globals + arg);
++	return pic->pic;
++}
++
++static void
++bi_Draw_CachePic (progs_t *pr)
++{
++	draw_resources_t *res = PR_Resources_Find (pr, "Draw");
++	const char *path = P_GSTRING (pr, 0);
++	int         alpha = P_INT (pr, 1);
++	qpic_t     *pic = Draw_CachePic (path, alpha);
++	bi_qpic_t  *qpic;
++	qpic_res_t *rpic = Hash_Find (res->pic_hash, path);
++
++	if (!pic) {
++		Con_DPrintf ("can't load %s\n", path);
++		R_INT (pr) = 0;
++		return;
++	}
++	if (rpic) {
++		qpic = rpic->pic;
++		qpic->pic = pic;
++		R_INT (pr) = (pr_type_t *)qpic - pr->pr_globals;
++		return;
++	}
++	qpic = PR_Zone_Malloc (pr, sizeof (bi_qpic_t));
++	qpic->width = pic->width;
++	qpic->height = pic->height;
++	qpic->pic = pic;
++	R_INT (pr) = (pr_type_t *)qpic - pr->pr_globals;
++	rpic = malloc (sizeof (qpic_res_t));
++	rpic->name = strdup (path);
++	rpic->pic = qpic;
++	Hash_Add (res->pic_hash, rpic);
++}
++
++static void
++bi_Draw_Pic (progs_t *pr)
++{
++	int         x = P_INT (pr, 0);
++	int         y = P_INT (pr, 1);
++	qpic_t     *pic = get_qpic (pr, P_INT (pr, 2), "Draw_Pic");
++
++	Draw_Pic (x, y, pic);
++}
++
++static void
++bi_Draw_SubPic (progs_t *pr)
++{
++	int         x = P_INT (pr, 0);
++	int         y = P_INT (pr, 1);
++	qpic_t     *pic = get_qpic (pr, P_INT (pr, 2), "Draw_SubPic");
++	int         srcx = P_INT (pr, 3);
++	int         srcy = P_INT (pr, 4);
++	int         width = P_INT (pr, 5);
++	int         height = P_INT (pr, 6);
++
++	Draw_SubPic (x, y, pic, srcx, srcy, width, height);
++}
++
++static void
++bi_Draw_CenterPic (progs_t *pr)
++{
++	int         x = P_INT (pr, 0);
++	int         y = P_INT (pr, 1);
++	qpic_t     *pic = get_qpic (pr, P_INT (pr, 2), "Draw_CenterPic");
++
++	Draw_Pic (x - pic->width / 2, y, pic);
++}
++
++static void
++bi_Draw_Character (progs_t *pr)
++{
++	int         x = P_INT (pr, 0);
++	int         y = P_INT (pr, 1);
++	int         c = P_INT (pr, 2);
++
++	Draw_Character (x, y, c);
++}
++
++static void
++bi_Draw_String (progs_t *pr)
++{
++	int         x = P_INT (pr, 0);
++	int         y = P_INT (pr, 1);
++	const char *text = P_GSTRING (pr, 2);
++
++	Draw_String (x, y, text);
++}
++
++static void
++bi_Draw_nString (progs_t *pr)
++{
++	int         x = P_INT (pr, 0);
++	int         y = P_INT (pr, 1);
++	const char *text = P_GSTRING (pr, 2);
++	int         n = P_INT (pr, 3);
++
++	Draw_nString (x, y, text, n);
++}
++
++static void
++bi_Draw_AltString (progs_t *pr)
++{
++	int         x = P_INT (pr, 0);
++	int         y = P_INT (pr, 1);
++	const char *text = P_GSTRING (pr, 2);
++
++	Draw_AltString (x, y, text);
++}
++
++/*
++	bi_Draw_Fill
++
++	Draws a filled area with a color
++	(only a wrapper function to original qf-api)
++*/
++static void
++bi_Draw_Fill (progs_t *pr)
++{
++	int         x = P_INT (pr, 0);
++	int         y = P_INT (pr, 1);
++	int         w = P_INT (pr, 2);
++	int         h = P_INT (pr, 3);
++	int         color = P_INT (pr, 4);
++
++	Draw_Fill (x, y, w, h, color);
++}
++
++static void
++bi_Draw_Crosshair (progs_t *pr)
++{
++	int         ch = P_INT (pr, 0);
++	int         x = P_INT (pr, 1);
++	int         y = P_INT (pr, 2);
++
++	Draw_CrosshairAt (ch, x, y);
++}
++
++static const char *
++bi_draw_get_key (void *p, void *unused)
++{
++	return ((qpic_res_t *) p)->name;
++}
++
++static void
++bi_draw_free (void *_p, void *unused)
++{
++	qpic_res_t *p = (qpic_res_t *) _p;
++
++	free (p->name);
++	free (p);
++}
++
++static void
++bi_draw_clear (progs_t *pr, void *data)
++{
++	draw_resources_t *res = (draw_resources_t *) data;
++
++	Hash_FlushTable (res->pic_hash);
++}
++
++static builtin_t builtins[] = {
++	{"Draw_CachePic",	bi_Draw_CachePic,	-1},
++	{"Draw_Pic",		bi_Draw_Pic,		-1},
++	{"Draw_SubPic",		bi_Draw_SubPic,		-1},
++	{"Draw_CenterPic",	bi_Draw_CenterPic,	-1},
++	{"Draw_Character",	bi_Draw_Character,	-1},
++	{"Draw_String",		bi_Draw_String,		-1},
++	{"Draw_nString",	bi_Draw_nString,	-1},
++	{"Draw_AltString",	bi_Draw_AltString,	-1},
++	{"Draw_Fill",		bi_Draw_Fill,		-1},
++	{"Draw_Crosshair",	bi_Draw_Crosshair,	-1},
++	{0}
++};
++
++void
++R_Progs_Init (progs_t *pr)
++{
++	draw_resources_t *res = malloc (sizeof (draw_resources_t));
++	res->pic_hash = Hash_NewTable (61, bi_draw_get_key, bi_draw_free, 0);
++
++	PR_Resources_Register (pr, "Draw", res, bi_draw_clear);
++	PR_RegisterBuiltins (pr, builtins);
++}
