@@ -1,11 +1,0 @@
-30
-      __                __                 __             
-.----|  |--.-----.---.-|  |_.----.-----.--|  .-----.-----.
-|  __|     |  -__|  _  |   _|  __|  _  |  _  |  -__|__ --|
-|____|__|__|_____|___._|____|____|_____|_____|_____|_____|
-0f
-03url=http://stream.example.com:8001/mount0f - play a custom stream
-04wget=10f - use wget/mpg123 combo instead of just mpg123; this gives you
-  more reliable streaming, at the cost of losing stream metadata (MP3 tags)
-05mute=10f - mute all audio mixer channels (default Master/PCM = 90%)
-06nostream=10f - don't start streaming after the system has booted
