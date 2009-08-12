@@ -1,4 +1,4 @@
-# $Id: linux-image-2.6.30.2-antlinux.txt,v 1.2 2009-08-10 08:38:58 brian Exp $
+# $Id: linux-image-2.6.30.2-antlinux.txt,v 1.1 2009-08-01 22:38:00 brian Exp $
 # description: example package with comments
 # depends: _base otherpackage1 otherpackage2
 # helpcommand: /usr/bin/somebin --help
@@ -1064,4 +1064,11 @@ file /lib/firmware/2.6.30.2-antlinux/sb16/alaw_main.csp /lib/firmware/2.6.30.2-a
 file /lib/firmware/2.6.30.2-antlinux/sb16/ima_adpcm_init.csp /lib/firmware/2.6.30.2-antlinux/sb16/ima_adpcm_init.csp 644 0 0
 file /lib/firmware/2.6.30.2-antlinux/sb16/ima_adpcm_playback.csp /lib/firmware/2.6.30.2-antlinux/sb16/ima_adpcm_playback.csp 644 0 0
 file /lib/firmware/2.6.30.2-antlinux/sb16/ima_adpcm_capture.csp /lib/firmware/2.6.30.2-antlinux/sb16/ima_adpcm_capture.csp 644 0 0
+#
+dir /lib/modules/2.6.30.2-antlinux 755 0 0
+dir /lib/modules/2.6.30.2-antlinux/updates 755 0 0
+file /lib/modules/2.6.30.2-antlinux/updates/loop.ko /lib/modules/2.6.30.2-antlinux/updates/loop.ko 644 0 0
+file /lib/modules/2.6.30.2-antlinux/updates/loop_serpent.ko /lib/modules/2.6.30.2-antlinux/updates/loop_serpent.ko 644 0 0
+file /lib/modules/2.6.30.2-antlinux/updates/loop_twofish.ko /lib/modules/2.6.30.2-antlinux/updates/loop_twofish.ko 644 0 0
+file /lib/modules/2.6.30.2-antlinux/updates/loop_blowfish.ko /lib/modules/2.6.30.2-antlinux/updates/loop_blowfish.ko 644 0 0
 # vi: set sw=4 ts=4 paste:
