@@ -17,7 +17,7 @@ HOSTNAME="portaboom"
 if [ -e $PROJECT_DIR/kernel_configs/linux-image-$1.txt ]; then
     cat $PROJECT_DIR/${HOSTNAME}_base.txt \
         $PROJECT_DIR/kernel_configs/linux-image-$1.txt \
-        > $PROJECT_DIR/initramfs-filellist.txt
+        > $PROJECT_DIR/initramfs-filelist.txt
 else
     echo "make_release_files.sh: linux-image-$1.txt file does not exist"
     echo "make_release_files.sh: in ${PROJECT_DIR}/kernel_configs directory"

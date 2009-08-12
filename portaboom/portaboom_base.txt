@@ -14,7 +14,7 @@ slink /usr/bin/getopt /bin/getopt 0755 0 0
 # /etc
 # we have to use user accounts because icecast doesn't like running as root
 # the busybox above has been built with this fact in mind
-file /etc/hostname /tmp/hostname.psas-player 0644 0 0
+file /etc/hostname /tmp/hostname.portaboom 0644 0 0
 file /etc/group :PROJECT_DIR:/etcfiles/group 0644 0 0
 file /etc/hosts :PROJECT_DIR:/etcfiles/hosts 0644 0 0
 file /etc/passwd :PROJECT_DIR:/etcfiles/passwd 0644 0 0
@@ -30,11 +30,11 @@ file /etc/modules :PROJECT_DIR:/etcfiles/modules 0644 0 0
 #file /etc/release_notes.txt :PROJECT_DIR:/release_notes.txt 0644 0 0
 dir /etc/ssl 0755 0 0
 dir /etc/ssl/certs 0755 0 0
-file /etc/ssl/certs/certificate.pem :BUILD_BASE:/builds/propaganda/sslcert/certificate.pem 0644 0 0
+#file /etc/ssl/certs/certificate.pem :PROJECT_DIR:/sslcert/certificate.pem 0644 0 0
 # system/textmenu/helper scripts
 dir /etc/scripts 0755 0 0
-file /etc/scripts/streaming.sh :BUILD_BASE:/builds/common/streaming.sh 0755 0 0
-file /etc/scripts/setvolume.sh :BUILD_BASE:/builds/common/setvolume.sh 0755 0 0
+file /etc/scripts/streaming.sh :BUILD_BASE:/builds/common/scripts/streaming.sh 0755 0 0
+file /etc/scripts/setvolume.sh :BUILD_BASE:/builds/common/scripts/setvolume.sh 0755 0 0
 file /etc/scripts/helloworld.pl :PROJECT_DIR:/scripts/helloworld.pl 0755 0 0
 #file /etc/scripts/run_mpg123.sh :PROJECT_DIR:/scripts/run_mpg123.sh 0755 0 0
 # /etc/network (directory already exists in _base)
@@ -46,13 +46,13 @@ dir /etc/network/run 0755 0 0
 file /etc/network/run/ifstate /etc/network/run/ifstate 0644 0 0
 # /usr/share/udhcpc for udhcpc script
 dir /usr/share/udhcpc 0755 0 0
-file /usr/share/udhcpc/default.script :BUILD_BASE:/builds/common/simple.script 0755 0 0
+file /usr/share/udhcpc/default.script :BUILD_BASE:/builds/common/scripts/simple.script 0755 0 0
 # /sbin
 file /sbin/modprobe /sbin/modprobe 0755 0 0
 file /sbin/getty /sbin/getty 0755 0 0
 # /usr/bin
 # a script that runs nslookup
-file /usr/bin/host :BUILD_BASE:/builds/common/host.sh 0755 0 0
+file /usr/bin/host :BUILD_BASE:/builds/common/scripts/host.sh 0755 0 0
 # for testing installation using debootstrap
 dir /mnt/rootvol 0755 0 0
 ### INITSCRIPTS
@@ -107,6 +107,5 @@ slink /etc/stop/75sysfs /etc/init.d/sysfs 0755 0 0
 slink /etc/stop/89klogd /etc/init.d/klogd 0755 0 0
 slink /etc/stop/90syslogd /etc/init.d/syslogd 0755 0 0
 slink /etc/stop/99procfs /etc/init.d/procfs 0755 0 0
-
 # vi: set sw=4 ts=4 paste:
 # eof
