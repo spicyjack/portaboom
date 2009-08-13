@@ -21,13 +21,16 @@ file /etc/passwd :PROJECT_DIR:/etcfiles/passwd 0644 0 0
 file /etc/profile :PROJECT_DIR:/etcfiles/profile 0644 0 0
 file /etc/shadow :PROJECT_DIR:/etcfiles/shadow 0640 0 0
 file /etc/sudoers :PROJECT_DIR:/etcfiles/sudoers 0440 0 0
-file /etc/styles.css :PROJECT_DIR:/etcfiles/styles.css 0644 0 0
 file /etc/sysctl.conf /etc/sysctl.conf 0644 0 0
 file /etc/inittab :PROJECT_DIR:/etcfiles/inittab 0644 0 0
 file /etc/modules :PROJECT_DIR:/etcfiles/modules 0644 0 0
 #file /etc/fstab :PROJECT_DIR:/fstab 0644 0 0
 #file /etc/credits.txt :PROJECT_DIR:/credits.txt 0644 0 0
 #file /etc/release_notes.txt :PROJECT_DIR:/release_notes.txt 0644 0 0
+# shellinabox
+dir /etc/shellinabox 0755 0 0
+file /etc/shellinabox/styles.css :PROJECT_DIR:/etcfiles/styles.css 0644 0 0
+# shellinabox certs
 dir /etc/ssl 0755 0 0
 dir /etc/ssl/certs 0755 0 0
 #file /etc/ssl/certs/certificate.pem :PROJECT_DIR:/sslcert/certificate.pem 0644 0 0

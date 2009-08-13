@@ -5,7 +5,7 @@
 ::ctrlaltdel:/sbin/reboot
 ::shutdown:/sbin/swapoff -a
 ::shutdown:/bin/umount -a -r
-#::respawn:-/bin/sh /etc/menu.sh
+#::respawn:-/bin/sh /etc/scripts/runtop.sh
 ::askfirst:-/bin/sh
 tty2::respawn:-/sbin/getty 38400 tty2
 tty3::respawn:-/sbin/getty 38400 tty3
