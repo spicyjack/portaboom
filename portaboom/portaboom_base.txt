@@ -8,7 +8,7 @@ dir /home/demo 0755 1000 1000
 dir /home/nobody 0755 65535 65535
 # /bin
 # make sure you get busybox in each project's specific initramfs file list now
-file /bin/busybox /tmp/busybox-1.14.2-x86 0755 0 0
+file /bin/busybox /tmp/busybox-1.14.3-x86 0755 0 0
 # busybox getopt hides in /bin
 slink /usr/bin/getopt /bin/getopt 0755 0 0
 # /etc
@@ -85,22 +85,24 @@ file /etc/init.d/udev :BUILD_BASE:/builds/common/initscripts/udev 0755 0 0
 file /etc/init.d/usb_modules :BUILD_BASE:/builds/common/initscripts/usb_modules 0755 0 0
 # start symlinks
 dir /etc/start 0755 0 0
-#slink /etc/start/01remount_rootfs /etc/init.d/remount_rootfs 0755 0 0
-#slink /etc/start/02bb_install /etc/init.d/bb_install 0755 0 0
-#slink /etc/start/05makedevs /etc/init.d/makedevs 0755 0 0
-#slink /etc/start/10syslogd /etc/init.d/syslogd 0755 0 0
-#slink /etc/start/11klogd /etc/init.d/klogd 0755 0 0
-#slink /etc/start/10sysfs /etc/init.d/sysfs 0755 0 0
-#slink /etc/start/10udev /etc/init.d/udev 0755 0 0
-slink /etc/start/10miscfs /etc/init.d/miscfs 0755 0 0
+slink /etc/start/01remount_rootfs /etc/init.d/remount_rootfs 0755 0 0
+slink /etc/start/02bb_install /etc/init.d/bb_install 0755 0 0
+slink /etc/start/03hostname /etc/init.d/hostname 0755 0 0
+slink /etc/start/05procfs /etc/init.d/procfs 0755 0 0
+slink /etc/start/06sysfs /etc/init.d/sysfs 0755 0 0
+slink /etc/start/10udev /etc/init.d/udev 0755 0 0
+slink /etc/start/15syslogd /etc/init.d/syslogd 0755 0 0
+slink /etc/start/16klogd /etc/init.d/klogd 0755 0 0
+slink /etc/start/17usb_modules /etc/init.d/usb_modules 0755 0 0
+slink /etc/start/18miscfs /etc/init.d/miscfs 0755 0 0
 slink /etc/start/20kernel_modules /etc/init.d/kernel_modules 0755 0 0
-slink /etc/start/25hostname /etc/init.d/hostname 0755 0 0
 slink /etc/start/30networking /etc/init.d/networking 0755 0 0
 # this kernel-panic's QEMU
 #slink /etc/start/35mountall /etc/init.d/mountall 0755 0 0
 slink /etc/start/70streaming /etc/init.d/streaming 0755 0 0
 slink /etc/start/80setvolume /etc/init.d/setvolume 0755 0 0
 slink /etc/start/90shellinaboxd /etc/init.d/shellinaboxd 0755 0 0
+#slink /etc/start/99kmod_nuke /etc/init.d/kmod_nuke 0755 0 0
 # stop symlinks
 dir /etc/stop 0755 0 0
 slink /etc/stop/50streaming /etc/init.d/streaming 0755 0 0
