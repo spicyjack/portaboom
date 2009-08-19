@@ -1,0 +1,105 @@
+diff -N -p -r -u doomlegacy-1.43/linux_x/i_system.c doomlegacy-1.43-patched/linux_x/i_system.c
+--- doomlegacy-1.43/linux_x/i_system.c	2002-07-26 08:23:01.000000000 -0700
++++ doomlegacy-1.43-patched/linux_x/i_system.c	2009-08-19 14:58:28.016385582 -0700
+@@ -142,9 +142,9 @@ extern int             eventtail;
+ 
+ // Locations for searching the legacy.dat
+ #define DEFAULTWADLOCATION1 "/usr/local/games/legacy"
+-#define DEFAULTWADLOCATION2 "/usr/games/legacy"
+-#define DEFAULTSEARCHPATH1 "/usr/local"
+-#define DEFAULTSEARCHPATH2 "/usr/games"
++#define DEFAULTWADLOCATION2 "/usr/share/games/doom"
++#define DEFAULTSEARCHPATH1 "/usr/local/games/legacy"
++#define DEFAULTSEARCHPATH2 "/usr/share/games/doom"
+ #define WADKEYWORD "legacy.dat"
+ 
+ // holds wad path
+diff -N -p -r -u doomlegacy-1.43/makefile doomlegacy-1.43-patched/makefile
+--- doomlegacy-1.43/makefile	2004-04-25 04:13:06.000000000 -0700
++++ doomlegacy-1.43-patched/makefile	2009-08-19 14:57:41.810055052 -0700
+@@ -263,7 +263,7 @@
+ 
+ # gcc or g++
+ #CC=@gcc
+-CC=gcc
++CC=gcc-3.4
+ 
+ #if use PGCC or EGCS
+ PGCC=1
+@@ -317,8 +317,8 @@ endif
+ ifdef DJGPPDOS
+ 	# subdirectory for objects
+ 
+-	O=objs
+-	BIN=bin
++	O=./objs
++	BIN=./bin
+ 
+ 	#use the x86 asm code
+     #USEASM=1
+@@ -343,8 +343,8 @@ endif #ifdef DJGPPDOS
+ ifdef LINUX
+ 
+ 	# subdirectory for objects
+-	O=../objs
+-	BIN=../bin
++	O=./objs
++	BIN=./bin
+ 	MUSSERV=linux_x/musserv
+ 	SNDSERV=linux_x/sndserv
+ 	
+@@ -387,8 +387,8 @@ endif
+ ifdef FREEBSD
+ 
+ 	# subdirectory for objects
+-	O=../objs
+-	BIN=../bin
++	O=./objs
++	BIN=./bin
+ 	MUSSERV=linux_x/musserv
+ 	SNDSERV=linux_x/sndserv
+ 	OSVERSION:=$(shell /sbin/sysctl -n kern.osreldate)
+@@ -455,8 +455,8 @@ endif #ifdef FREEBSD
+ ifdef SOLARIS
+ 
+ 	# subdirectory for objects
+-	O=../objs
+-	BIN=../bin
++	O=./objs
++	BIN=./bin
+ 	OPTS := -DLINUX -DHWRENDER -DDIRECTFULLSCREEN -DHAVE_MIXER -DSDL -DVID_X11 
+ 	OPTS := $(OPTS) -I. -I/usr/local/include -I/usr/X11R6/include -Wall
+ 	OPTS := $(OPTS) -DBSD_COMP -DSOLARIS 
+@@ -483,8 +483,8 @@ endif #ifdef SOLARIS
+ 
+ ifdef SDL
+ 	# subdirectory for objects
+-	O=../objs
+-	BIN=../bin
++	O=./objs
++	BIN=./bin
+ 	OPTS := $(OPTS) -I.
+ 	SFLAGS=-g $(OPTS)
+ 	OBJS=$(O)/i_video.o $(O)/dosstr.o $(O)/endtxt.o \
+@@ -506,8 +506,8 @@ endif
+ ifdef OS2
+ 
+ 	# subdirectory for objects
+-	O=objs
+-	BIN=bin
++	O=./objs
++	BIN=./bin
+ 
+ 	#use the x86 asm code
+ 	NASM=nasm
+@@ -539,8 +539,8 @@ ifdef GCC30
+ 	M5=-march=pentium
+ 	M4=-march=486
+ else
+-	M5=-mpentium
+-	M4=-m486
++	M5=-march=pentium
++	M4=-march=486
+ endif
+ endif
+ 

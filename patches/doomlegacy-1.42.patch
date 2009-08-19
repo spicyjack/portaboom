@@ -1,0 +1,146 @@
+diff -N -p -r -u doomlegacy_142_src/linux_x/i_system.c doomlegacy-1.42-patched/linux_x/i_system.c
+--- doomlegacy_142_src/linux_x/i_system.c	2004-04-18 14:02:24.000000000 -0700
++++ doomlegacy-1.42-patched/linux_x/i_system.c	2009-08-19 14:41:15.309384012 -0700
+@@ -142,9 +142,9 @@ extern int             eventtail;
+ 
+ // Locations for searching the legacy.dat
+ #define DEFAULTWADLOCATION1 "/usr/local/games/legacy"
+-#define DEFAULTWADLOCATION2 "/usr/games/legacy"
+-#define DEFAULTSEARCHPATH1 "/usr/local"
+-#define DEFAULTSEARCHPATH2 "/usr/games"
++#define DEFAULTWADLOCATION2 "/usr/share/games/doom"
++#define DEFAULTSEARCHPATH1 "/usr/local/games/legacy"
++#define DEFAULTSEARCHPATH2 "/usr/share/games/doom"
+ #define WADKEYWORD "legacy.dat"
+ 
+ // holds wad path
+diff -N -p -r -u doomlegacy_142_src/linux_x/musserv/Makefile.linux doomlegacy-1.42-patched/linux_x/musserv/Makefile.linux
+--- doomlegacy_142_src/linux_x/musserv/Makefile.linux	2004-04-18 14:02:24.000000000 -0700
++++ doomlegacy-1.42-patched/linux_x/musserv/Makefile.linux	2009-08-19 14:41:39.556628412 -0700
+@@ -3,7 +3,7 @@
+ #
+ 
+ CC	= gcc
+-CFLAGS	= -I. -Wall -O2 -m486
++CFLAGS	= -I. -Wall -O2 -march=pentium
+ LDFLAGS	=
+ #LDFLAGS	= -static
+ 
+diff -N -p -r -u doomlegacy_142_src/linux_x/sndserv/Makefile doomlegacy-1.42-patched/linux_x/sndserv/Makefile
+--- doomlegacy_142_src/linux_x/sndserv/Makefile	2004-04-18 14:02:24.000000000 -0700
++++ doomlegacy-1.42-patched/linux_x/sndserv/Makefile	2009-08-19 14:42:04.920289662 -0700
+@@ -27,7 +27,7 @@
+ #
+ 
+ CC=gcc
+-CFLAGS=-O2 -m486 -Wall -DNORMALUNIX -DLINUX
++CFLAGS=-O2 -march=pentium -Wall -DNORMALUNIX -DLINUX
+ ifdef FREEBSD
+ CFLAGS:=${CFLAGS} -DFREEBSD
+ endif
+diff -N -p -r -u doomlegacy_142_src/makefile doomlegacy-1.42-patched/makefile
+--- doomlegacy_142_src/makefile	2004-04-18 14:02:24.000000000 -0700
++++ doomlegacy-1.42-patched/makefile	2009-08-19 14:45:07.217279612 -0700
+@@ -260,7 +260,7 @@
+ 
+ # gcc or g++
+ #CC=@gcc
+-CC=gcc
++CC=gcc-3.4
+ 
+ #if use PGCC or EGCS
+ PGCC=1
+@@ -314,8 +314,8 @@ endif
+ ifdef DJGPPDOS
+ 	# subdirectory for objects
+ 
+-	O=objs
+-	BIN=bin
++	O=./objs
++	BIN=./bin
+ 
+ 	#use the x86 asm code
+     #USEASM=1
+@@ -340,8 +340,8 @@ endif #ifdef DJGPPDOS
+ ifdef LINUX
+ 
+ 	# subdirectory for objects
+-	O=../objs
+-	BIN=../bin
++	O=./objs
++	BIN=./bin
+ 	MUSSERV=linux_x/musserv
+ 	SNDSERV=linux_x/sndserv
+ 
+@@ -384,8 +384,8 @@ endif
+ ifdef FREEBSD
+ 
+ 	# subdirectory for objects
+-	O=../objs
+-	BIN=../bin
++	O=./objs
++	BIN=./bin
+ 	MUSSERV=linux_x/musserv
+ 	SNDSERV=linux_x/sndserv
+ 	OSVERSION:=$(shell /sbin/sysctl -n kern.osreldate)
+@@ -452,8 +452,8 @@ endif #ifdef FREEBSD
+ ifdef SOLARIS
+ 
+ 	# subdirectory for objects
+-	O=../objs
+-	BIN=../bin
++	O=./objs
++	BIN=./bin
+ 	OPTS := -DLINUX -DHWRENDER -DDIRECTFULLSCREEN -DHAVE_MIXER -DSDL -DVID_X11 
+ 	OPTS := $(OPTS) -I. -I/usr/local/include -I/usr/X11R6/include -Wall
+ 	OPTS := $(OPTS) -DBSD_COMP -DSOLARIS 
+@@ -480,8 +480,8 @@ endif #ifdef SOLARIS
+ 
+ ifdef SDL
+ 	# subdirectory for objects
+-	O=../objs
+-	BIN=../bin
++	O=./objs
++	BIN=./bin
+ 	OPTS := $(OPTS) -I.
+ 	SFLAGS=-g $(OPTS)
+ 	OBJS=$(O)/i_video.o $(O)/dosstr.o $(O)/endtxt.o \
+@@ -536,8 +536,8 @@ ifdef GCC30
+ 	M5=-march=pentium
+ 	M4=-march=486
+ else
+-	M5=-mpentium
+-	M4=-m486
++	M5=-march=pentium
++	M4=-march=486
+ endif
+ endif
+ 
+@@ -545,9 +545,9 @@ ifdef PROFILEMODE
+ 
+ 	# build with profiling information
+ 	ifdef PGCC
+-		CFLAGS = -g -pg -DPARANOIA -fwritable-strings $(OPTS)
++		CFLAGS = -g -pg -DPARANOIA $(OPTS)
+ 	else
+-		CFLAGS = -g -pg $(M4) -O3 -ffast-math -fwritable-strings $(OPTS)
++		CFLAGS = -g -pg $(M4) -O3 -ffast-math $(OPTS)
+ 	endif
+ 	LDFLAGS = -g -pg -L/usr/X11R6/lib
+ else
+@@ -555,13 +555,13 @@ else
+ 
+ 	# build a normal optimised version
+ 	ifdef PGCC
+-		CFLAGS = $(OPTS) $(M5) -O6 -ffast-math -fomit-frame-pointer -fwritable-strings
++		CFLAGS = $(OPTS) $(M5) -O6 -ffast-math -fomit-frame-pointer 
+ 		# -fgcse -fcse-follow-jumps -fcse-skip-blocks -frerun-cse-after-loop -ffunction-cse \
+ 		# -fexpensive-optimizations -fforce-mem -fstrength-reduce -fthread-jumps  \
+ 		# -fregmove -fschedule-insns -fschedule-insns2 -fmove-all-movables \
+ 		# -fcaller-saves -finline-functions -mieee-fp -mfp-ret-in-387 -m80387 -mhard-float -finline
+ 	else
+-		CFLAGS = $(M4) -O3 -ffast-math -fomit-frame-pointer -fwritable-strings $(OPTS)
++		CFLAGS = $(M4) -O3 -ffast-math -fomit-frame-pointer $(OPTS)
+ 	endif
+ endif
+ 
