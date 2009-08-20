@@ -99,7 +99,7 @@ slink /etc/start/20kernel_modules /etc/init.d/kernel_modules 0755 0 0
 slink /etc/start/30networking /etc/init.d/networking 0755 0 0
 # this kernel-panic's QEMU
 #slink /etc/start/35mountall /etc/init.d/mountall 0755 0 0
-slink /etc/start/70streaming /etc/init.d/streaming 0755 0 0
+#slink /etc/start/70streaming /etc/init.d/streaming 0755 0 0
 slink /etc/start/80setvolume /etc/init.d/setvolume 0755 0 0
 slink /etc/start/90shellinaboxd /etc/init.d/shellinaboxd 0755 0 0
 #slink /etc/start/99kmod_nuke /etc/init.d/kmod_nuke 0755 0 0
