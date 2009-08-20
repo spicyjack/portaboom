@@ -1,0 +1,24 @@
+diff -N -p -r -u glbsp-2.24-source/Makefile.unx glbsp-2.24-patched/Makefile.unx
+--- glbsp-2.24-source/Makefile.unx	2007-07-25 20:14:34.000000000 -0700
++++ glbsp-2.24-patched/Makefile.unx	2009-08-19 17:31:10.484735672 -0700
+@@ -28,7 +28,7 @@ BASE_FLAGS=-Wall -O2 -I./src -DUNIX -DIN
+ 
+ FLTK_DIR=./fltk-1.1.7
+ 
+-INSTALL_PREFIX=/usr/local
++INSTALL_PREFIX=/usr/local/stow/glbsp-2.24
+ MAN_PREFIX=$(INSTALL_PREFIX)/share/man
+ 
+ 
+@@ -83,9 +83,11 @@ $(CMD_NAME): $(LIB_NAME) $(CMD_OBJS)
+ 	$(STRIP) $@
+ 
+ install: $(CMD_NAME)
++	mkdir -p $(INSTALL_PREFIX)/bin/
+ 	cp $(CMD_NAME) $(INSTALL_PREFIX)/bin/
+ 	chown root $(INSTALL_PREFIX)/bin/$(CMD_NAME)
+ 	chmod 755 $(INSTALL_PREFIX)/bin/$(CMD_NAME)
++	mkdir -p $(MAN_PREFIX)/man1/
+ 	cp glbsp.1 $(MAN_PREFIX)/man1/
+ 	chmod 644 $(MAN_PREFIX)/man1/glbsp.1
+ 
