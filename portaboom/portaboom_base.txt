@@ -61,7 +61,6 @@ dir /mnt/rootvol 0755 0 0
 ### INITSCRIPTS
 # get the full set of init helper scripts
 dir /etc/init.d 0755 0 0
-#file /etc/init.d/makedevs :BUILD_BASE:/builds/common/initscripts/makedevs 0755 0 0
 file /etc/init.d/bb_install :BUILD_BASE:/builds/common/initscripts/bb_install 0755 0 0
 file /etc/init.d/hostname :BUILD_BASE:/builds/common/initscripts/hostname 0755 0 0
 file /etc/init.d/kernel_modules :BUILD_BASE:/builds/common/initscripts/kernel_modules 0755 0 0
@@ -85,6 +84,7 @@ file /etc/init.d/udev :BUILD_BASE:/builds/common/initscripts/udev 0755 0 0
 file /etc/init.d/usb_modules :BUILD_BASE:/builds/common/initscripts/usb_modules 0755 0 0
 # start symlinks
 dir /etc/start 0755 0 0
+slink /etc/start/00loadfont /etc/init.d/loadfont 0755 0 0
 slink /etc/start/01remount_rootfs /etc/init.d/remount_rootfs 0755 0 0
 slink /etc/start/02bb_install /etc/init.d/bb_install 0755 0 0
 slink /etc/start/03hostname /etc/init.d/hostname 0755 0 0
