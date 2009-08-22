@@ -39,6 +39,9 @@ dir /etc/scripts 0755 0 0
 file /etc/scripts/streaming.sh :BUILD_BASE:/builds/common/scripts/streaming.sh 0755 0 0
 file /etc/scripts/setvolume.sh :BUILD_BASE:/builds/common/scripts/setvolume.sh 0755 0 0
 file /etc/scripts/helloworld.pl :PROJECT_DIR:/scripts/helloworld.pl 0755 0 0
+# debugging X windows
+file /bin/logstartx.sh :BUILD_BASE:/builds/common/scripts/logstartx.sh 0755 0 0
+file /bin/logxinit.sh :BUILD_BASE:/builds/common/scripts/logxinit.sh 0755 0 0
 #file /etc/scripts/run_mpg123.sh :PROJECT_DIR:/scripts/run_mpg123.sh 0755 0 0
 # /etc/network (directory already exists in _base)
 dir /etc/network/if-down.d 0755 0 0
