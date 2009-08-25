@@ -13,7 +13,7 @@
 
 [1;33;40mRelease:[37;40m :RELEASE_VER:
 
-Today is: \\d; You are viewing \\l 
+Today is: \d; You are viewing \l 
 
 Account info: [34;40m
 u: root               p: Disabled; use SUDO from 'demo' user account

@@ -1,4 +1,4 @@
-# $Id: psas-player_base.txt,v 1.10 2009-08-10 08:38:58 brian Exp $
+# $Id: portaboom_base.txt,v 1.10 2009-08-10 08:38:58 brian Exp $
 # dir <name> <mode> <uid> <gid>
 # file <name> <source> <mode> <uid> <gid>
 # slink <new name> <original file> <mode> <uid> <gid>
@@ -12,9 +12,10 @@ file /bin/busybox /tmp/busybox-1.14.3-x86 0755 0 0
 # busybox getopt hides in /bin
 slink /usr/bin/getopt /bin/getopt 0755 0 0
 # /etc
-# we have to use user accounts because icecast doesn't like running as root
-# the busybox above has been built with this fact in mind
+# generated files
+file /etc/issue.portaboom /tmp/issue.portaboom 0644 0 0
 file /etc/hostname /tmp/hostname.portaboom 0644 0 0
+# non-generated files
 file /etc/group :PROJECT_DIR:/etcfiles/group 0644 0 0
 file /etc/hosts :PROJECT_DIR:/etcfiles/hosts 0644 0 0
 file /etc/passwd :PROJECT_DIR:/etcfiles/passwd 0644 0 0
