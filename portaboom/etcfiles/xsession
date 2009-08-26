@@ -1,0 +1,2 @@
+xsetroot -solid black
+exec xterm -geometry +0-0
