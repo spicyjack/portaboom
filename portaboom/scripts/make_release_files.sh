@@ -10,7 +10,7 @@ SED=$(which sed)
 OUTPUT_DIR="/tmp"
 INPUT_DIR="etcfiles"
 HOSTNAME="portaboom"
-INPUT_FILES="issue.${HOSTNAME}"
+INPUT_FILES="issue.${HOSTNAME} issue.${HOSTNAME}.nogetty"
 # any files in this list get enumerated over and the substitutions below are
 # performed on them
 

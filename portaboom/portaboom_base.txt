@@ -14,6 +14,7 @@ slink /usr/bin/getopt /bin/getopt 0755 0 0
 # /etc
 # generated files
 file /etc/issue.portaboom /tmp/issue.portaboom 0644 0 0
+file /etc/issue /tmp/issue.portaboom.nogetty 0644 0 0
 file /etc/hostname /tmp/hostname.portaboom 0644 0 0
 # non-generated files
 file /etc/group :PROJECT_DIR:/etcfiles/group 0644 0 0
@@ -28,7 +29,7 @@ file /etc/modules :PROJECT_DIR:/etcfiles/modules 0644 0 0
 #file /etc/fstab :PROJECT_DIR:/fstab 0644 0 0
 #file /etc/credits.txt :PROJECT_DIR:/credits.txt 0644 0 0
 #file /etc/release_notes.txt :PROJECT_DIR:/release_notes.txt 0644 0 0
-file /home/demo/.Xresources :BUILD_BASE:/common/etcfiles/Xresources 0644 1000 100
+file /etc/X11/Xresources/Xresources.portaboom :BUILD_BASE:/common/etcfiles/Xresources 0644 1000 100
 file /home/demo/.xsession :PROJECT_DIR:/etcfiles/xsession 0755 1000 100
 # shellinabox
 dir /etc/shellinabox 0755 0 0
@@ -36,12 +37,13 @@ file /etc/shellinabox/styles.css :PROJECT_DIR:/etcfiles/styles.css 0644 0 0
 # shellinabox certs
 dir /etc/ssl 0755 0 0
 dir /etc/ssl/certs 0755 0 0
-#file /etc/ssl/certs/certificate.pem :PROJECT_DIR:/sslcert/certificate.pem 0644 0 0
+file /etc/ssl/certs/certificate.pem /tmp/certificate.pem 0644 0 0
 # system/textmenu/helper scripts
 dir /etc/scripts 0755 0 0
 file /etc/scripts/streaming.sh :BUILD_BASE:/common/scripts/streaming.sh 0755 0 0
 file /etc/scripts/setvolume.sh :BUILD_BASE:/common/scripts/setvolume.sh 0755 0 0
 file /etc/scripts/helloworld.pl :PROJECT_DIR:/scripts/helloworld.pl 0755 0 0
+file /etc/scripts/startx_demo.sh :PROJECT_DIR:/scripts/startx_demo.sh 0755 0 0
 # debugging X windows
 file /bin/logstartx.sh :BUILD_BASE:/common/scripts/logstartx.sh 0755 0 0
 file /bin/logxinit.sh :BUILD_BASE:/common/scripts/logxinit.sh 0755 0 0
