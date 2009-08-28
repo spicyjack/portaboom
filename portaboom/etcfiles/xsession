@@ -1,2 +1,10 @@
-xsetroot -solid black
-exec xterm -geometry +0-0
+#!/bin/sh
+
+# xsession script for 'demo' user
+
+# set a black background
+/usr/bin/xsetroot -solid black
+# set the image of the moon on top of it
+/usr/games/xphoon
+# start an xterm in the lower left corner of the screen
+exec xterm +sb -geometry +0-0

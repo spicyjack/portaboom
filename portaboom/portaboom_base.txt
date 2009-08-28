@@ -29,7 +29,9 @@ file /etc/modules :PROJECT_DIR:/etcfiles/modules 0644 0 0
 #file /etc/fstab :PROJECT_DIR:/fstab 0644 0 0
 #file /etc/credits.txt :PROJECT_DIR:/credits.txt 0644 0 0
 #file /etc/release_notes.txt :PROJECT_DIR:/release_notes.txt 0644 0 0
-file /etc/X11/Xresources/Xresources.portaboom :BUILD_BASE:/common/etcfiles/Xresources 0644 1000 100
+# xsession and xresources files
+file /home/demo/.Xresources :BUILD_BASE:/common/etcfiles/Xresources 0644 1000 100
+file /home/demo/fonttest.txt :BUILD_BASE:/common/etcfiles/fonttest.txt 0644 1000 100
 file /home/demo/.xsession :PROJECT_DIR:/etcfiles/xsession 0755 1000 100
 # shellinabox
 dir /etc/shellinabox 0755 0 0

@@ -1065,4 +1065,10 @@ file /lib/firmware/2.6.30.5-antlinux/yam/1200.bin /lib/firmware/2.6.30.5-antlinu
 file /lib/firmware/2.6.30.5-antlinux/yam/9600.bin /lib/firmware/2.6.30.5-antlinux/yam/9600.bin 644 0 0
 slink /lib/modules/2.6.30.5-antlinux/source /usr/src/linux-2.6.30.5 777 0 0
 slink /lib/modules/2.6.30.5-antlinux/build /usr/src/linux-2.6.30.5 777 0 0
+# loop-aes-modules-2.6.30.5-antlinux
+dir /lib/modules/2.6.30.5-antlinux/updates 755 0 0
+file /lib/modules/2.6.30.5-antlinux/updates/loop.ko /lib/modules/2.6.30.5-antlinux/updates/loop.ko 644 0 0
+file /lib/modules/2.6.30.5-antlinux/updates/loop_serpent.ko /lib/modules/2.6.30.5-antlinux/updates/loop_serpent.ko 644 0 0
+file /lib/modules/2.6.30.5-antlinux/updates/loop_twofish.ko /lib/modules/2.6.30.5-antlinux/updates/loop_twofish.ko 644 0 0
+file /lib/modules/2.6.30.5-antlinux/updates/loop_blowfish.ko /lib/modules/2.6.30.5-antlinux/updates/loop_blowfish.ko 644 0 0
 # vi: set sw=4 ts=4 paste:
