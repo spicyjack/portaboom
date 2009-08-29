@@ -32,7 +32,8 @@ file /etc/modules :PROJECT_DIR:/etcfiles/modules 0644 0 0
 # xsession and xresources files
 file /home/demo/.Xresources :BUILD_BASE:/common/etcfiles/Xresources 0644 1000 100
 file /home/demo/fonttest.txt :BUILD_BASE:/common/etcfiles/fonttest.txt 0644 1000 100
-file /home/demo/.xsession :PROJECT_DIR:/etcfiles/xsession 0755 1000 100
+# this gets changed at runtime depending on whether or not debug is set
+file /home/demo/xsession :PROJECT_DIR:/etcfiles/xsession 0755 1000 100
 # shellinabox
 dir /etc/shellinabox 0755 0 0
 file /etc/shellinabox/styles.css :PROJECT_DIR:/etcfiles/styles.css 0644 0 0
