@@ -1,2 +1,3 @@
 syntax: regexp
 initramfs-filelist\.txt$
+.*swp$
