@@ -12,6 +12,8 @@ my $button = Gtk2::Button->new (q(Quit));
 $button->signal_connect (clicked => sub { Gtk2->main_quit });
 # add the button to the window
 $window->add ($button);
+# center it
+$window->set_position(q(center));
 # show the window
 $window->show_all;
 # yield to Gtk2 and wait for user input
