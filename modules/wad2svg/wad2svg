@@ -1,0 +1,164 @@
+#!/usr/bin/perl -w
+# By Colin Phipps; see the file AUTHORS for details
+# Copyright 2002 by Colin Phipps
+# You are permitted to redistribute this software providing the copyright and
+#  authoring notices remain attached - see the file COPYING for details
+
+use strict;
+use SVG;
+use Getopt::Std;
+use Doom::WAD;
+use Doom::Level;
+use lib '.';
+
+my %opts;
+getopts("m:d:",\%opts);
+
+my ($xsize,$ysize) = (250,250);
+
+sub wadtoimgcoords {
+	@_ == 3 or die "bad params";
+	my $level = shift;
+	sub wadtoimg($$$$) { my ($lb,$ub,$sz,$co) = @_; return $sz*($co-$lb)/($ub-$lb); }
+	return (
+		wadtoimg($level->{xmin},$level->{xmax},$xsize,shift),
+		wadtoimg($level->{ymin},$level->{ymax},$xsize,shift),
+	);
+}
+
+sub vertextocoord($$) {
+	my ($level,$vn) = @_;
+	my @vc = @{$level->{vertex}[$vn]};
+	return wadtoimgcoords($level,@vc);
+}
+
+# Linedef drawing
+
+sub drawflaglines($$$$$) {
+	my ($svg,$level,$colour,$yesflags,$noflags) = @_;
+	my $g = $svg->group(id=>"flag-lines-$yesflags-$noflags",style=>{stroke=>$colour});
+	foreach my $l (@{$level->{linedef}}) {
+		next if $l->{flags} & $noflags;
+		next unless (($l->{flags} & $yesflags) == $yesflags);
+		my %params;
+		@params{qw/x1 y1/} = vertextocoord($level,$l->{from});
+		@params{qw/x2 y2/} = vertextocoord($level,$l->{to});
+		$g->line(%params);
+	}
+}
+
+sub draw1slines {
+	my ($svg,$level,%params) = @_;
+	return drawflaglines($svg,$level,$params{colour},0,4);
+}
+
+sub draw2slines {
+	my ($svg,$level,%params) = @_;
+	return drawflaglines($svg,$level,$params{colour},4,0);
+}
+
+# Nodes drawing
+
+sub wherehit($$) {
+	my ($cutter,$target) = @_;
+	$cutter->{ptmp} ||= ($cutter->{dx}*$cutter->{y}-$cutter->{dy}*$cutter->{x}); # Prcalculation useful later, see BSP source
+	return (
+		-($cutter->{dx}*$target->{y} - $cutter->{dy}*$target->{x} - $cutter->{ptmp})
+		/
+		(
+			($cutter->{dx}*$target->{dy} - $cutter->{dy}*$target->{dx})
+				or return undef
+		)
+	);
+}
+
+sub splitcolor($) {
+	my @colours = ("rgb(212,192,0)", "rgb(255,128,0)", "rgb(255,0,0)", "rgb(255,0,128)", "rgb(212,0,192)");
+	my $p = shift;
+	if ($p >= @colours) { return $colours[@colours-1]; }
+	else { return $colours[$p]; }
+
+}
+
+sub drawnode {
+	my ($g,$level,$node) = @_;
+	my @fakes = (
+		{ x => $level->{xmin}, y => $level->{ymin}, dx => 0, dy => 1 },
+		{ x => $level->{xmax}, y => $level->{ymin}, dx => 0, dy => 1 },
+		{ x => $level->{xmin}, y => $level->{ymax}, dx => 1, dy => 0 },
+		{ x => $level->{xmin}, y => $level->{ymin}, dx => 1, dy => 0 }
+	);
+	{ # Walk the nodes up from this one, clipping the splitline against it
+		my ($start,$end) = (-99999,99999);
+		my $parents = 0;
+		{
+			my $parent = $node;
+			while ($parent = $parent->{parent}) {
+				$parents++;
+				my $cutratio = wherehit($parent->{cut},$node->{cut});
+				defined($cutratio) or next; # Parallel
+				$end = $cutratio if ($cutratio > 0 && $cutratio < $end);
+				$start = $cutratio if ($cutratio <= 0 && $cutratio > $start);
+			}
+			foreach my $fakecut (@fakes) {
+				my $cutratio = wherehit($fakecut,$node->{cut});
+				defined($cutratio) or next; # Parallel
+				$end = $cutratio if ($cutratio > 0 && $cutratio < $end);
+				$start = $cutratio if ($cutratio <= 0 && $cutratio > $start);
+			}
+		}
+		{
+			my %params;
+			@params{qw/x1 y1/} = wadtoimgcoords(
+				$level,
+				($node->{cut}{x} + $start*$node->{cut}{dx}),
+				($node->{cut}{y} + $start*$node->{cut}{dy}),
+			);
+			@params{qw/x2 y2/} = wadtoimgcoords(
+				$level,
+				($node->{cut}{x} + $end*$node->{cut}{dx}),
+				($node->{cut}{y} + $end*$node->{cut}{dy}),
+			);
+			$g->line(%params,style=>{stroke=>splitcolor($parents)});
+		}
+	}
+	drawnode($g,$level,$node->{left}) if ref $node->{left};
+	drawnode($g,$level,$node->{right}) if ref $node->{right};
+}
+
+sub drawnodes {
+	my ($svg,$level,%params) = @_;
+	my $g = $svg->group(id=>"nodes");
+	return drawnode($g,$level,$level->{rootnode});
+}
+
+# Overall drawing
+
+my %drawtype = (
+'1slines' => \&draw1slines,
+'2slines' => \&draw2slines,
+'nodes' => \&drawnodes,
+);
+
+sub maptosvg($) {
+	my $level = shift;
+	my $svg = new SVG(width => $xsize, height => $ysize);
+	$opts{d} ||= "1slines:colour=black;2slines:colour=grey";
+
+	my @commands = split /\;/,$opts{d};
+	foreach my $c (@commands) {
+		my $p;
+		($c,$p) = $c =~ /^([^:]+)(?::(.+))?$/;
+		print STDERR "Running $c ($p)\n";
+		my $coderef = $drawtype{$c};
+		&$coderef($svg,$level,split(/[=:]/,$p));
+	}
+
+	print $svg->xmlify;
+}
+
+print STDERR "wad2svg 0.1\nBy Colin Phipps <cph\@cph.demon.co.uk> - see the files AUTHORS and COPYING included for details\n";
+Doom::WAD::open(shift @ARGV or die "Please supply name of input WAD file");
+
+maptosvg(new Doom::Level($opts{m} || "MAP01"));
+

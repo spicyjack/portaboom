@@ -1,0 +1,12 @@
+wad2svg, and the Doom:: modules included for accessing WAD files, is written by
+Colin Phipps <cph@cph.demon.co.uk>. See the README file for more information on
+the program, places to go for help or to contribute to the program.
+
+It grew out of a program called wadgd, which I wrote back in 2000 as the start
+on a project to draw maps of Doom levels overlayed with information extracted
+from demo files (showing speed demo routes etc). This project never finished,
+but it did get far enough to draw Doom maps to gif/png files. When I needed a
+tool for drawing a map of the Nodes (for debugging BSP) I originally began to
+adapt wadgd for this; however I decided that using a bitmap graphics library for
+drawing what is esssentially a vector image was rather foolish, so I started
+from scratch and wrote wad2svg.
