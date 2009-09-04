@@ -1,2 +1,6 @@
 Portaboom Perl Modules 
 ======================
+
+    -altdeath
+    -avg (aka -timer 20)
+    -cdrom
