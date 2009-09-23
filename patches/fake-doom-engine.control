@@ -1,0 +1,24 @@
+### Commented entries have reasonable defaults.
+### Uncomment to edit them.
+Section: misc
+Priority: optional
+Standards-Version: 3.6.2
+
+Package: fake-doom-engine
+Version: 22Sep2009
+Maintainer: Brian Manning <elspicyjack@gmail.com>
+# Pre-Depends: <comma-separated list of packages>
+# Depends: <comma-separated list of packages>
+# Recommends: <comma-separated list of packages>
+# Suggests: <comma-separated list of packages>
+Provides: doom-engine
+# Replaces: <comma-separated list of packages>
+# Architecture: all
+# Copyright: <copyright file; defaults to GPL2>
+# Changelog: <changelog file; defaults to a generic changelog>
+# Readme: <README.Debian file; defaults to a generic one>
+# Extra-Files: <comma-separated list of additional files for the doc directory>
+Description: Satisfies the dependency on doom-engine
+ Use this package when you need to satisfy a dependency on the 'doom-engine'
+ package, but don't want to use the Debian-maintained engines.
+ .
