@@ -2,11 +2,6 @@
 +++ chocolate-doom-1.3.0/debian/compat
 @@ -0,0 +1 @@
 +7
---- chocolate-doom-1.3.0.orig/debian/menu.ex
-+++ chocolate-doom-1.3.0/debian/menu.ex
-@@ -0,0 +1,2 @@
-+?package(chocolate-doom):needs="X11|text|vc|wm" section="Applications/see-menu-manual"\
-+  title="chocolate-doom" command="/usr/bin/chocolate-doom"
 --- chocolate-doom-1.3.0.orig/debian/rules
 +++ chocolate-doom-1.3.0/debian/rules
 @@ -0,0 +1,105 @@
@@ -178,7 +173,7 @@
 +Architecture: any
 +Depends: ${shlibs:Depends}, ${misc:Depends}, libsdl-mixer1.2, libsdl-net1.2
 +Provides: doom-engine
-+Description: A Doom port that aims to reproduce the original behaivor of Doom
++Description: A Doom port that tries to behave like "Vanilla" Doom
 + Chocolate Doom is a source port of Doom that aims to reproduce the behaivor
 + of (Vanilla) Doom as closely as possible, including being able to run demos
 + and savegames, use the original config file, and bug-for-bug compatibility.
@@ -190,19 +185,6 @@
 +  * Initial packaging from source
 +
 + -- Brian Manning <elspicyjack@gmail.com>  Mon, 14 Jun 2010 19:12:44 -0700
---- chocolate-doom-1.3.0.orig/debian/chocolate-doom.default.ex
-+++ chocolate-doom-1.3.0/debian/chocolate-doom.default.ex
-@@ -0,0 +1,10 @@
-+# Defaults for chocolate-doom initscript
-+# sourced by /etc/init.d/chocolate-doom
-+# installed at /etc/default/chocolate-doom by the maintainer scripts
-+
-+#
-+# This is a POSIX shell fragment
-+#
-+
-+# Additional options that are passed to the Daemon.
-+DAEMON_OPTS=""
 --- chocolate-doom-1.3.0.orig/debian/chocolate-doom.doc-base.EX
 +++ chocolate-doom-1.3.0/debian/chocolate-doom.doc-base.EX
 @@ -0,0 +1,20 @@
@@ -226,8 +208,15 @@
 +Format: HTML
 +Index: /usr/share/doc/chocolate-doom/html/index.html
 +Files: /usr/share/doc/chocolate-doom/html/*.html
---- chocolate-doom-1.3.0.orig/debian/watch.ex
-+++ chocolate-doom-1.3.0/debian/watch.ex
+--- chocolate-doom-1.3.0.orig/debian/docs
++++ chocolate-doom-1.3.0/debian/docs
+@@ -0,0 +1,4 @@
++BUGS
++NEWS
++README
++TODO
+--- chocolate-doom-1.3.0.orig/debian/watch
++++ chocolate-doom-1.3.0/debian/watch
 @@ -0,0 +1,23 @@
 +# Example watch control file for uscan
 +# Rename this file to "watch" and then you can run the "uscan" command
@@ -248,14 +237,12 @@
 +#ftp://ftp.example.com/pub/chocolate-doom-(.*)\.tar\.gz debian uupdate
 +
 +# Uncomment to find new files on sourceforge, for devscripts >= 2.9
-+# http://sf.net/chocolate-doom/chocolate-doom-(.*)\.tar\.gz
++http://sf.net/chocolate-doom/chocolate-doom-(.*)\.tar\.gz
 +
 +# Uncomment to find new files on GooglePages
 +# http://example.googlepages.com/foo.html chocolate-doom-(.*)\.tar\.gz
---- chocolate-doom-1.3.0.orig/debian/docs
-+++ chocolate-doom-1.3.0/debian/docs
-@@ -0,0 +1,4 @@
-+BUGS
-+NEWS
-+README
-+TODO
+--- chocolate-doom-1.3.0.orig/debian/menu
++++ chocolate-doom-1.3.0/debian/menu
+@@ -0,0 +1,2 @@
++?package(chocolate-doom):needs="X11|text|vc|wm" section="Applications/see-menu-manual"\
++  title="chocolate-doom" command="/usr/bin/chocolate-doom"
