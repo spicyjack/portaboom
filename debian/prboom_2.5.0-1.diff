@@ -150,7 +150,7 @@
 @@ -0,0 +1,45 @@
 +This package was debianized by:
 +
-+    Brian Manning <elspicyjack@gmail.com> on Mon, 14 Jun 2010 19:12:44 -0700
++    Brian Manning <brian@portaboom.com> on Mon, 14 Jun 2010 19:12:44 -0700
 +
 +It was downloaded from:
 +
@@ -189,7 +189,7 @@
 +
 +The Debian packaging is:
 +
-+    Copyright (C) 2010 Brian Manning <elspicyjack@gmail.com>
++    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
 +
 +and is licensed under the GPL version 2, 
 +see `/usr/share/common-licenses/GPL-2'.
@@ -202,7 +202,7 @@
 +Maintainer: Brian Manning <elspicyjack@gmail.org>
 +Build-Depends: debhelper (>= 7), autotools-dev, libsdl-mixer1.2-dev, libsdl-net1.2-dev
 +Standards-Version: 3.7.3
-+Homepage: <http://prboom.sourceforge.net/linux.html>
++Homepage: http://prboom.sourceforge.net/linux.html
 +
 +Package: prboom
 +Architecture: any

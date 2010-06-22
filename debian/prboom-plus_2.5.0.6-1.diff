@@ -125,7 +125,7 @@
 @@ -0,0 +1,40 @@
 +This package was debianized by:
 +
-+    Brian Manning <elspicyjack@gmail.com> on Tue, 15 Jun 2010 17:06:31 -0700
++    Brian Manning <brian@portaboom.com> on Tue, 15 Jun 2010 17:06:31 -0700
 +
 +It was downloaded from:
 +
@@ -159,7 +159,7 @@
 +
 +The Debian packaging is:
 +
-+    Copyright (C) 2010 Brian Manning <elspicyjack@gmail.com>
++    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
 +
 +and is licensed under the GPL version 2, 
 +see `/usr/share/common-licenses/GPL-2'.
@@ -169,10 +169,10 @@
 +Source: prboom-plus
 +Section: games
 +Priority: optional
-+Maintainer: Brian Manning <elspicyjack@gmail.com>
++Maintainer: Brian Manning <brian@portaboom.com>
 +Build-Depends: debhelper (>= 7), libsdl-mixer1.2-dev, libsdl-net1.2-dev
 +Standards-Version: 3.8.1
-+Homepage: <http://prboom-plus.sourceforge.net/>
++Homepage: http://prboom-plus.sourceforge.net/
 +
 +Package: prboom-plus
 +Architecture: any
@@ -195,7 +195,7 @@
 +
 +  * Initial packaging
 +
-+ -- Brian Manning <elspicyjack@gmail.com>  Tue, 15 Jun 2010 17:06:31 -0700
++ -- Brian Manning <brian@portaboom.com>  Tue, 15 Jun 2010 17:06:31 -0700
 --- prboom-plus-2.5.0.6.orig/debian/watch
 +++ prboom-plus-2.5.0.6/debian/watch
 @@ -0,0 +1,23 @@
