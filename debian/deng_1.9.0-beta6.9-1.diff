@@ -9,7 +9,7 @@
 +  title="deng" command="/usr/bin/deng"
 --- deng-1.9.0-beta6.9.orig/debian/rules
 +++ deng-1.9.0-beta6.9/debian/rules
-@@ -0,0 +1,88 @@
+@@ -0,0 +1,87 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
 +# Sample debian/rules that uses debhelper.
@@ -58,8 +58,7 @@
 +	dh_installdirs
 +
 +	# Add here commands to install the package into debian/deng.
-+	cd $(CURDIR)/doomsday/mybuild; $(MAKE) DESTDIR=$(CURDIR)/debian/deng install
-+
++	echo "Copying files to $(CURDIR)/../../debian/deng"; cd $(CURDIR)/doomsday/mybuild; $(MAKE) DESTDIR=$(CURDIR)/../../debian/deng install
 +
 +# Build architecture-independent files here.
 +binary-indep: install
