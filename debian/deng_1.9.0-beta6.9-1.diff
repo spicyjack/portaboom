@@ -9,7 +9,7 @@
 +  title="deng" command="/usr/bin/deng"
 --- deng-1.9.0-beta6.9.orig/debian/rules
 +++ deng-1.9.0-beta6.9/debian/rules
-@@ -0,0 +1,87 @@
+@@ -0,0 +1,88 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
 +# Sample debian/rules that uses debhelper.
@@ -36,7 +36,7 @@
 +
 +	# Add here commands to compile the package.
 +	mkdir $(CURDIR)/doomsday/mybuild
-+	cd $(CURDIR)/doomsday/mybuild; cmake -DCMAKE_INSTALL_PREFIX=$(CURDIR)/debian/deng ..; $(MAKE)
++	cd $(CURDIR)/doomsday/mybuild; cmake -DCMAKE_INSTALL_PREFIX=$(CURDIR)/debian/deng/usr ..; $(MAKE)
 +	touch $@
 +
 +clean: 
@@ -58,7 +58,8 @@
 +	dh_installdirs
 +
 +	# Add here commands to install the package into debian/deng.
-+	echo "Copying files to $(CURDIR)/../../debian/deng"; cd $(CURDIR)/doomsday/mybuild; $(MAKE) DESTDIR=$(CURDIR)/../../debian/deng install
++	#echo "Copying files to $(CURDIR)/debian/deng"; cd $(CURDIR)/doomsday/mybuild; $(MAKE) DESTDIR=$(CURDIR)/debian/deng install
++	echo "Copying files to $(CURDIR)/debian/deng"; cd $(CURDIR)/doomsday/mybuild; $(MAKE) install; mkdir $(CURDIR)/debian/deng/usr/games; mv $(CURDIR)/debian/deng/usr/bin/doomsday $(CURDIR)/debian/deng/usr/games; rmdir $(CURDIR)/debian/deng/usr/bin
 +
 +# Build architecture-independent files here.
 +binary-indep: install
@@ -100,8 +101,8 @@
 --- deng-1.9.0-beta6.9.orig/debian/dirs
 +++ deng-1.9.0-beta6.9/debian/dirs
 @@ -0,0 +1,2 @@
-+usr/bin
-+usr/sbin
++usr/games
++usr/share/deng/data
 --- deng-1.9.0-beta6.9.orig/debian/copyright
 +++ deng-1.9.0-beta6.9/debian/copyright
 @@ -0,0 +1,44 @@
