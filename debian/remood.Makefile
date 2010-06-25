@@ -442,6 +442,7 @@ debian:		wad release
 			if test -d debian; then $(DELTREE) debian; fi				# Remove debian
 			
 			# Make Tree
+			find . -type d -exec chmod g-s '{}' \;
 			mkdir debian
 			mkdir debian/DEBIAN
 			mkdir debian/usr
