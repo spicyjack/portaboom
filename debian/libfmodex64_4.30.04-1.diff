@@ -1,0 +1,269 @@
+--- libfmodex64-4.30.04.orig/debian/compat
++++ libfmodex64-4.30.04/debian/compat
+@@ -0,0 +1 @@
++7
+--- libfmodex64-4.30.04.orig/debian/libfmodex641.install
++++ libfmodex64-4.30.04/debian/libfmodex641.install
+@@ -0,0 +1 @@
++usr/lib/lib*.so.*
+--- libfmodex64-4.30.04.orig/debian/rules
++++ libfmodex64-4.30.04/debian/rules
+@@ -0,0 +1,94 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++# Sample debian/rules that uses debhelper.
++# This file was originally written by Joey Hess and Craig Small.
++# As a special exception, when this file is copied by dh-make into a
++# dh-make output file, you may use that output file without restriction.
++# This special exception was added by Craig Small in version 0.37 of dh-make.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++# shared library versions, option 1
++version=2.0.5
++major=2
++# option 2, assuming the library is created as src/.libs/libfoo.so.2.0.5 or so
++#version=`ls src/.libs/lib*.so.* | \
++# awk '{if (match($$0,/[0-9]+\.[0-9]+\.[0-9]+$$/)) print substr($$0,RSTART)}'`
++#major=`ls src/.libs/lib*.so.* | \
++# awk '{if (match($$0,/\.so\.[0-9]+$$/)) print substr($$0,RSTART+4)}'`
++
++configure: configure-stamp
++configure-stamp:
++	dh_testdir
++	# Add here commands to configure the package.
++
++	touch configure-stamp
++
++
++build: build-stamp
++build-stamp: configure-stamp  
++	dh_testdir
++
++	# Add here commands to compile the package.
++	#$(MAKE)
++
++	touch $@
++
++clean: 
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp configure-stamp
++
++	# Add here commands to clean up after the build process.
++	#$(MAKE) clean
++
++	dh_clean 
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_prep  
++	dh_installdirs
++
++	# Add here commands to install the package into debian/tmp
++	#$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
++
++
++# Build architecture-independent files here.
++binary-indep: install
++# We have nothing to do by default.
++
++# Build architecture-dependent files here.
++binary-arch: install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs 
++	dh_installdocs
++	dh_installexamples
++#	dh_install
++#	dh_installmenu
++#	dh_installdebconf
++#	dh_installlogrotate
++#	dh_installemacsen
++#	dh_installpam
++#	dh_installmime
++#	dh_installinit
++#	dh_installcron
++#	dh_installinfo
++	dh_installman
++	dh_link
++	dh_strip
++	dh_compress
++	dh_fixperms
++#	dh_perl
++#	dh_python
++#	dh_makeshlibs
++	dh_installdeb
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install configure
+--- libfmodex64-4.30.04.orig/debian/dirs
++++ libfmodex64-4.30.04/debian/dirs
+@@ -0,0 +1,2 @@
++usr/bin
++usr/sbin
+--- libfmodex64-4.30.04.orig/debian/libfmodex64-dev.install
++++ libfmodex64-4.30.04/debian/libfmodex64-dev.install
+@@ -0,0 +1,6 @@
++usr/include/*
++usr/lib/lib*.a
++usr/lib/lib*.so
++usr/lib/pkgconfig/*
++usr/lib/*.la
++usr/share/pkgconfig/*
+--- libfmodex64-4.30.04.orig/debian/shlibs.local.ex
++++ libfmodex64-4.30.04/debian/shlibs.local.ex
+@@ -0,0 +1 @@
++liblibfmodex64 4.30.04 libfmodex64 (>> 4.30.04-0), libfmodex64 (<< 4.30.04-99)
+--- libfmodex64-4.30.04.orig/debian/copyright
++++ libfmodex64-4.30.04/debian/copyright
+@@ -0,0 +1,52 @@
++This package was debianized by:
++
++    Brian Manning <brian@portaboom.com> on Fri, 25 Jun 2010 17:16:02 -0700
++
++It was downloaded from: 
++
++    <http://www.fmod.org/index.php/download>
++
++Upstream Author(s):
++
++    Firelight Technologies Pty, Ltd. <support@fmod.org>
++
++Copyright:
++
++    Copyright (C) 1994-2009 Firelight Technologies Pty, Ltd.
++    Copyright (C) 2002, Xiph.org Foundation
++
++License:
++
++    libfmodex license:
++
++    IF YOUR PRODUCT IS NOT INTENDED FOR COMMERCIAL GAIN AND DOES NOT
++    INCLUDE THE FMOD LIBRARY FOR RESALE, LICENSE OR OTHER COMMERCIAL
++    DISTRIBUTION, THEN USE OF FMOD IS FREE OF CHARGE.  THERE ARE NO
++    LICENSE FEES FOR NON-COMMERCIAL APPLICATIONS.
++
++    CONDITIONS/LIMITATIONS:
++    - WHEN USING THIS LICENSE, THE FMOD LIBRARY CANNOT BE USED FOR
++      RESALE OR OTHER COMMERCIAL DISTRIBUTION
++    - THIS LICENSE CANNOT BE USED FOR PRODUCTS WHICH DO NOT MAKE
++      PROFIT BUT ARE STILL COMMERCIALLY RELEASED
++    - THIS LICENSE CANNOT BE USED FOR COMMERCIAL SERVICES, WHERE THE
++      EXECUTABLE CONTAINING FMOD IS NOT SOLD, BUT THE DATA IS.
++    - WHEN USING FMOD, A CREDIT LINE IS REQUIRED IN EITHER DOCUMENTATION,
++      OR 'ON SCREEN' FORMAT (IF POSSIBLE). IT SHOULD CONTAIN AT LEAST
++      THE WORDS FMOD SOUND SYSTEM AND FIRELIGHT TECHNOLOGIES.
++      LOGOS ARE AVAILABLE FOR BOX OR MANUAL ART, BUT ARE NOT MANDANTORY.
++      AN EXAMPLE CREDIT COULD BE:
++    
++      FMOD Sound System, copyright © Firelight Technologies Pty, Ltd., 1994-2009.
++
++      NOTE THIS IN ADVANCE, AS IT MUST BE DONE BEFORE SHIPPING YOUR
++      PRODUCT WITH FMOD.
++
++    libfmodex uses the Ogg Vorbis codec, which is covered by the BSD license;
++    see /usr/share/common-licenses/BSD for the terms of that license.
++
++The Debian packaging is:
++
++    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
++
++and is licensed under the BSD license, see `/usr/share/common-licenses/BSD'.
+--- libfmodex64-4.30.04.orig/debian/control
++++ libfmodex64-4.30.04/debian/control
+@@ -0,0 +1,22 @@
++Source: libfmodex64
++Priority: optional
++Maintainer: Brian Manning <brian@portaboom.com>
++Build-Depends: debhelper (>= 7)
++Standards-Version: 3.8.1
++Section: libs
++Homepage: 
++
++Package: libfmodex64-dev
++Section: libdevel
++Architecture: any
++Depends: libfmodex64BROKEN (= ${binary:Version})
++Description: <insert up to 60 chars description>
++ <insert long description, indented with spaces>
++
++#Package: libfmodex64BROKEN
++Package: libfmodex64
++Section: libs
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}
++Description: <insert up to 60 chars description>
++ <insert long description, indented with spaces>
+--- libfmodex64-4.30.04.orig/debian/changelog
++++ libfmodex64-4.30.04/debian/changelog
+@@ -0,0 +1,5 @@
++libfmodex64 (4.30.04-1) unstable; urgency=low
++
++  * Initial packaging
++
++ -- Brian Manning <brian@portaboom.com>  Fri, 25 Jun 2010 17:16:02 -0700
+--- libfmodex64-4.30.04.orig/debian/libfmodex641.dirs
++++ libfmodex64-4.30.04/debian/libfmodex641.dirs
+@@ -0,0 +1 @@
++usr/lib
+--- libfmodex64-4.30.04.orig/debian/libfmodex64-dev.dirs
++++ libfmodex64-4.30.04/debian/libfmodex64-dev.dirs
+@@ -0,0 +1,2 @@
++usr/lib
++usr/include
+--- libfmodex64-4.30.04.orig/debian/libfmodex64.doc-base.EX
++++ libfmodex64-4.30.04/debian/libfmodex64.doc-base.EX
+@@ -0,0 +1,20 @@
++Document: libfmodex64
++Title: Debian libfmodex64 Manual
++Author: <insert document author here>
++Abstract: This manual describes what libfmodex64 is
++ and how it can be used to
++ manage online manuals on Debian systems.
++Section: unknown
++
++Format: debiandoc-sgml
++Files: /usr/share/doc/libfmodex64/libfmodex64.sgml.gz
++
++Format: postscript
++Files: /usr/share/doc/libfmodex64/libfmodex64.ps.gz
++
++Format: text
++Files: /usr/share/doc/libfmodex64/libfmodex64.text.gz
++
++Format: HTML
++Index: /usr/share/doc/libfmodex64/html/index.html
++Files: /usr/share/doc/libfmodex64/html/*.html
+--- libfmodex64-4.30.04.orig/debian/watch.ex
++++ libfmodex64-4.30.04/debian/watch.ex
+@@ -0,0 +1,23 @@
++# Example watch control file for uscan
++# Rename this file to "watch" and then you can run the "uscan" command
++# to check for upstream updates and more.
++# See uscan(1) for format
++
++# Compulsory line, this is a version 3 file
++version=3
++
++# Uncomment to examine a Webpage
++# <Webpage URL> <string match>
++#http://www.example.com/downloads.php libfmodex64-(.*)\.tar\.gz
++
++# Uncomment to examine a Webserver directory
++#http://www.example.com/pub/libfmodex64-(.*)\.tar\.gz
++
++# Uncommment to examine a FTP server
++#ftp://ftp.example.com/pub/libfmodex64-(.*)\.tar\.gz debian uupdate
++
++# Uncomment to find new files on sourceforge, for devscripts >= 2.9
++# http://sf.net/libfmodex64/libfmodex64-(.*)\.tar\.gz
++
++# Uncomment to find new files on GooglePages
++# http://example.googlepages.com/foo.html libfmodex64-(.*)\.tar\.gz
