@@ -1,10 +1,10 @@
---- libfmodex-4.30.04.orig/debian/compat
-+++ libfmodex-4.30.04/debian/compat
+--- libfmodex-4.28.14.orig/debian/compat
++++ libfmodex-4.28.14/debian/compat
 @@ -0,0 +1 @@
 +7
---- libfmodex-4.30.04.orig/debian/rules
-+++ libfmodex-4.30.04/debian/rules
-@@ -0,0 +1,100 @@
+--- libfmodex-4.28.14.orig/debian/rules
++++ libfmodex-4.28.14/debian/rules
+@@ -0,0 +1,102 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
 +# Sample debian/rules that uses debhelper.
@@ -59,6 +59,8 @@
 +	#$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
 +    # directories should already exist
 +	cp api/lib/lib* debian/libfmodex4/usr/lib
++	rm debian/libfmodex4/usr/lib/libfmodexL.so debian/libfmodex4/usr/lib/libfmodexp.so debian/libfmodex4/usr/lib/libfmodex.so
++	cd debian/libfmodex4/usr/lib; ln -s libfmodex-4*.so libfmodex.so; ln -s libfmodexL-4*.so libfmodexL.so; ln -s libfmodexp-4*.so libfmodexp.so
 +	cp api/plugins/* debian/libfmodex4/usr/share/libfmodex4/plugins
 +    # -dev package
 +	cp api/inc/* debian/libfmodex4-dev/usr/include
@@ -105,12 +107,12 @@
 +
 +binary: binary-indep binary-arch
 +.PHONY: build clean binary-indep binary-arch binary install configure
---- libfmodex-4.30.04.orig/debian/shlibs.local.ex
-+++ libfmodex-4.30.04/debian/shlibs.local.ex
+--- libfmodex-4.28.14.orig/debian/shlibs.local.ex
++++ libfmodex-4.28.14/debian/shlibs.local.ex
 @@ -0,0 +1 @@
 +liblibfmodex64 4.30.04 libfmodex64 (>> 4.30.04-0), libfmodex64 (<< 4.30.04-99)
---- libfmodex-4.30.04.orig/debian/copyright
-+++ libfmodex-4.30.04/debian/copyright
+--- libfmodex-4.28.14.orig/debian/copyright
++++ libfmodex-4.28.14/debian/copyright
 @@ -0,0 +1,52 @@
 +This package was debianized by:
 +
@@ -164,8 +166,8 @@
 +    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
 +
 +and is licensed under the BSD license, see `/usr/share/common-licenses/BSD'.
---- libfmodex-4.30.04.orig/debian/control
-+++ libfmodex-4.30.04/debian/control
+--- libfmodex-4.28.14.orig/debian/control
++++ libfmodex-4.28.14/debian/control
 @@ -0,0 +1,29 @@
 +Source: libfmodex
 +Priority: optional
@@ -196,16 +198,16 @@
 + developers, sound designers, musicians and audio engineers.  FMOD Ex aims to
 + push the capabilities of audio for games, whilst at the same time using
 + minimal resources and remaining fully scalable.  
---- libfmodex-4.30.04.orig/debian/changelog
-+++ libfmodex-4.30.04/debian/changelog
+--- libfmodex-4.28.14.orig/debian/changelog
++++ libfmodex-4.28.14/debian/changelog
 @@ -0,0 +1,5 @@
-+libfmodex (4.30.04-1) unstable; urgency=low
++libfmodex (4.28.14-1) unstable; urgency=low
 +
 +  * Initial packaging
 +
-+ -- Brian Manning <brian@portaboom.com>  Fri, 25 Jun 2010 17:16:02 -0700
---- libfmodex-4.30.04.orig/debian/watch.ex
-+++ libfmodex-4.30.04/debian/watch.ex
++ -- Brian Manning <brian@portaboom.com>  Sun, 27 Jun 2010 18:17:02 -0700
+--- libfmodex-4.28.14.orig/debian/watch.ex
++++ libfmodex-4.28.14/debian/watch.ex
 @@ -0,0 +1,23 @@
 +# Example watch control file for uscan
 +# Rename this file to "watch" and then you can run the "uscan" command
@@ -230,23 +232,23 @@
 +
 +# Uncomment to find new files on GooglePages
 +# http://example.googlepages.com/foo.html libfmodex64-(.*)\.tar\.gz
---- libfmodex-4.30.04.orig/debian/libfmodex4.dirs
-+++ libfmodex-4.30.04/debian/libfmodex4.dirs
+--- libfmodex-4.28.14.orig/debian/libfmodex4.dirs
++++ libfmodex-4.28.14/debian/libfmodex4.dirs
 @@ -0,0 +1,3 @@
 +usr/lib
 +usr/share/libfmodex4/plugins
 +usr/share/doc/libfmodex4
---- libfmodex-4.30.04.orig/debian/libfmodex4.install
-+++ libfmodex-4.30.04/debian/libfmodex4.install
+--- libfmodex-4.28.14.orig/debian/libfmodex4.install
++++ libfmodex-4.28.14/debian/libfmodex4.install
 @@ -0,0 +1,2 @@
 +api/lib/lib*.so.* usr/lib/lib*.so.*
 +api/plugins/* usr/share/fmod/plugins/*
---- libfmodex-4.30.04.orig/debian/libfmodex4-dev.dirs
-+++ libfmodex-4.30.04/debian/libfmodex4-dev.dirs
+--- libfmodex-4.28.14.orig/debian/libfmodex4-dev.dirs
++++ libfmodex-4.28.14/debian/libfmodex4-dev.dirs
 @@ -0,0 +1,2 @@
 +usr/include
 +usr/share/doc/libfmodex4-dev
---- libfmodex-4.30.04.orig/debian/libfmodex4-dev.install
-+++ libfmodex-4.30.04/debian/libfmodex4-dev.install
+--- libfmodex-4.28.14.orig/debian/libfmodex4-dev.install
++++ libfmodex-4.28.14/debian/libfmodex4-dev.install
 @@ -0,0 +1 @@
 +api/inc/* usr/include/*
