@@ -1,14 +1,10 @@
---- libfmodex64-4.30.04.orig/debian/compat
-+++ libfmodex64-4.30.04/debian/compat
+--- libfmodex-4.30.04.orig/debian/compat
++++ libfmodex-4.30.04/debian/compat
 @@ -0,0 +1 @@
 +7
---- libfmodex64-4.30.04.orig/debian/libfmodex641.install
-+++ libfmodex64-4.30.04/debian/libfmodex641.install
-@@ -0,0 +1 @@
-+usr/lib/lib*.so.*
---- libfmodex64-4.30.04.orig/debian/rules
-+++ libfmodex64-4.30.04/debian/rules
-@@ -0,0 +1,94 @@
+--- libfmodex-4.30.04.orig/debian/rules
++++ libfmodex-4.30.04/debian/rules
+@@ -0,0 +1,100 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
 +# Sample debian/rules that uses debhelper.
@@ -33,7 +29,6 @@
 +configure-stamp:
 +	dh_testdir
 +	# Add here commands to configure the package.
-+
 +	touch configure-stamp
 +
 +
@@ -43,7 +38,6 @@
 +
 +	# Add here commands to compile the package.
 +	#$(MAKE)
-+
 +	touch $@
 +
 +clean: 
@@ -53,7 +47,6 @@
 +
 +	# Add here commands to clean up after the build process.
 +	#$(MAKE) clean
-+
 +	dh_clean 
 +
 +install: build
@@ -64,7 +57,16 @@
 +
 +	# Add here commands to install the package into debian/tmp
 +	#$(MAKE) DESTDIR=$(CURDIR)/debian/tmp install
-+
++    # directories should already exist
++	cp api/lib/lib* debian/libfmodex4/usr/lib
++	cp api/plugins/* debian/libfmodex4/usr/share/libfmodex4/plugins
++    # -dev package
++	cp api/inc/* debian/libfmodex4-dev/usr/include
++    # copy the license into both packages
++	cp documentation/LICENSE.TXT debian/libfmodex4/usr/share/doc/libfmodex4/license.txt
++	cp documentation/LICENSE.TXT debian/libfmodex4-dev/usr/share/doc/libfmodex4-dev/license.txt
++	cp documentation/revision.txt debian/libfmodex4/usr/share/doc/libfmodex4/changelog.txt
++	cp documentation/revision.txt debian/libfmodex4-dev/usr/share/doc/libfmodex4-dev/changelog.txt
 +
 +# Build architecture-independent files here.
 +binary-indep: install
@@ -103,26 +105,12 @@
 +
 +binary: binary-indep binary-arch
 +.PHONY: build clean binary-indep binary-arch binary install configure
---- libfmodex64-4.30.04.orig/debian/dirs
-+++ libfmodex64-4.30.04/debian/dirs
-@@ -0,0 +1,2 @@
-+usr/bin
-+usr/sbin
---- libfmodex64-4.30.04.orig/debian/libfmodex64-dev.install
-+++ libfmodex64-4.30.04/debian/libfmodex64-dev.install
-@@ -0,0 +1,6 @@
-+usr/include/*
-+usr/lib/lib*.a
-+usr/lib/lib*.so
-+usr/lib/pkgconfig/*
-+usr/lib/*.la
-+usr/share/pkgconfig/*
---- libfmodex64-4.30.04.orig/debian/shlibs.local.ex
-+++ libfmodex64-4.30.04/debian/shlibs.local.ex
+--- libfmodex-4.30.04.orig/debian/shlibs.local.ex
++++ libfmodex-4.30.04/debian/shlibs.local.ex
 @@ -0,0 +1 @@
 +liblibfmodex64 4.30.04 libfmodex64 (>> 4.30.04-0), libfmodex64 (<< 4.30.04-99)
---- libfmodex64-4.30.04.orig/debian/copyright
-+++ libfmodex64-4.30.04/debian/copyright
+--- libfmodex-4.30.04.orig/debian/copyright
++++ libfmodex-4.30.04/debian/copyright
 @@ -0,0 +1,52 @@
 +This package was debianized by:
 +
@@ -176,73 +164,48 @@
 +    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
 +
 +and is licensed under the BSD license, see `/usr/share/common-licenses/BSD'.
---- libfmodex64-4.30.04.orig/debian/control
-+++ libfmodex64-4.30.04/debian/control
-@@ -0,0 +1,22 @@
-+Source: libfmodex64
+--- libfmodex-4.30.04.orig/debian/control
++++ libfmodex-4.30.04/debian/control
+@@ -0,0 +1,29 @@
++Source: libfmodex
 +Priority: optional
 +Maintainer: Brian Manning <brian@portaboom.com>
 +Build-Depends: debhelper (>= 7)
 +Standards-Version: 3.8.1
 +Section: libs
-+Homepage: 
++Homepage: http://www.fmod.org/
 +
-+Package: libfmodex64-dev
++Package: libfmodex4-dev
 +Section: libdevel
++# Architecture: i386
 +Architecture: any
-+Depends: libfmodex64BROKEN (= ${binary:Version})
-+Description: <insert up to 60 chars description>
-+ <insert long description, indented with spaces>
++Depends: libfmodex4 (= ${binary:Version})
++Description: A audio engine for game developers; headers and docs
++ The FMOD Ex sound system is an audio engine for game developers, multimedia
++ developers, sound designers, musicians and audio engineers.  FMOD Ex aims to
++ push the capabilities of audio for games, whilst at the same time using
++ minimal resources and remaining fully scalable.  
 +
-+#Package: libfmodex64BROKEN
-+Package: libfmodex64
++Package: libfmodex4
 +Section: libs
++#Architecture: i386
 +Architecture: any
 +Depends: ${shlibs:Depends}, ${misc:Depends}
-+Description: <insert up to 60 chars description>
-+ <insert long description, indented with spaces>
---- libfmodex64-4.30.04.orig/debian/changelog
-+++ libfmodex64-4.30.04/debian/changelog
++Description: A audio engine for game developers; binaries
++ The FMOD Ex sound system is an audio engine for game developers, multimedia
++ developers, sound designers, musicians and audio engineers.  FMOD Ex aims to
++ push the capabilities of audio for games, whilst at the same time using
++ minimal resources and remaining fully scalable.  
+--- libfmodex-4.30.04.orig/debian/changelog
++++ libfmodex-4.30.04/debian/changelog
 @@ -0,0 +1,5 @@
-+libfmodex64 (4.30.04-1) unstable; urgency=low
++libfmodex (4.30.04-1) unstable; urgency=low
 +
 +  * Initial packaging
 +
 + -- Brian Manning <brian@portaboom.com>  Fri, 25 Jun 2010 17:16:02 -0700
---- libfmodex64-4.30.04.orig/debian/libfmodex641.dirs
-+++ libfmodex64-4.30.04/debian/libfmodex641.dirs
-@@ -0,0 +1 @@
-+usr/lib
---- libfmodex64-4.30.04.orig/debian/libfmodex64-dev.dirs
-+++ libfmodex64-4.30.04/debian/libfmodex64-dev.dirs
-@@ -0,0 +1,2 @@
-+usr/lib
-+usr/include
---- libfmodex64-4.30.04.orig/debian/libfmodex64.doc-base.EX
-+++ libfmodex64-4.30.04/debian/libfmodex64.doc-base.EX
-@@ -0,0 +1,20 @@
-+Document: libfmodex64
-+Title: Debian libfmodex64 Manual
-+Author: <insert document author here>
-+Abstract: This manual describes what libfmodex64 is
-+ and how it can be used to
-+ manage online manuals on Debian systems.
-+Section: unknown
-+
-+Format: debiandoc-sgml
-+Files: /usr/share/doc/libfmodex64/libfmodex64.sgml.gz
-+
-+Format: postscript
-+Files: /usr/share/doc/libfmodex64/libfmodex64.ps.gz
-+
-+Format: text
-+Files: /usr/share/doc/libfmodex64/libfmodex64.text.gz
-+
-+Format: HTML
-+Index: /usr/share/doc/libfmodex64/html/index.html
-+Files: /usr/share/doc/libfmodex64/html/*.html
---- libfmodex64-4.30.04.orig/debian/watch.ex
-+++ libfmodex64-4.30.04/debian/watch.ex
+--- libfmodex-4.30.04.orig/debian/watch.ex
++++ libfmodex-4.30.04/debian/watch.ex
 @@ -0,0 +1,23 @@
 +# Example watch control file for uscan
 +# Rename this file to "watch" and then you can run the "uscan" command
@@ -267,3 +230,23 @@
 +
 +# Uncomment to find new files on GooglePages
 +# http://example.googlepages.com/foo.html libfmodex64-(.*)\.tar\.gz
+--- libfmodex-4.30.04.orig/debian/libfmodex4.dirs
++++ libfmodex-4.30.04/debian/libfmodex4.dirs
+@@ -0,0 +1,3 @@
++usr/lib
++usr/share/libfmodex4/plugins
++usr/share/doc/libfmodex4
+--- libfmodex-4.30.04.orig/debian/libfmodex4.install
++++ libfmodex-4.30.04/debian/libfmodex4.install
+@@ -0,0 +1,2 @@
++api/lib/lib*.so.* usr/lib/lib*.so.*
++api/plugins/* usr/share/fmod/plugins/*
+--- libfmodex-4.30.04.orig/debian/libfmodex4-dev.dirs
++++ libfmodex-4.30.04/debian/libfmodex4-dev.dirs
+@@ -0,0 +1,2 @@
++usr/include
++usr/share/doc/libfmodex4-dev
+--- libfmodex-4.30.04.orig/debian/libfmodex4-dev.install
++++ libfmodex-4.30.04/debian/libfmodex4-dev.install
+@@ -0,0 +1 @@
++api/inc/* usr/include/*
