@@ -1,0 +1,240 @@
+--- eternity-3.37.00.orig/debian/changelog
++++ eternity-3.37.00/debian/changelog
+@@ -0,0 +1,6 @@
++eternity (3.37.00-1) unstable; urgency=low
++
++  * Initial packaging
++
++ -- Brian Manning <brian@portaboom.com>  Mon, 28 Jun 2010 22:00:28 -0700
++
+--- eternity-3.37.00.orig/debian/compat
++++ eternity-3.37.00/debian/compat
+@@ -0,0 +1 @@
++7
+--- eternity-3.37.00.orig/debian/dirs
++++ eternity-3.37.00/debian/dirs
+@@ -0,0 +1,2 @@
++usr/games
++usr/share/eternity
+--- eternity-3.37.00.orig/debian/menu.ex
++++ eternity-3.37.00/debian/menu.ex
+@@ -0,0 +1,2 @@
++?package(eternity):needs="X11|text|vc|wm" section="Applications/see-menu-manual"\
++  title="eternity" command="/usr/bin/eternity"
+--- eternity-3.37.00.orig/debian/copyright
++++ eternity-3.37.00/debian/copyright
+@@ -0,0 +1,36 @@
++This package was debianized by Brian Manning <brian@portaboom.com> on
++Mon, 28 Jun 2010 22:00:28 -0700.
++
++It was downloaded from http://eternity.mancubus.net/ee3.37.00-src.zip
++
++Upstream Author(s):
++
++    James "Quasar" Haley <haleyjd@hotmail.com>
++    Stephen "SoM" McGranahan <no@email.address>
++
++Copyright:
++
++    Copyright (C) 2000 James Haley
++    Copyright (C) 2004 Stephen McGranahan
++
++License:
++
++    This package is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This package is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this package; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
++
++On Debian systems, the complete text of the GNU General
++Public License can be found in `/usr/share/common-licenses/GPL'.
++
++The Debian packaging is (C) 2010, Brian Manning <brian@portaboom.com> and
++is licensed under the GPLv2.
+--- eternity-3.37.00.orig/debian/control
++++ eternity-3.37.00/debian/control
+@@ -0,0 +1,17 @@
++Source: eternity
++Section: games
++Priority: optional
++Maintainer: Brian Manning <brian@portaboom.com>
++Build-Depends: debhelper (>= 7)
++Standards-Version: 3.7.3
++Homepage: http://eternity.youfailit.net/index.php?title=Main_Page
++
++Package: eternity
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}
++Description: A modification of Boom source port.
++ The Eternity Engine began in 1998 as a simple modification of Boom meant to
++ power Eternity TC, which was at that time a new and active project. When Lee
++ Killough began the MBF project, James "Quasar" Haley became a beta tester
++ after emailing Lee with questions about the early Doom alpha versions. The
++ Eternity project moved to an MBF code base after that port's first release.
+--- eternity-3.37.00.orig/debian/rules
++++ eternity-3.37.00/debian/rules
+@@ -0,0 +1,89 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++# Sample debian/rules that uses debhelper.
++# This file was originally written by Joey Hess and Craig Small.
++# As a special exception, when this file is copied by dh-make into a
++# dh-make output file, you may use that output file without restriction.
++# This special exception was added by Craig Small in version 0.37 of dh-make.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++configure: configure-stamp
++configure-stamp:
++	dh_testdir
++	# Add here commands to configure the package.
++	if [ ! -e configure ]; then /bin/sh autogen.sh; fi
++	/bin/sh configure --prefix=/usr
++	touch configure-stamp
++
++build: build-stamp
++
++build-stamp: configure-stamp  
++	dh_testdir
++
++	# Add here commands to compile the package.
++	$(MAKE)
++	#docbook-to-man debian/eternity.sgml > eternity.1
++
++	touch $@
++
++clean: 
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp configure-stamp
++
++	# Add here commands to clean up after the build process.
++	if [ -e Makefile ]; then $(MAKE) clean; fi
++
++	dh_clean 
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_clean -k 
++	dh_installdirs
++
++	# Add here commands to install the package into debian/eternity.
++	$(MAKE) DESTDIR=$(CURDIR)/debian/eternity install
++	/bin/cp -av base debian/eternity/usr/share/eternity
++	/bin/mv -v debian/eternity/usr/local/games/eternity debian/eternity/usr/games/eternity
++	/bin/rm -rf debian/eternity/usr/local
++
++# Build architecture-independent files here.
++binary-indep: build install
++# We have nothing to do by default.
++
++# Build architecture-dependent files here.
++binary-arch: build install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs ChangeLog
++	dh_installdocs
++	dh_installexamples
++#	dh_install
++#	dh_installmenu
++#	dh_installdebconf	
++#	dh_installlogrotate
++#	dh_installemacsen
++#	dh_installpam
++#	dh_installmime
++#	dh_python
++#	dh_installinit
++#	dh_installcron
++#	dh_installinfo
++	dh_installman
++	dh_link
++	dh_strip
++	dh_compress
++	dh_fixperms
++#	dh_perl
++#	dh_makeshlibs
++	dh_installdeb
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install configure
+--- eternity-3.37.00.orig/debian/watch.ex
++++ eternity-3.37.00/debian/watch.ex
+@@ -0,0 +1,23 @@
++# Example watch control file for uscan
++# Rename this file to "watch" and then you can run the "uscan" command
++# to check for upstream updates and more.
++# See uscan(1) for format
++
++# Compulsory line, this is a version 3 file
++version=3
++
++# Uncomment to examine a Webpage
++# <Webpage URL> <string match>
++#http://www.example.com/downloads.php eternity-(.*)\.tar\.gz
++
++# Uncomment to examine a Webserver directory
++#http://www.example.com/pub/eternity-(.*)\.tar\.gz
++
++# Uncommment to examine a FTP server
++#ftp://ftp.example.com/pub/eternity-(.*)\.tar\.gz debian uupdate
++
++# Uncomment to find new files on sourceforge, for devscripts >= 2.9
++# http://sf.net/eternity/eternity-(.*)\.tar\.gz
++
++# Uncomment to find new files on GooglePages
++# http://example.googlepages.com/foo.html eternity-(.*)\.tar\.gz
+--- eternity-3.37.00.orig/debian/docs
++++ eternity-3.37.00/debian/docs
+@@ -0,0 +1,12 @@
++ee3.37.00.txt
++haleyjd_changelog_1.txt
++haleyjd_changelog_2.txt
++haleyjd_changelog_3.txt
++haleyjd_changelog_4.txt
++NEWS
++README
++zdoomcode-license.txt
++haleyjd_changelog_1.txt
++haleyjd_changelog_2.txt
++haleyjd_changelog_3.txt
++haleyjd_changelog_4.txt
+--- eternity-3.37.00.orig/debian/eternity.doc-base.EX
++++ eternity-3.37.00/debian/eternity.doc-base.EX
+@@ -0,0 +1,22 @@
++Document: eternity
++Title: Debian eternity Manual
++Author: <insert document author here>
++Abstract: This manual describes what eternity is
++ and how it can be used to
++ manage online manuals on Debian systems.
++Section: unknown
++
++Format: debiandoc-sgml
++Files: /usr/share/doc/eternity/eternity.sgml.gz
++
++Format: postscript
++Files: /usr/share/doc/eternity/eternity.ps.gz
++
++Format: text
++Files: /usr/share/doc/eternity/eternity.text.gz
++
++Format: HTML
++Index: /usr/share/doc/eternity/html/index.html
++Files: /usr/share/doc/eternity/html/*.html
++
++
