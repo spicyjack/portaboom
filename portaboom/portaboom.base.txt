@@ -48,6 +48,7 @@ file /etc/scripts/streaming.sh :BUILD_BASE:/common/scripts/streaming.sh 0755 0 0
 file /etc/scripts/setvolume.sh :BUILD_BASE:/common/scripts/setvolume.sh 0755 0 0
 file /etc/scripts/helloworld.pl :BUILD_BASE:/common/scripts/helloworld.pl 0755 0 0
 file /etc/scripts/startx.sh :PROJECT_DIR:/scripts/startx.sh 0755 0 0
+file /etc/scripts/start_term.sh :PROJECT_DIR:/scripts/start_term.sh
 # debugging X windows
 file /bin/logstartx.sh :BUILD_BASE:/common/scripts/logstartx.sh 0755 0 0
 file /bin/logxinit.sh :BUILD_BASE:/common/scripts/logxinit.sh 0755 0 0
