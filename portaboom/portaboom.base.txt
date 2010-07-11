@@ -5,7 +5,10 @@
 # home directories
 #dir /home 0755 0 0
 #dir /home/lack 0755 1000 1000
+file /home/lack/.gtkrc-2.0 :PROJECT_DIR:/etcfiles/lack.gtkrc-2.0 644 1000 1000
+# home directory for a nobody user
 dir /home/nobody 0755 65535 65535
+
 # /bin
 # make sure you get busybox in each project's specific initramfs file list now
 file /bin/busybox /tmp/busybox-1.14.3-x86-run-parts 0755 0 0
@@ -47,8 +50,8 @@ dir /etc/scripts 0755 0 0
 file /etc/scripts/streaming.sh :BUILD_BASE:/common/scripts/streaming.sh 0755 0 0
 file /etc/scripts/setvolume.sh :BUILD_BASE:/common/scripts/setvolume.sh 0755 0 0
 file /etc/scripts/helloworld.pl :BUILD_BASE:/common/scripts/helloworld.pl 0755 0 0
-file /etc/scripts/startx.sh :PROJECT_DIR:/scripts/startx.sh 0755 0 0
-file /etc/scripts/start_term.sh :PROJECT_DIR:/scripts/start_term.sh
+file /etc/scripts/startx.sh :BUILD_BASE:/common/scripts/startx.sh 0755 0 0
+file /etc/scripts/start_term.sh :BUILD_BASE:/common/scripts/start_term.sh 0755 0 0
 # debugging X windows
 file /bin/logstartx.sh :BUILD_BASE:/common/scripts/logstartx.sh 0755 0 0
 file /bin/logxinit.sh :BUILD_BASE:/common/scripts/logxinit.sh 0755 0 0

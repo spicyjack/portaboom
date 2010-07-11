@@ -1397,4 +1397,15 @@ file /lib/firmware/2.6.34-lack/yam/1200.bin /lib/firmware/2.6.34-lack/yam/1200.b
 file /lib/firmware/2.6.34-lack/yam/9600.bin /lib/firmware/2.6.34-lack/yam/9600.bin 644 0 0
 slink /lib/modules/2.6.34-lack/source /usr/src/linux-2.6.34 777 0 0
 slink /lib/modules/2.6.34-lack/build /usr/src/linux-2.6.34 777 0 0
+# loop-aes-modules-2.6.34-lack
+dir /lib/modules/2.6.34-lack 755 0 0
+dir /lib/modules/2.6.34-lack/updates 755 0 0
+file /lib/modules/2.6.34-lack/updates/loop.ko /lib/modules/2.6.34-lack/updates/loop.ko 644 0 0
+file /lib/modules/2.6.34-lack/updates/loop_serpent.ko /lib/modules/2.6.34-lack/updates/loop_serpent.ko 644 0 0
+file /lib/modules/2.6.34-lack/updates/loop_twofish.ko /lib/modules/2.6.34-lack/updates/loop_twofish.ko 644 0 0
+file /lib/modules/2.6.34-lack/updates/loop_blowfish.ko /lib/modules/2.6.34-lack/updates/loop_blowfish.ko 644 0 0
+# ndiswrapper-modules-2.6.34-lack
+dir /lib/modules/2.6.34-lack 755 0 0
+dir /lib/modules/2.6.34-lack/misc 755 0 0
+file /lib/modules/2.6.34-lack/misc/ndiswrapper.ko /lib/modules/2.6.34-lack/misc/ndiswrapper.ko 644 0 0
 # vi: set sw=4 ts=4 paste:
