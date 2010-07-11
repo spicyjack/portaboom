@@ -46,7 +46,7 @@ file /etc/ssl/certs/certificate.pem /tmp/certificate.pem 0644 0 0
 dir /etc/scripts 0755 0 0
 file /etc/scripts/streaming.sh :BUILD_BASE:/common/scripts/streaming.sh 0755 0 0
 file /etc/scripts/setvolume.sh :BUILD_BASE:/common/scripts/setvolume.sh 0755 0 0
-file /etc/scripts/helloworld.pl :PROJECT_DIR:/scripts/helloworld.pl 0755 0 0
+file /etc/scripts/helloworld.pl :BUILD_BASE:/common/scripts/helloworld.pl 0755 0 0
 file /etc/scripts/startx.sh :PROJECT_DIR:/scripts/startx.sh 0755 0 0
 # debugging X windows
 file /bin/logstartx.sh :BUILD_BASE:/common/scripts/logstartx.sh 0755 0 0

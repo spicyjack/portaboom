@@ -1,6 +1,6 @@
 root:x:0:
 tty:x:5:
-audio:x:29:demo
+audio:x:29:lack
 icecast:x:110:
-demo:x:1000:
+lack:x:1000:
 nogroup:x:65535:

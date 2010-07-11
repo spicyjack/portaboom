@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# xsession script for 'demo' user
+# xsession script for 'lack' user
 
 # set a black background
 /usr/bin/xsetroot -solid black

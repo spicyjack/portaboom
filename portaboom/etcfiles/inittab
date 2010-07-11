@@ -11,7 +11,7 @@
 tty2::respawn:-/sbin/getty -f /etc/issue.portaboom 38400 tty2
 tty3::respawn:-/sbin/getty -f /etc/issue.portaboom 38400 tty3
 tty4::respawn:-/sbin/getty -f /etc/issue.portaboom 38400 tty4
-tty5::respawn:-/bin/sh /etc/scripts/startx_demo.sh
+tty5::respawn:-/bin/sh /etc/scripts/startx.sh
 # need a getty in your initramfs image to use this next line; the busybox shell
 # isn't smart enough to run on a serial port
 # if there's no ttyS0, then this just continually respawns

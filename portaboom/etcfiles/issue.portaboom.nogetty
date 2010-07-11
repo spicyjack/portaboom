@@ -14,6 +14,6 @@
 [1;33;40mRelease:[37;40m :RELEASE_VER:
 
 Account info: [34;40m
-u: root               p: Disabled; use SUDO from 'demo' user account
-u: demo               p: :DEMO_PASS:
+u: root               p: Disabled; use SUDO from 'lack' user account
+u: lack               p: :LACK_PASS:
 [0;37;40m

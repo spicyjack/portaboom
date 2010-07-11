@@ -16,8 +16,8 @@ Cmnd_Alias POWEROFF=/sbin/poweroff -f
 Cmnd_Alias UMOUNT=/etc/init.d/mountall stop
 
 # User privilege specification
-demo	ALL=(ALL) ALL
-demo    ALL=NOPASSWD: POWEROFF, UMOUNT
+lack	ALL=(ALL) ALL
+lack    ALL=NOPASSWD: POWEROFF, UMOUNT
 root	ALL=(ALL) ALL
 
 # Uncomment to allow members of group sudo to not need a password

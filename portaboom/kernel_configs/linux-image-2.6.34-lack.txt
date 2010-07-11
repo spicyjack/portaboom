@@ -582,6 +582,10 @@ file /lib/modules/2.6.34-lack/kernel/drivers/rtc/rtc-s35390a.ko /lib/modules/2.6
 file /lib/modules/2.6.34-lack/kernel/drivers/rtc/rtc-stk17ta8.ko /lib/modules/2.6.34-lack/kernel/drivers/rtc/rtc-stk17ta8.ko 644 0 0
 file /lib/modules/2.6.34-lack/kernel/drivers/rtc/rtc-v3020.ko /lib/modules/2.6.34-lack/kernel/drivers/rtc/rtc-v3020.ko 644 0 0
 file /lib/modules/2.6.34-lack/kernel/drivers/rtc/rtc-x1205.ko /lib/modules/2.6.34-lack/kernel/drivers/rtc/rtc-x1205.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/drivers/scsi 755 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/scsi/scsi_mod.ko /lib/modules/2.6.34-lack/kernel/drivers/scsi/scsi_mod.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/scsi/sg.ko /lib/modules/2.6.34-lack/kernel/drivers/scsi/sg.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/scsi/sr_mod.ko /lib/modules/2.6.34-lack/kernel/drivers/scsi/sr_mod.ko 644 0 0
 dir /lib/modules/2.6.34-lack/kernel/drivers/serial 755 0 0
 file /lib/modules/2.6.34-lack/kernel/drivers/serial/8250_accent.ko /lib/modules/2.6.34-lack/kernel/drivers/serial/8250_accent.ko 644 0 0
 file /lib/modules/2.6.34-lack/kernel/drivers/serial/8250_boca.ko /lib/modules/2.6.34-lack/kernel/drivers/serial/8250_boca.ko 644 0 0
@@ -622,6 +626,125 @@ dir /lib/modules/2.6.34-lack/kernel/drivers/usb/mon 755 0 0
 file /lib/modules/2.6.34-lack/kernel/drivers/usb/mon/usbmon.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/mon/usbmon.ko 644 0 0
 dir /lib/modules/2.6.34-lack/kernel/drivers/usb/otg 755 0 0
 file /lib/modules/2.6.34-lack/kernel/drivers/usb/otg/nop-usb-xceiv.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/otg/nop-usb-xceiv.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/drivers/usb/storage 755 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-alauda.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-alauda.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-cypress.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-cypress.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-datafab.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-datafab.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-freecom.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-freecom.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-isd200.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-isd200.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-jumpshot.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-jumpshot.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-karma.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-karma.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-onetouch.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-onetouch.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-sddr09.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-sddr09.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-sddr55.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-sddr55.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-usbat.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/ums-usbat.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/usb-libusual.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/usb-libusual.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/usb-storage.ko /lib/modules/2.6.34-lack/kernel/drivers/usb/storage/usb-storage.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs 755 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/autofs4 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/autofs4/autofs4.ko /lib/modules/2.6.34-lack/kernel/fs/autofs4/autofs4.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/binfmt_aout.ko /lib/modules/2.6.34-lack/kernel/fs/binfmt_aout.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/binfmt_misc.ko /lib/modules/2.6.34-lack/kernel/fs/binfmt_misc.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/btrfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/btrfs/btrfs.ko /lib/modules/2.6.34-lack/kernel/fs/btrfs/btrfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/cifs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/cifs/cifs.ko /lib/modules/2.6.34-lack/kernel/fs/cifs/cifs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/configfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/configfs/configfs.ko /lib/modules/2.6.34-lack/kernel/fs/configfs/configfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/cramfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/cramfs/cramfs.ko /lib/modules/2.6.34-lack/kernel/fs/cramfs/cramfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/exportfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/exportfs/exportfs.ko /lib/modules/2.6.34-lack/kernel/fs/exportfs/exportfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/ext2 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/ext2/ext2.ko /lib/modules/2.6.34-lack/kernel/fs/ext2/ext2.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/ext3 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/ext3/ext3.ko /lib/modules/2.6.34-lack/kernel/fs/ext3/ext3.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/ext4 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/ext4/ext4.ko /lib/modules/2.6.34-lack/kernel/fs/ext4/ext4.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/fat 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/fat/fat.ko /lib/modules/2.6.34-lack/kernel/fs/fat/fat.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/fat/msdos.ko /lib/modules/2.6.34-lack/kernel/fs/fat/msdos.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/fat/vfat.ko /lib/modules/2.6.34-lack/kernel/fs/fat/vfat.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/freevxfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/freevxfs/freevxfs.ko /lib/modules/2.6.34-lack/kernel/fs/freevxfs/freevxfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/fuse 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/fuse/cuse.ko /lib/modules/2.6.34-lack/kernel/fs/fuse/cuse.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/fuse/fuse.ko /lib/modules/2.6.34-lack/kernel/fs/fuse/fuse.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/hfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/hfs/hfs.ko /lib/modules/2.6.34-lack/kernel/fs/hfs/hfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/hfsplus 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/hfsplus/hfsplus.ko /lib/modules/2.6.34-lack/kernel/fs/hfsplus/hfsplus.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/isofs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/isofs/isofs.ko /lib/modules/2.6.34-lack/kernel/fs/isofs/isofs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/jfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/jfs/jfs.ko /lib/modules/2.6.34-lack/kernel/fs/jfs/jfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/lockd 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/lockd/lockd.ko /lib/modules/2.6.34-lack/kernel/fs/lockd/lockd.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/logfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/logfs/logfs.ko /lib/modules/2.6.34-lack/kernel/fs/logfs/logfs.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/mbcache.ko /lib/modules/2.6.34-lack/kernel/fs/mbcache.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/nfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nfs/nfs.ko /lib/modules/2.6.34-lack/kernel/fs/nfs/nfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/nfs_common 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nfs_common/nfs_acl.ko /lib/modules/2.6.34-lack/kernel/fs/nfs_common/nfs_acl.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/nfsd 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nfsd/nfsd.ko /lib/modules/2.6.34-lack/kernel/fs/nfsd/nfsd.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/nls 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_ascii.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_ascii.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_base.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_base.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp1250.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp1250.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp1251.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp1251.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp1255.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp1255.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp437.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp437.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp737.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp737.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp775.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp775.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp850.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp850.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp852.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp852.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp855.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp855.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp857.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp857.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp860.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp860.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp861.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp861.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp862.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp862.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp863.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp863.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp864.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp864.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp865.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp865.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp866.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp866.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp869.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp869.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp874.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp874.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp932.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp932.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp936.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp936.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp949.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp949.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp950.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_cp950.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_euc-jp.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_euc-jp.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-1.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-1.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-13.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-13.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-14.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-14.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-15.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-15.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-2.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-2.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-3.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-3.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-4.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-4.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-5.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-5.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-6.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-6.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-7.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-7.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-9.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_iso8859-9.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_koi8-r.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_koi8-r.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_koi8-ru.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_koi8-ru.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_koi8-u.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_koi8-u.ko 644 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/nls/nls_utf8.ko /lib/modules/2.6.34-lack/kernel/fs/nls/nls_utf8.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/ntfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/ntfs/ntfs.ko /lib/modules/2.6.34-lack/kernel/fs/ntfs/ntfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/reiserfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/reiserfs/reiserfs.ko /lib/modules/2.6.34-lack/kernel/fs/reiserfs/reiserfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/smbfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/smbfs/smbfs.ko /lib/modules/2.6.34-lack/kernel/fs/smbfs/smbfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/squashfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/squashfs/squashfs.ko /lib/modules/2.6.34-lack/kernel/fs/squashfs/squashfs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/udf 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/udf/udf.ko /lib/modules/2.6.34-lack/kernel/fs/udf/udf.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/ufs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/ufs/ufs.ko /lib/modules/2.6.34-lack/kernel/fs/ufs/ufs.ko 644 0 0
+dir /lib/modules/2.6.34-lack/kernel/fs/xfs 755 0 0
+file /lib/modules/2.6.34-lack/kernel/fs/xfs/xfs.ko /lib/modules/2.6.34-lack/kernel/fs/xfs/xfs.ko 644 0 0
 dir /lib/modules/2.6.34-lack/kernel/lib 755 0 0
 file /lib/modules/2.6.34-lack/kernel/lib/crc-ccitt.ko /lib/modules/2.6.34-lack/kernel/lib/crc-ccitt.ko 644 0 0
 file /lib/modules/2.6.34-lack/kernel/lib/crc-itu-t.ko /lib/modules/2.6.34-lack/kernel/lib/crc-itu-t.ko 644 0 0
