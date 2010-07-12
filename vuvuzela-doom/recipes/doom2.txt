@@ -9,5 +9,5 @@
 # file <name> <source> <mode> <uid> <gid>
 # slink <new name> <original file> <mode> <uid> <gid>
 # doom2 
-file /home/portaboom/doom2.wad /home/src/idGames/master_levels_of_doom/doom2/doom2.wad 775 1001 1000
+file /usr/share/doom/doom2.wad /home/src/idGames/master_levels_of_doom/doom2/doom2.wad 0644 0 0
 # vi: set sw=4 ts=4 paste:

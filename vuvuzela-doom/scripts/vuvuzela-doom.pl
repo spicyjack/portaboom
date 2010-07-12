@@ -142,12 +142,12 @@ my $toplevel = Gtk2::Window->new (q(toplevel));
 my $vbox = Gtk2::VBox->new(FALSE, 5);
 
 # create a label with some text
-my $label_text = qq(<span font_weight="bold">WARNING!</span>\n)
+my $label_text = qq(<span weight="bold">WARNING!</span>\n)
     . qq(Both ZDoom and libfmod are not GPL'ed applications.\n)
     . qq(This means if you distribute this CD, you will be\n)
     . qq(violating the GPL.  You have been warned!!!\n)
     . qq(Press the "Run ZDoom!" button below to start\n)
-    . qq(<span font_weight="bold">Vuvuzela Doom!</span>\n);
+    . qq(<span weight="bold">Vuvuzela Doom!</span>\n);
 my $label = Gtk2::Label->new();
 $label->set_markup_with_mnemonic($label_text);
 # pack the label, expand == true, fill == true, 5 pixels padding

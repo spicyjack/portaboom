@@ -8,8 +8,6 @@
 # dir <name> <mode> <uid> <gid>
 # file <name> <source> <mode> <uid> <gid>
 # slink <new name> <original file> <mode> <uid> <gid>
-#
-# final_doom 
-file /usr/share/doom/plutonia.wad /home/src/idGames/final_doom/plutonia.wad 0644 0 0
-file /usr/share/doom/tnt.wad /home/src/idGames/final_doom/tnt.wad 0644 0 0
+# doom2 
+dir /usr/share/doom 0755 0 0
 # vi: set sw=4 ts=4 paste:

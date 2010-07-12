@@ -10,6 +10,6 @@
 # slink <new name> <original file> <mode> <uid> <gid>
 #
 # ultimate_doom
-file /home/portaboom/d.wad /home/src/idGames/ultimate_doom/d.WAD 775 1001 1000
-file /home/portaboom/doom.wad /home/src/idGames/ultimate_doom/doom.wad 775 1001 1000
+file /usr/share/doom/d.wad /home/src/idGames/ultimate_doom/d.WAD 0644 0 0
+file /usr/share/doom/doom.wad /home/src/idGames/ultimate_doom/doom.wad 0644 0 0
 # vi: set sw=4 ts=4 paste:
