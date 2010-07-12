@@ -1,0 +1,51 @@
+# $Id: generate_recipe.sh,v 1.8 2009-07-31 23:47:23 brian Exp $
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+#
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# 
+file /home/portaboom/attack.txt /home/src/idGames/master_levels_of_doom/master/wads/attack.txt 775 1001 1000
+file /home/portaboom/attack.wad /home/src/idGames/master_levels_of_doom/master/wads/attack.wad 775 1001 1000
+file /home/portaboom/blacktwr.txt /home/src/idGames/master_levels_of_doom/master/wads/blacktwr.txt 775 1001 1000
+file /home/portaboom/blacktwr.wad /home/src/idGames/master_levels_of_doom/master/wads/blacktwr.wad 775 1001 1000
+file /home/portaboom/bloodsea.txt /home/src/idGames/master_levels_of_doom/master/wads/bloodsea.txt 775 1001 1000
+file /home/portaboom/bloodsea.wad /home/src/idGames/master_levels_of_doom/master/wads/bloodsea.wad 775 1001 1000
+file /home/portaboom/canyon.txt /home/src/idGames/master_levels_of_doom/master/wads/canyon.txt 775 1001 1000
+file /home/portaboom/canyon.wad /home/src/idGames/master_levels_of_doom/master/wads/canyon.wad 775 1001 1000
+file /home/portaboom/catwalk.txt /home/src/idGames/master_levels_of_doom/master/wads/catwalk.txt 775 1001 1000
+file /home/portaboom/catwalk.wad /home/src/idGames/master_levels_of_doom/master/wads/catwalk.wad 775 1001 1000
+file /home/portaboom/combine.txt /home/src/idGames/master_levels_of_doom/master/wads/combine.txt 775 1001 1000
+file /home/portaboom/combine.wad /home/src/idGames/master_levels_of_doom/master/wads/combine.wad 775 1001 1000
+file /home/portaboom/fistula.txt /home/src/idGames/master_levels_of_doom/master/wads/fistula.txt 775 1001 1000
+file /home/portaboom/fistula.wad /home/src/idGames/master_levels_of_doom/master/wads/fistula.wad 775 1001 1000
+file /home/portaboom/garrison.txt /home/src/idGames/master_levels_of_doom/master/wads/garrison.txt 775 1001 1000
+file /home/portaboom/garrison.wad /home/src/idGames/master_levels_of_doom/master/wads/garrison.wad 775 1001 1000
+file /home/portaboom/geryon.txt /home/src/idGames/master_levels_of_doom/master/wads/geryon.txt 775 1001 1000
+file /home/portaboom/geryon.wad /home/src/idGames/master_levels_of_doom/master/wads/geryon.wad 775 1001 1000
+file /home/portaboom/mephisto.txt /home/src/idGames/master_levels_of_doom/master/wads/mephisto.txt 775 1001 1000
+file /home/portaboom/mephisto.wad /home/src/idGames/master_levels_of_doom/master/wads/mephisto.wad 775 1001 1000
+file /home/portaboom/minos.txt /home/src/idGames/master_levels_of_doom/master/wads/minos.txt 775 1001 1000
+file /home/portaboom/minos.wad /home/src/idGames/master_levels_of_doom/master/wads/minos.wad 775 1001 1000
+file /home/portaboom/nessus.txt /home/src/idGames/master_levels_of_doom/master/wads/nessus.txt 775 1001 1000
+file /home/portaboom/nessus.wad /home/src/idGames/master_levels_of_doom/master/wads/nessus.wad 775 1001 1000
+file /home/portaboom/paradox.txt /home/src/idGames/master_levels_of_doom/master/wads/paradox.txt 775 1001 1000
+file /home/portaboom/paradox.wad /home/src/idGames/master_levels_of_doom/master/wads/paradox.wad 775 1001 1000
+file /home/portaboom/subspace.txt /home/src/idGames/master_levels_of_doom/master/wads/subspace.txt 775 1001 1000
+file /home/portaboom/subspace.wad /home/src/idGames/master_levels_of_doom/master/wads/subspace.wad 775 1001 1000
+file /home/portaboom/subterra.txt /home/src/idGames/master_levels_of_doom/master/wads/subterra.txt 775 1001 1000
+file /home/portaboom/subterra.wad /home/src/idGames/master_levels_of_doom/master/wads/subterra.wad 775 1001 1000
+file /home/portaboom/teeth.txt /home/src/idGames/master_levels_of_doom/master/wads/teeth.txt 775 1001 1000
+file /home/portaboom/teeth.wad /home/src/idGames/master_levels_of_doom/master/wads/teeth.wad 775 1001 1000
+file /home/portaboom/ttrap.txt /home/src/idGames/master_levels_of_doom/master/wads/ttrap.txt 775 1001 1000
+file /home/portaboom/ttrap.wad /home/src/idGames/master_levels_of_doom/master/wads/ttrap.wad 775 1001 1000
+file /home/portaboom/vesperas.txt /home/src/idGames/master_levels_of_doom/master/wads/vesperas.txt 775 1001 1000
+file /home/portaboom/vesperas.wad /home/src/idGames/master_levels_of_doom/master/wads/vesperas.wad 775 1001 1000
+file /home/portaboom/virgil.txt /home/src/idGames/master_levels_of_doom/master/wads/virgil.txt 775 1001 1000
+file /home/portaboom/virgil.wad /home/src/idGames/master_levels_of_doom/master/wads/virgil.wad 775 1001 1000
+# vi: set sw=4 ts=4 paste:

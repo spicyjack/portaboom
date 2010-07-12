@@ -1,0 +1,63 @@
+# $Id: generate_recipe.sh,v 1.8 2009-07-31 23:47:23 brian Exp $
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+#
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# libfmodex4
+file /usr/lib/libfmodex-4.28.14.so /usr/lib/libfmodex-4.28.14.so 644 0 0
+file /usr/lib/libfmodexL-4.28.14.so /usr/lib/libfmodexL-4.28.14.so 644 0 0
+file /usr/lib/libfmodexp-4.28.14.so /usr/lib/libfmodexp-4.28.14.so 644 0 0
+dir /usr/share/libfmodex4 755 0 0
+dir /usr/share/libfmodex4/plugins 755 0 0
+file /usr/share/libfmodex4/plugins/codec_aiff.so /usr/share/libfmodex4/plugins/codec_aiff.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_cdda.so /usr/share/libfmodex4/plugins/codec_cdda.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_dls.so /usr/share/libfmodex4/plugins/codec_dls.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_flac.so /usr/share/libfmodex4/plugins/codec_flac.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_fsb.so /usr/share/libfmodex4/plugins/codec_fsb.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_it.so /usr/share/libfmodex4/plugins/codec_it.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_midi.so /usr/share/libfmodex4/plugins/codec_midi.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_mod.so /usr/share/libfmodex4/plugins/codec_mod.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_mpeg.so /usr/share/libfmodex4/plugins/codec_mpeg.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_oggvorbis.so /usr/share/libfmodex4/plugins/codec_oggvorbis.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_playlist.so /usr/share/libfmodex4/plugins/codec_playlist.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_raw.so /usr/share/libfmodex4/plugins/codec_raw.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_s3m.so /usr/share/libfmodex4/plugins/codec_s3m.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_tag.so /usr/share/libfmodex4/plugins/codec_tag.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_vag.so /usr/share/libfmodex4/plugins/codec_vag.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_wav.so /usr/share/libfmodex4/plugins/codec_wav.so 644 0 0
+file /usr/share/libfmodex4/plugins/codec_xm.so /usr/share/libfmodex4/plugins/codec_xm.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_chorus.so /usr/share/libfmodex4/plugins/dsp_chorus.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_compressor.so /usr/share/libfmodex4/plugins/dsp_compressor.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_delay.so /usr/share/libfmodex4/plugins/dsp_delay.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_distortion.so /usr/share/libfmodex4/plugins/dsp_distortion.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_echo.so /usr/share/libfmodex4/plugins/dsp_echo.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_flange.so /usr/share/libfmodex4/plugins/dsp_flange.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_highpass.so /usr/share/libfmodex4/plugins/dsp_highpass.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_itecho.so /usr/share/libfmodex4/plugins/dsp_itecho.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_lowpass2.so /usr/share/libfmodex4/plugins/dsp_lowpass2.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_lowpass_simple.so /usr/share/libfmodex4/plugins/dsp_lowpass_simple.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_lowpass.so /usr/share/libfmodex4/plugins/dsp_lowpass.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_normalize.so /usr/share/libfmodex4/plugins/dsp_normalize.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_oscillator.so /usr/share/libfmodex4/plugins/dsp_oscillator.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_parameq.so /usr/share/libfmodex4/plugins/dsp_parameq.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_pitchshift.so /usr/share/libfmodex4/plugins/dsp_pitchshift.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_reverb.so /usr/share/libfmodex4/plugins/dsp_reverb.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_sfxreverb.so /usr/share/libfmodex4/plugins/dsp_sfxreverb.so 644 0 0
+file /usr/share/libfmodex4/plugins/dsp_tremolo.so /usr/share/libfmodex4/plugins/dsp_tremolo.so 644 0 0
+file /usr/share/libfmodex4/plugins/output_alsa.so /usr/share/libfmodex4/plugins/output_alsa.so 644 0 0
+file /usr/share/libfmodex4/plugins/output_esd.so /usr/share/libfmodex4/plugins/output_esd.so 644 0 0
+file /usr/share/libfmodex4/plugins/output_nosound_nrt.so /usr/share/libfmodex4/plugins/output_nosound_nrt.so 644 0 0
+file /usr/share/libfmodex4/plugins/output_nosound.so /usr/share/libfmodex4/plugins/output_nosound.so 644 0 0
+file /usr/share/libfmodex4/plugins/output_oss.so /usr/share/libfmodex4/plugins/output_oss.so 644 0 0
+file /usr/share/libfmodex4/plugins/output_wavwriter_nrt.so /usr/share/libfmodex4/plugins/output_wavwriter_nrt.so 644 0 0
+file /usr/share/libfmodex4/plugins/output_wavwriter.so /usr/share/libfmodex4/plugins/output_wavwriter.so 644 0 0
+slink /usr/lib/libfmodexp.so /usr/lib/libfmodexp-4.28.14.so 777 0 0
+slink /usr/lib/libfmodexL.so /usr/lib/libfmodexL-4.28.14.so 777 0 0
+slink /usr/lib/libfmodex.so /usr/lib/libfmodex-4.28.14.so 777 0 0
+# vi: set sw=4 ts=4 paste:

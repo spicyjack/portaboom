@@ -1,0 +1,17 @@
+[1;32;43m
+/\\   /\\_   ___   ___   _ _______| | __ _   /   \\___   ___  _ __ ___  
+\\ \\ / | | | \\ \\ / | | | |_  / _ | |/ _`   / /\\ / _ \\ / _ \\| '_ ` _ \\ 
+ \\ V /| |_| |\\ V /| |_| |/ |  __| | (_|  / /_/| (_) | (_) | | | | | |
+  \\_/  \\__,_| \\_/  \\__,_/___\\___|_|\\__,_/___,' \\___/ \\___/|_| |_| |_|
+[31;40m
+
+  http://code.google.com/p/portaboom/ | <portaboom@googlegroups.com>
+
+[1;33;40mRelease:[37;40m :RELEASE_VER:
+
+Today is: \d; You are viewing \l 
+
+Account info: [34;40m
+u: root               p: Disabled; use SUDO from 'lack' user account
+u: lack               p: :LACK_PASS:
+[0;37;40m
