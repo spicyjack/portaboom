@@ -10,9 +10,8 @@
 # slink <new name> <original file> <mode> <uid> <gid>
 #
 # zdoom
-dir /usr/games 755 0 0
 file /usr/games/zdoom /usr/games/zdoom 755 0 0
 dir /usr/share/zdoom 755 0 0
 file /usr/share/zdoom/zdoom.pk3 /usr/share/zdoom/zdoom.pk3 644 0 0
-file /home/portaboom/zdoom.pk3 /usr/share/zdoom/zdoom.pk3 644 0 0
+slink /usr/share/doom/zdoom.pk3 /usr/share/zdoom/zdoom.pk3 644 0 0
 # vi: set sw=4 ts=4 paste:
