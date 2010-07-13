@@ -8,7 +8,6 @@
 # dir <name> <mode> <uid> <gid>
 # file <name> <source> <mode> <uid> <gid>
 # slink <new name> <original file> <mode> <uid> <gid>
-# vuvuzela-wad
-file /usr/share/doom/vuvuzela.wad /home/src/idGames/vuvuzela.wad 0644 0 0
-file /usr/share/doom/e1m1.chainsaw.wad /home/src/idGames/e1m1.chainsaw.wad 0644 0 0
+# doom2 
+file /usr/share/doom/doom1.wad /home/src/idGames/doom1.wad 0644 0 0
 # vi: set sw=4 ts=4 paste:

@@ -88,8 +88,10 @@ sub launch_terminal {
         if ( &dialog_move($top, q(notcenter)) == 1 ) {
             my $zdoom = q(touch /tmp/start_zdoom.pid; )
                 . q(DOOMWADDIR=/usr/share/doom )
-                . q(/usr/games/zdoom -iwad doom2.wad -file vuvuzela.wad;)
+                . q(/usr/games/zdoom -iwad doom1.wad )
+                . q(-file e1m1.chainsaw.wad -file vuvuzela.wad;)
                 . q(rm /tmp/start_zdoom.pid);
+                # . q(/usr/games/zdoom -iwad doom2.wad -file vuvuzela.wad;)
             system( $zdoom );
             #system( q(touch /tmp/start_zdoom.pid) );
             $move_dialog = 0;
