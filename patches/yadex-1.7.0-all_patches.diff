@@ -1,54 +1,6 @@
-diff -N -p -r -u yadex-1.7.0/GNUmakefile yadex-1.7.0-patched/GNUmakefile
---- yadex-1.7.0/GNUmakefile	2003-12-28 09:23:56.000000000 -0800
-+++ yadex-1.7.0-patched/GNUmakefile	2009-08-18 22:38:56.000000000 -0700
-@@ -160,6 +160,7 @@ MODULES_YADEX =								\
- 	s_swapf		s_vertices	sanity		scrnshot	\
- 	selbox		selectn		selpath		selrect		\
- 	serialnum	spritdir	sticker		swapmem		\
-+ 	r_render	r_images					\
- 	t_centre	t_flags		t_prop		t_spin		\
- 	textures	things		trace		v_centre	\
- 	v_merge		v_polyg		vectext		verbmsg		\
-@@ -237,6 +238,7 @@ DOC2_SRC_HTML =				\
- 	docsrc/legal.html		\
- 	docsrc/packagers_guide.html	\
- 	docsrc/palette.html		\
-+	docsrc/preview.html		\
- 	docsrc/reporting.html		\
- 	docsrc/tips.html		\
- 	docsrc/trivia.html		\
-@@ -609,8 +611,9 @@ showconf:
- #
- ########################################################################
- 
--# If Makefile.config doesn't exist, give a hint...
-+# If Makefile.config or config.h don't exist, give a hint...
- $(OBJDIR)/Makefile.config:
-+$(OBJDIR)/config.h:
- 	@echo "Sorry guv'nor, but... did you run ./configure ?" >&2
- 	@false
- 
-@@ -637,7 +640,7 @@ $(OBJDIR)/files_share.man: $(OBJDIR)/con
- # Note: the modules of Atclib are not scanned as they all
- # depend on $(HEADERS_ATCLIB) and nothing else.
- 
--yadex.dep: $(SRC_NON_GEN)
-+yadex.dep: $(SRC_NON_GEN) src/config.h
- 	@echo "Generating $@"
- 	@makedepend -f- -Y -Iatclib $(SRC_NON_GEN) 2>/dev/null	\
- 		| awk 'sub (/^src/, "") == 1 {				\
-diff -N -p -r -u yadex-1.7.0/README yadex-1.7.0-patched/README
---- yadex-1.7.0/README	2003-12-28 13:38:38.000000000 -0800
-+++ yadex-1.7.0-patched/README	2009-08-18 23:23:01.000000000 -0700
-@@ -1,4 +1,4 @@
--Yadex 1.7.0 (2003-12-28)
-+Yadex 1.7.0 (2009-08-18)
- 
- WHAT IS YADEX ?
-     Yadex is a Doom level (wad) editor for Unix systems running X,
 diff -N -p -r -u yadex-1.7.0/atclib/al_adigits.c yadex-1.7.0-patched/atclib/al_adigits.c
 --- yadex-1.7.0/atclib/al_adigits.c	1999-08-01 07:52:00.000000000 -0700
-+++ yadex-1.7.0-patched/atclib/al_adigits.c	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/atclib/al_adigits.c	2010-07-13 14:21:19.000000000 -0700
 @@ -29,5 +29,11 @@ Software Foundation, Inc., 59 Temple Pla
  #include "atclib.h"
  
@@ -62,13 +14,27 @@ diff -N -p -r -u yadex-1.7.0/atclib/al_adigits.c yadex-1.7.0-patched/atclib/al_a
 +'U', 'V', 'W', 'X', 'Y', 'Z'
 +};
  
+diff -N -p -r -u yadex-1.7.0/cache/pixlist yadex-1.7.0-patched/cache/pixlist
+--- yadex-1.7.0/cache/pixlist	2003-12-28 14:45:40.000000000 -0800
++++ yadex-1.7.0-patched/cache/pixlist	2010-07-13 14:21:51.000000000 -0700
+@@ -1,8 +1,8 @@
+ 002f2f.png
+-E1.png
+-E2.png
+ e1.png
++E1.png
+ e2.png
++E2.png
+ logo.png
+ logo_small.png
+ mirror0.png
 diff -N -p -r -u yadex-1.7.0/cache/srcdate yadex-1.7.0-patched/cache/srcdate
 --- yadex-1.7.0/cache/srcdate	2003-12-27 15:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/cache/srcdate	2009-08-18 00:00:00.000000000 -0700
++++ yadex-1.7.0-patched/cache/srcdate	2010-07-13 00:00:00.000000000 -0700
 @@ -1 +1 @@
 -2003-12-28
 \ No newline at end of file
-+2009-08-18
++2010-07-13
 \ No newline at end of file
 diff -N -p -r -u yadex-1.7.0/doc/README yadex-1.7.0-patched/doc/README
 --- yadex-1.7.0/doc/README	2003-12-28 13:38:38.000000000 -0800
@@ -78,7 +44,7 @@ diff -N -p -r -u yadex-1.7.0/doc/README yadex-1.7.0-patched/doc/README
 -directory and type "make doc".
 diff -N -p -r -u yadex-1.7.0/docsrc/index.html yadex-1.7.0-patched/docsrc/index.html
 --- yadex-1.7.0/docsrc/index.html	2002-05-09 06:36:06.000000000 -0700
-+++ yadex-1.7.0-patched/docsrc/index.html	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/docsrc/index.html	2010-07-13 14:21:19.000000000 -0700
 @@ -34,6 +34,7 @@
  
  <ul>
@@ -89,7 +55,7 @@ diff -N -p -r -u yadex-1.7.0/docsrc/index.html yadex-1.7.0-patched/docsrc/index.
  <li><a href="yadex.6">The man page for Yadex</a>
 diff -N -p -r -u yadex-1.7.0/docsrc/preview.html yadex-1.7.0-patched/docsrc/preview.html
 --- yadex-1.7.0/docsrc/preview.html	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/docsrc/preview.html	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/docsrc/preview.html	2010-07-13 14:21:19.000000000 -0700
 @@ -0,0 +1,108 @@
 +<html>
 +<head>
@@ -199,9 +165,48 @@ diff -N -p -r -u yadex-1.7.0/docsrc/preview.html yadex-1.7.0-patched/docsrc/prev
 +<p><hr>AJA $SELF_DATE
 +</body>
 +</html>
-diff -N -p -r -u yadex-1.7.0/src/config.cc yadex-1.7.0-patched/src/config.cc
---- yadex-1.7.0/src/config.cc	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/config.cc	2009-08-18 22:43:52.000000000 -0700
+diff -N -p -r -u yadex-1.7.0/GNUmakefile yadex-1.7.0-patched/GNUmakefile
+--- yadex-1.7.0/GNUmakefile	2003-12-28 09:23:56.000000000 -0800
++++ yadex-1.7.0-patched/GNUmakefile	2010-07-13 14:21:19.000000000 -0700
+@@ -160,6 +160,7 @@ MODULES_YADEX =								\
+ 	s_swapf		s_vertices	sanity		scrnshot	\
+ 	selbox		selectn		selpath		selrect		\
+ 	serialnum	spritdir	sticker		swapmem		\
++ 	r_render	r_images					\
+ 	t_centre	t_flags		t_prop		t_spin		\
+ 	textures	things		trace		v_centre	\
+ 	v_merge		v_polyg		vectext		verbmsg		\
+@@ -237,6 +238,7 @@ DOC2_SRC_HTML =				\
+ 	docsrc/legal.html		\
+ 	docsrc/packagers_guide.html	\
+ 	docsrc/palette.html		\
++	docsrc/preview.html		\
+ 	docsrc/reporting.html		\
+ 	docsrc/tips.html		\
+ 	docsrc/trivia.html		\
+@@ -609,8 +611,9 @@ showconf:
+ #
+ ########################################################################
+ 
+-# If Makefile.config doesn't exist, give a hint...
++# If Makefile.config or config.h don't exist, give a hint...
+ $(OBJDIR)/Makefile.config:
++$(OBJDIR)/config.h:
+ 	@echo "Sorry guv'nor, but... did you run ./configure ?" >&2
+ 	@false
+ 
+@@ -637,7 +640,7 @@ $(OBJDIR)/files_share.man: $(OBJDIR)/con
+ # Note: the modules of Atclib are not scanned as they all
+ # depend on $(HEADERS_ATCLIB) and nothing else.
+ 
+-yadex.dep: $(SRC_NON_GEN)
++yadex.dep: $(SRC_NON_GEN) src/config.h
+ 	@echo "Generating $@"
+ 	@makedepend -f- -Y -Iatclib $(SRC_NON_GEN) 2>/dev/null	\
+ 		| awk 'sub (/^src/, "") == 1 {				\
+diff -N -p -r -u yadex-1.7.0/obj/oso_260273490288/config.cc yadex-1.7.0-patched/obj/oso_260273490288/config.cc
+--- yadex-1.7.0/obj/oso_260273490288/config.cc	1969-12-31 16:00:00.000000000 -0800
++++ yadex-1.7.0-patched/obj/oso_260273490288/config.cc	2010-07-13 14:21:46.000000000 -0700
 @@ -0,0 +1,22 @@
 +// DO NOT EDIT -- generated by ./configure
 +
@@ -212,7 +217,7 @@ diff -N -p -r -u yadex-1.7.0/src/config.cc yadex-1.7.0-patched/src/config.cc
 +  ".",
 +  "~/.yadex/%v",
 +  "~/.yadex",
-+  "/etc/opt/stow/yadex-1.7.0-1",
++  "/local/stow/yadex-1.7.0/etc",
 +  0
 +};
 +
@@ -221,13 +226,118 @@ diff -N -p -r -u yadex-1.7.0/src/config.cc yadex-1.7.0-patched/src/config.cc
 +  ".",
 +  "~/.yadex/%v",
 +  "~/.yadex",
-+  "/opt/stow/yadex-1.7.0-1/share",
++  "/local/stow/yadex-1.7.0/share",
++  0
++};
++
+diff -N -p -r -u yadex-1.7.0/obj/oso_260273490288/config.etc yadex-1.7.0-patched/obj/oso_260273490288/config.etc
+--- yadex-1.7.0/obj/oso_260273490288/config.etc	1969-12-31 16:00:00.000000000 -0800
++++ yadex-1.7.0-patched/obj/oso_260273490288/config.etc	2010-07-13 14:21:46.000000000 -0700
+@@ -0,0 +1,4 @@
++.
++~/.yadex/%v
++~/.yadex
++/local/stow/yadex-1.7.0/etc
+diff -N -p -r -u yadex-1.7.0/obj/oso_260273490288/config.h yadex-1.7.0-patched/obj/oso_260273490288/config.h
+--- yadex-1.7.0/obj/oso_260273490288/config.h	1969-12-31 16:00:00.000000000 -0800
++++ yadex-1.7.0-patched/obj/oso_260273490288/config.h	2010-07-13 14:21:46.000000000 -0700
+@@ -0,0 +1,14 @@
++// DO NOT EDIT -- generated by ./configure
++
++//#define Y_DOS
++#define Y_UNIX
++//#define Y_BGI
++#define Y_X11
++#define Y_GETTIMEOFDAY
++#define Y_NANOSLEEP
++#define Y_SNPRINTF
++#define Y_USLEEP
++
++extern const char *yadex_etc_path[];
++extern const char *yadex_share_path[];
++
+diff -N -p -r -u yadex-1.7.0/obj/oso_260273490288/config.share yadex-1.7.0-patched/obj/oso_260273490288/config.share
+--- yadex-1.7.0/obj/oso_260273490288/config.share	1969-12-31 16:00:00.000000000 -0800
++++ yadex-1.7.0-patched/obj/oso_260273490288/config.share	2010-07-13 14:21:46.000000000 -0700
+@@ -0,0 +1,4 @@
++.
++~/.yadex/%v
++~/.yadex
++/local/stow/yadex-1.7.0/share
+diff -N -p -r -u yadex-1.7.0/obj/oso_260273490288/files_etc.man yadex-1.7.0-patched/obj/oso_260273490288/files_etc.man
+--- yadex-1.7.0/obj/oso_260273490288/files_etc.man	1969-12-31 16:00:00.000000000 -0800
++++ yadex-1.7.0-patched/obj/oso_260273490288/files_etc.man	2010-07-13 14:21:51.000000000 -0700
+@@ -0,0 +1,4 @@
++.B ./yadex.cfg
++.B ~/.yadex/1.7.0/yadex.cfg
++.B ~/.yadex/yadex.cfg
++.B /local/stow/yadex-1.7.0/etc/yadex.cfg
+diff -N -p -r -u yadex-1.7.0/obj/oso_260273490288/files_share.man yadex-1.7.0-patched/obj/oso_260273490288/files_share.man
+--- yadex-1.7.0/obj/oso_260273490288/files_share.man	1969-12-31 16:00:00.000000000 -0800
++++ yadex-1.7.0-patched/obj/oso_260273490288/files_share.man	2010-07-13 14:21:51.000000000 -0700
+@@ -0,0 +1,4 @@
++.BI ./ game .ygd
++.BI ~/.yadex/1.7.0/ game .ygd
++.BI ~/.yadex/ game .ygd
++.BI /local/stow/yadex-1.7.0/share/ game .ygd
+diff -N -p -r -u yadex-1.7.0/obj/oso_260273490288/Makefile.config yadex-1.7.0-patched/obj/oso_260273490288/Makefile.config
+--- yadex-1.7.0/obj/oso_260273490288/Makefile.config	1969-12-31 16:00:00.000000000 -0800
++++ yadex-1.7.0-patched/obj/oso_260273490288/Makefile.config	2010-07-13 14:21:46.000000000 -0700
+@@ -0,0 +1,16 @@
++# DO NOT EDIT -- generated by ./configure
++
++BINDIR            = /local/stow/yadex-1.7.0/bin
++CC                = gcc
++CXX               = g++
++ETCDIR            = /local/stow/yadex-1.7.0/etc
++ETCDIRNV          = 
++HAVE_GETTIMEOFDAY = 1
++HAVE_NANOSLEEP    = 1
++HAVE_SNPRINTF     = 1
++HAVE_USLEEP       = 1
++INTERFACE         = x11
++MANDIR            = /local/stow/yadex-1.7.0/man
++PLATFORM          = unix
++SHAREDIR          = /local/stow/yadex-1.7.0/share
++SHAREDIRNV        = 
+diff -N -p -r -u yadex-1.7.0/README yadex-1.7.0-patched/README
+--- yadex-1.7.0/README	2003-12-28 13:38:38.000000000 -0800
++++ yadex-1.7.0-patched/README	2010-07-13 14:21:51.000000000 -0700
+@@ -1,4 +1,4 @@
+-Yadex 1.7.0 (2003-12-28)
++Yadex 1.7.0 (2010-07-13)
+ 
+ WHAT IS YADEX ?
+     Yadex is a Doom level (wad) editor for Unix systems running X,
+diff -N -p -r -u yadex-1.7.0/src/config.cc yadex-1.7.0-patched/src/config.cc
+--- yadex-1.7.0/src/config.cc	1969-12-31 16:00:00.000000000 -0800
++++ yadex-1.7.0-patched/src/config.cc	2010-07-13 14:21:46.000000000 -0700
+@@ -0,0 +1,22 @@
++// DO NOT EDIT -- generated by ./configure
++
++#include "config.h"
++
++extern const char *yadex_etc_path[] =
++{
++  ".",
++  "~/.yadex/%v",
++  "~/.yadex",
++  "/local/stow/yadex-1.7.0/etc",
++  0
++};
++
++extern const char *yadex_share_path[] =
++{
++  ".",
++  "~/.yadex/%v",
++  "~/.yadex",
++  "/local/stow/yadex-1.7.0/share",
 +  0
 +};
 +
 diff -N -p -r -u yadex-1.7.0/src/config.h yadex-1.7.0-patched/src/config.h
 --- yadex-1.7.0/src/config.h	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/config.h	2009-08-18 22:43:52.000000000 -0700
++++ yadex-1.7.0-patched/src/config.h	2010-07-13 14:21:46.000000000 -0700
 @@ -0,0 +1,14 @@
 +// DO NOT EDIT -- generated by ./configure
 +
@@ -245,7 +355,7 @@ diff -N -p -r -u yadex-1.7.0/src/config.h yadex-1.7.0-patched/src/config.h
 +
 diff -N -p -r -u yadex-1.7.0/src/editloop.cc yadex-1.7.0-patched/src/editloop.cc
 --- yadex-1.7.0/src/editloop.cc	2003-07-05 04:12:32.000000000 -0700
-+++ yadex-1.7.0-patched/src/editloop.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/editloop.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -43,6 +43,7 @@ Place, Suite 330, Boston, MA 02111-1307,
  #include "entry.h"
  #include "entry2.h"
@@ -566,7 +676,7 @@ diff -N -p -r -u yadex-1.7.0/src/editloop.cc yadex-1.7.0-patched/src/editloop.cc
 +
 diff -N -p -r -u yadex-1.7.0/src/editloop.h yadex-1.7.0-patched/src/editloop.h
 --- yadex-1.7.0/src/editloop.h	2000-01-10 05:40:12.000000000 -0800
-+++ yadex-1.7.0-patched/src/editloop.h	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/editloop.h	2010-07-13 14:21:19.000000000 -0700
 @@ -6,6 +6,9 @@
  
  void EditorLoop (const char *); /* SWAP! */
@@ -579,7 +689,7 @@ diff -N -p -r -u yadex-1.7.0/src/editloop.h yadex-1.7.0-patched/src/editloop.h
  
 diff -N -p -r -u yadex-1.7.0/src/gcolour1.cc yadex-1.7.0-patched/src/gcolour1.cc
 --- yadex-1.7.0/src/gcolour1.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/gcolour1.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/gcolour1.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -127,6 +127,21 @@ game_colours = alloc_colours (rgb_values
    }
    verbmsg ("colours: colour %d remapped to %d (delta %d)\n",
@@ -604,7 +714,7 @@ diff -N -p -r -u yadex-1.7.0/src/gcolour1.cc yadex-1.7.0-patched/src/gcolour1.cc
  #endif
 diff -N -p -r -u yadex-1.7.0/src/gcolour2.cc yadex-1.7.0-patched/src/gcolour2.cc
 --- yadex-1.7.0/src/gcolour2.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/gcolour2.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/gcolour2.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -35,4 +35,5 @@ Place, Suite 330, Boston, MA 02111-1307,
  
  pcolour_t *game_colour = 0;	// Pixel values for the DOOM_COLOURS game clrs.
@@ -613,190 +723,28 @@ diff -N -p -r -u yadex-1.7.0/src/gcolour2.cc yadex-1.7.0-patched/src/gcolour2.cc
  
 diff -N -p -r -u yadex-1.7.0/src/gcolour2.h yadex-1.7.0-patched/src/gcolour2.h
 --- yadex-1.7.0/src/gcolour2.h	2000-08-10 14:18:16.000000000 -0700
-+++ yadex-1.7.0-patched/src/gcolour2.h	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/gcolour2.h	2010-07-13 14:21:19.000000000 -0700
 @@ -10,4 +10,5 @@
  
  extern pcolour_t *game_colour;  // Pixel values for the DOOM_COLOURS game clrs.
  extern int colour0;		// Game colour to which g. colour 0 is remapped
 +extern int sky_colour;		// Game colour for a medium blue sky
  
-diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
---- yadex-1.7.0/src/l_prop.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/l_prop.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -105,13 +105,13 @@ const char *Menu_data_ldt::operator[] (s
-  *	Prototypes of private functions
-  */
- static char *GetTaggedLineDefFlag (int linedefnum, int flagndx);
--static int InputLinedefType (int x0, int y0, int *number);
-+int InputLinedefType (int x0, int y0, int *number);
- static const char *PrintLdtgroup (void *ptr);
- 
- 
- void LinedefProperties (int x0, int y0, SelPtr obj)
- {
--  char  *menustr[8];
-+  char  *menustr[12];
-   char   texname[WAD_TEX_NAME + 1];
-   int    n, val;
-   SelPtr cur, sdlist;
-@@ -132,9 +132,9 @@ void LinedefProperties (int x0, int y0, 
-   switch (val)
-   {
-     case 1:
--      for (n = 0; n < 8; n++)
-+      for (n = 0; n < 12; n++)
- 	menustr[n] = (char *) GetMemory (60);
--      sprintf (menustr[7], "Edit linedef #%d", obj->objnum);
-+      sprintf (menustr[11], "Edit linedef #%d", obj->objnum);
-       sprintf (menustr[0], "Change flags            (Current: %d)",
- 	LineDefs[obj->objnum].flags);
-       sprintf (menustr[1], "Change type             (Current: %d)",
-@@ -149,7 +149,16 @@ void LinedefProperties (int x0, int y0, 
- 	LineDefs[obj->objnum].sidedef1);
-       sprintf (menustr[6], "Change 2nd sidedef ref. (Current: #%d)",
- 	LineDefs[obj->objnum].sidedef2);
--      val = vDisplayMenu (x0 + 42, subwin_y0, menustr[7],
-+      sprintf (menustr[7], "Change special arg2     (Current: %d)",
-+    LineDefs[obj->objnum].arg2);
-+      sprintf (menustr[8], "Change special arg3     (Current: %d)",
-+    LineDefs[obj->objnum].arg3);
-+      sprintf (menustr[9], "Change special arg4     (Current: %d)",
-+    LineDefs[obj->objnum].arg4);
-+      sprintf (menustr[10], "Change special arg5     (Current: %d)",
-+    LineDefs[obj->objnum].arg5);
-+      if (yg_level_format == YGLF_HEXEN)
-+         val = vDisplayMenu (x0 + 42, subwin_y0, menustr[11],
- 	menustr[0], YK_, 0,
- 	menustr[1], YK_, 0,
- 	menustr[2], YK_, 0,
-@@ -157,8 +166,22 @@ void LinedefProperties (int x0, int y0, 
- 	menustr[4], YK_, 0,
- 	menustr[5], YK_, 0,
- 	menustr[6], YK_, 0,
--	NULL);
--      for (n = 0; n < 8; n++)
-+   menustr[7], YK_, 0,
-+   menustr[8], YK_, 0,
-+   menustr[9], YK_, 0,
-+   menustr[10], YK_, 0,
-+    NULL);
-+     else
-+         val = vDisplayMenu (x0 + 42, subwin_y0, menustr[11],
-+   menustr[0], YK_, 0,
-+   menustr[1], YK_, 0,
-+   menustr[2], YK_, 0,
-+   menustr[3], YK_, 0,
-+   menustr[4], YK_, 0,
-+   menustr[5], YK_, 0,
-+   menustr[6], YK_, 0,
-+   NULL);
-+      for (n = 0; n < 12; n++)
- 	FreeMemory (menustr[n]);
-       subsubwin_y0 = subwin_y0 + BOX_BORDER + (2 + val) * FONTH;
-       switch (val)
-@@ -267,9 +290,51 @@ void LinedefProperties (int x0, int y0, 
- 	      LineDefs[cur->objnum].sidedef2 = val;
- 	    MadeChanges = 1;
- 	    MadeMapChanges = 1;
-+     }
-+     break;
-+
-+   case 8:
-+     val = InputIntegerValue (x0 + 84, subsubwin_y0,
-+       0, 255, LineDefs[obj->objnum].arg2);
-+     if (val != IIV_CANCEL)  // Not [esc]
-+     {
-+       for (cur = obj; cur; cur = cur->next)
-+         LineDefs[cur->objnum].arg2 = val;
-+       MadeChanges = 1;
-+     }
-+     break;
-+   case 9:
-+     val = InputIntegerValue (x0 + 84, subsubwin_y0,
-+       0, 255, LineDefs[obj->objnum].arg3);
-+     if (val != IIV_CANCEL)  // Not [esc]
-+     {
-+       for (cur = obj; cur; cur = cur->next)
-+         LineDefs[cur->objnum].arg3 = val;
-+       MadeChanges = 1;
-+     }
-+     break;
-+
-+   case 10:
-+     val = InputIntegerValue (x0 + 84, subsubwin_y0,
-+       0, 255, LineDefs[obj->objnum].arg4);
-+     if (val != IIV_CANCEL)  // Not [esc]
-+     {
-+       for (cur = obj; cur; cur = cur->next)
-+         LineDefs[cur->objnum].arg4 = val;
-+       MadeChanges = 1;
-+     }
-+     break;
-+   case 11:
-+     val = InputIntegerValue (x0 + 84, subsubwin_y0,
-+       0, 255, LineDefs[obj->objnum].arg5);
-+     if (val != IIV_CANCEL)  // Not [esc]
-+     {
-+       for (cur = obj; cur; cur = cur->next)
-+         LineDefs[cur->objnum].arg5 = val;
-+       MadeChanges = 1;
- 	  }
- 	  break;
--     }
-+     } // switch (val)
-      break;
- 
-     // Edit or add the first sidedef
-@@ -475,7 +540,7 @@ static char *GetTaggedLineDefFlag (int l
-  *	Let the user select a linedef type number and return it.
-  *	Returns 0 if OK, <>0 if cancelled
-  */
--static int InputLinedefType (int x0, int y0, int *number)
-+int InputLinedefType (int x0, int y0, int *number)
- {
-   int         r;
-   int         ldtgno = 0;
-@@ -547,3 +612,37 @@ static const char *PrintLdtgroup (void *
-   return ((ldtgroup_t *)ptr)->desc;
- }
- 
-+/*
-+ *   TransferLinedefProperties
-+ *
-+ *   Note: right now nothing is done about sidedefs.  Being able to
-+ *   (intelligently) transfer sidedef properties from source line to
-+ *   destination linedefs could be a useful feature -- though it is
-+ *   unclear the best way to do it.  OTOH not touching sidedefs might
-+ *   be useful too.
-+ *
-+ *   -AJA- 2001-05-27
-+ */
-+#define LINEDEF_FLAG_KEEP  (1 + 4)
-+
-+void TransferLinedefProperties (int src_linedef, SelPtr linedefs)
-+{
-+   SelPtr cur;
-+   wad_ldflags_t src_flags = LineDefs[src_linedef].flags & ~LINEDEF_FLAG_KEEP;
-+
-+   for (cur=linedefs; cur; cur=cur->next)
-+   {
-+      if (! is_obj(cur->objnum))
-+         continue;
-+
-+      // don't transfer certain flags
-+      LineDefs[cur->objnum].flags &= LINEDEF_FLAG_KEEP;
-+      LineDefs[cur->objnum].flags |= src_flags;
-+
-+      LineDefs[cur->objnum].type = LineDefs[src_linedef].type;
-+      LineDefs[cur->objnum].tag  = LineDefs[src_linedef].tag;
-+
-+      MadeChanges = 1;
-+   }
-+}
-+
+diff -N -p -r -u yadex-1.7.0/src/gfx.cc yadex-1.7.0-patched/src/gfx.cc
+--- yadex-1.7.0/src/gfx.cc	2003-12-14 16:50:02.000000000 -0800
++++ yadex-1.7.0-patched/src/gfx.cc	2010-07-13 14:22:43.000000000 -0700
+@@ -310,7 +310,7 @@ int InitGfx (void)
+     win_vis_id    = vis_info->visualid;
+ #if defined _cplusplus || defined __cplusplus
+     win_vis_class = vis_info->c_class;
+-#elif
++#else
+     win_vis_class = vis_info->class;
+ #endif
+     win_ncolours  = vis_info->colormap_size;
 diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
 --- yadex-1.7.0/src/levels.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/levels.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/levels.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -58,6 +58,8 @@ int NumVertices;		/* number of vertexes 
  VPtr Vertices;			/* vertex data */
  int NumSectors;			/* number of sectors */
@@ -1071,7 +1019,7 @@ diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
     file_write_i32 (file, lump_size[L]);
 diff -N -p -r -u yadex-1.7.0/src/levels.h yadex-1.7.0-patched/src/levels.h
 --- yadex-1.7.0/src/levels.h	2001-10-13 07:57:33.000000000 -0700
-+++ yadex-1.7.0-patched/src/levels.h	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/levels.h	2010-07-13 14:21:19.000000000 -0700
 @@ -28,6 +28,8 @@ extern VPtr  Vertices;		/* vertices data
  extern int   NumSegs;		/* number of segments */
  extern int   NumSectors;	/* number of sectors */
@@ -1081,9 +1029,183 @@ diff -N -p -r -u yadex-1.7.0/src/levels.h yadex-1.7.0-patched/src/levels.h
  
  // FIXME should be somewhere else
  extern int   NumWTexture;	/* number of wall textures */
+diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
+--- yadex-1.7.0/src/l_prop.cc	2003-03-28 04:37:32.000000000 -0800
++++ yadex-1.7.0-patched/src/l_prop.cc	2010-07-13 14:21:19.000000000 -0700
+@@ -105,13 +105,13 @@ const char *Menu_data_ldt::operator[] (s
+  *	Prototypes of private functions
+  */
+ static char *GetTaggedLineDefFlag (int linedefnum, int flagndx);
+-static int InputLinedefType (int x0, int y0, int *number);
++int InputLinedefType (int x0, int y0, int *number);
+ static const char *PrintLdtgroup (void *ptr);
+ 
+ 
+ void LinedefProperties (int x0, int y0, SelPtr obj)
+ {
+-  char  *menustr[8];
++  char  *menustr[12];
+   char   texname[WAD_TEX_NAME + 1];
+   int    n, val;
+   SelPtr cur, sdlist;
+@@ -132,9 +132,9 @@ void LinedefProperties (int x0, int y0, 
+   switch (val)
+   {
+     case 1:
+-      for (n = 0; n < 8; n++)
++      for (n = 0; n < 12; n++)
+ 	menustr[n] = (char *) GetMemory (60);
+-      sprintf (menustr[7], "Edit linedef #%d", obj->objnum);
++      sprintf (menustr[11], "Edit linedef #%d", obj->objnum);
+       sprintf (menustr[0], "Change flags            (Current: %d)",
+ 	LineDefs[obj->objnum].flags);
+       sprintf (menustr[1], "Change type             (Current: %d)",
+@@ -149,7 +149,16 @@ void LinedefProperties (int x0, int y0, 
+ 	LineDefs[obj->objnum].sidedef1);
+       sprintf (menustr[6], "Change 2nd sidedef ref. (Current: #%d)",
+ 	LineDefs[obj->objnum].sidedef2);
+-      val = vDisplayMenu (x0 + 42, subwin_y0, menustr[7],
++      sprintf (menustr[7], "Change special arg2     (Current: %d)",
++    LineDefs[obj->objnum].arg2);
++      sprintf (menustr[8], "Change special arg3     (Current: %d)",
++    LineDefs[obj->objnum].arg3);
++      sprintf (menustr[9], "Change special arg4     (Current: %d)",
++    LineDefs[obj->objnum].arg4);
++      sprintf (menustr[10], "Change special arg5     (Current: %d)",
++    LineDefs[obj->objnum].arg5);
++      if (yg_level_format == YGLF_HEXEN)
++         val = vDisplayMenu (x0 + 42, subwin_y0, menustr[11],
+ 	menustr[0], YK_, 0,
+ 	menustr[1], YK_, 0,
+ 	menustr[2], YK_, 0,
+@@ -157,8 +166,22 @@ void LinedefProperties (int x0, int y0, 
+ 	menustr[4], YK_, 0,
+ 	menustr[5], YK_, 0,
+ 	menustr[6], YK_, 0,
+-	NULL);
+-      for (n = 0; n < 8; n++)
++   menustr[7], YK_, 0,
++   menustr[8], YK_, 0,
++   menustr[9], YK_, 0,
++   menustr[10], YK_, 0,
++    NULL);
++     else
++         val = vDisplayMenu (x0 + 42, subwin_y0, menustr[11],
++   menustr[0], YK_, 0,
++   menustr[1], YK_, 0,
++   menustr[2], YK_, 0,
++   menustr[3], YK_, 0,
++   menustr[4], YK_, 0,
++   menustr[5], YK_, 0,
++   menustr[6], YK_, 0,
++   NULL);
++      for (n = 0; n < 12; n++)
+ 	FreeMemory (menustr[n]);
+       subsubwin_y0 = subwin_y0 + BOX_BORDER + (2 + val) * FONTH;
+       switch (val)
+@@ -267,9 +290,51 @@ void LinedefProperties (int x0, int y0, 
+ 	      LineDefs[cur->objnum].sidedef2 = val;
+ 	    MadeChanges = 1;
+ 	    MadeMapChanges = 1;
++     }
++     break;
++
++   case 8:
++     val = InputIntegerValue (x0 + 84, subsubwin_y0,
++       0, 255, LineDefs[obj->objnum].arg2);
++     if (val != IIV_CANCEL)  // Not [esc]
++     {
++       for (cur = obj; cur; cur = cur->next)
++         LineDefs[cur->objnum].arg2 = val;
++       MadeChanges = 1;
++     }
++     break;
++   case 9:
++     val = InputIntegerValue (x0 + 84, subsubwin_y0,
++       0, 255, LineDefs[obj->objnum].arg3);
++     if (val != IIV_CANCEL)  // Not [esc]
++     {
++       for (cur = obj; cur; cur = cur->next)
++         LineDefs[cur->objnum].arg3 = val;
++       MadeChanges = 1;
++     }
++     break;
++
++   case 10:
++     val = InputIntegerValue (x0 + 84, subsubwin_y0,
++       0, 255, LineDefs[obj->objnum].arg4);
++     if (val != IIV_CANCEL)  // Not [esc]
++     {
++       for (cur = obj; cur; cur = cur->next)
++         LineDefs[cur->objnum].arg4 = val;
++       MadeChanges = 1;
++     }
++     break;
++   case 11:
++     val = InputIntegerValue (x0 + 84, subsubwin_y0,
++       0, 255, LineDefs[obj->objnum].arg5);
++     if (val != IIV_CANCEL)  // Not [esc]
++     {
++       for (cur = obj; cur; cur = cur->next)
++         LineDefs[cur->objnum].arg5 = val;
++       MadeChanges = 1;
+ 	  }
+ 	  break;
+-     }
++     } // switch (val)
+      break;
+ 
+     // Edit or add the first sidedef
+@@ -475,7 +540,7 @@ static char *GetTaggedLineDefFlag (int l
+  *	Let the user select a linedef type number and return it.
+  *	Returns 0 if OK, <>0 if cancelled
+  */
+-static int InputLinedefType (int x0, int y0, int *number)
++int InputLinedefType (int x0, int y0, int *number)
+ {
+   int         r;
+   int         ldtgno = 0;
+@@ -547,3 +612,37 @@ static const char *PrintLdtgroup (void *
+   return ((ldtgroup_t *)ptr)->desc;
+ }
+ 
++/*
++ *   TransferLinedefProperties
++ *
++ *   Note: right now nothing is done about sidedefs.  Being able to
++ *   (intelligently) transfer sidedef properties from source line to
++ *   destination linedefs could be a useful feature -- though it is
++ *   unclear the best way to do it.  OTOH not touching sidedefs might
++ *   be useful too.
++ *
++ *   -AJA- 2001-05-27
++ */
++#define LINEDEF_FLAG_KEEP  (1 + 4)
++
++void TransferLinedefProperties (int src_linedef, SelPtr linedefs)
++{
++   SelPtr cur;
++   wad_ldflags_t src_flags = LineDefs[src_linedef].flags & ~LINEDEF_FLAG_KEEP;
++
++   for (cur=linedefs; cur; cur=cur->next)
++   {
++      if (! is_obj(cur->objnum))
++         continue;
++
++      // don't transfer certain flags
++      LineDefs[cur->objnum].flags &= LINEDEF_FLAG_KEEP;
++      LineDefs[cur->objnum].flags |= src_flags;
++
++      LineDefs[cur->objnum].type = LineDefs[src_linedef].type;
++      LineDefs[cur->objnum].tag  = LineDefs[src_linedef].tag;
++
++      MadeChanges = 1;
++   }
++}
++
 diff -N -p -r -u yadex-1.7.0/src/objects.cc yadex-1.7.0-patched/src/objects.cc
 --- yadex-1.7.0/src/objects.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/objects.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/objects.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -465,12 +465,28 @@ switch (objtype)
  	 Things[last].type  = Things[copyfrom].type;
  	 Things[last].angle = Things[copyfrom].angle;
@@ -1137,7 +1259,7 @@ diff -N -p -r -u yadex-1.7.0/src/objects.cc yadex-1.7.0-patched/src/objects.cc
        LineDefs[last].sidedef2 = OBJ_NO_NONE;
 diff -N -p -r -u yadex-1.7.0/src/r_images.cc yadex-1.7.0-patched/src/r_images.cc
 --- yadex-1.7.0/src/r_images.cc	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/r_images.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/r_images.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -0,0 +1,400 @@
 +/*
 + *	r_images.cc
@@ -1541,7 +1663,7 @@ diff -N -p -r -u yadex-1.7.0/src/r_images.cc yadex-1.7.0-patched/src/r_images.cc
 +}
 diff -N -p -r -u yadex-1.7.0/src/r_images.h yadex-1.7.0-patched/src/r_images.h
 --- yadex-1.7.0/src/r_images.h	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/r_images.h	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/r_images.h	2010-07-13 14:21:19.000000000 -0700
 @@ -0,0 +1,69 @@
 +/*
 + *	r_images.h
@@ -1614,7 +1736,7 @@ diff -N -p -r -u yadex-1.7.0/src/r_images.h yadex-1.7.0-patched/src/r_images.h
 +#endif  /* DO NOT ADD ANYTHING AFTER THIS LINE */
 diff -N -p -r -u yadex-1.7.0/src/r_render.cc yadex-1.7.0-patched/src/r_render.cc
 --- yadex-1.7.0/src/r_render.cc	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/r_render.cc	2009-08-18 23:21:08.000000000 -0700
++++ yadex-1.7.0-patched/src/r_render.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -0,0 +1,1275 @@
 +/*
 + *	r_render.cc
@@ -2893,7 +3015,7 @@ diff -N -p -r -u yadex-1.7.0/src/r_render.cc yadex-1.7.0-patched/src/r_render.cc
 +
 diff -N -p -r -u yadex-1.7.0/src/r_render.h yadex-1.7.0-patched/src/r_render.h
 --- yadex-1.7.0/src/r_render.h	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/r_render.h	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/r_render.h	2010-07-13 14:21:19.000000000 -0700
 @@ -0,0 +1,14 @@
 +/*
 + *	r_render.h
@@ -2909,9 +3031,25 @@ diff -N -p -r -u yadex-1.7.0/src/r_render.h yadex-1.7.0-patched/src/r_render.h
 +
 +
 +#endif  /* DO NOT ADD ANYTHING AFTER THIS LINE */
+diff -N -p -r -u yadex-1.7.0/src/sanity.cc yadex-1.7.0-patched/src/sanity.cc
+--- yadex-1.7.0/src/sanity.cc	2003-03-28 04:37:32.000000000 -0800
++++ yadex-1.7.0-patched/src/sanity.cc	2010-07-13 14:21:19.000000000 -0700
+@@ -67,10 +67,10 @@ void check_types ()
+   assert_size (i16, 2);
+   assert_size (u32, 4);
+   assert_size (i32, 4);
+-  assert_size (struct LineDef, 14);
++  assert_size (struct LineDef, 18);
+   assert_size (struct Sector,  26);
+   assert_size (struct SideDef, 30);
+-  assert_size (struct Thing,   10);
++  assert_size (struct Thing,   20);
+   assert_size (struct Vertex,   4);
+   assert_wrap (u8,          255,           0);
+   assert_wrap (i8,          127,        -128);
 diff -N -p -r -u yadex-1.7.0/src/s_misc.cc yadex-1.7.0-patched/src/s_misc.cc
 --- yadex-1.7.0/src/s_misc.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/s_misc.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/s_misc.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -29,11 +29,15 @@ Place, Suite 330, Boston, MA 02111-1307,
  
  
@@ -3271,7 +3409,7 @@ diff -N -p -r -u yadex-1.7.0/src/s_misc.cc yadex-1.7.0-patched/src/s_misc.cc
  /* end of file */
 diff -N -p -r -u yadex-1.7.0/src/s_prop.cc yadex-1.7.0-patched/src/s_prop.cc
 --- yadex-1.7.0/src/s_prop.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/s_prop.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/s_prop.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -259,4 +259,67 @@ void SectorProperties (int x0, int y0, S
    }
  }
@@ -3342,7 +3480,7 @@ diff -N -p -r -u yadex-1.7.0/src/s_prop.cc yadex-1.7.0-patched/src/s_prop.cc
  
 diff -N -p -r -u yadex-1.7.0/src/s_split.cc yadex-1.7.0-patched/src/s_split.cc
 --- yadex-1.7.0/src/s_split.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/s_split.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/s_split.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -36,6 +36,7 @@ Place, Suite 330, Boston, MA 02111-1307,
  #include "s_linedefs.h"
  #include "selectn.h"
@@ -3351,25 +3489,9 @@ diff -N -p -r -u yadex-1.7.0/src/s_split.cc yadex-1.7.0-patched/src/s_split.cc
  
  
  /*
-diff -N -p -r -u yadex-1.7.0/src/sanity.cc yadex-1.7.0-patched/src/sanity.cc
---- yadex-1.7.0/src/sanity.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/sanity.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -67,10 +67,10 @@ void check_types ()
-   assert_size (i16, 2);
-   assert_size (u32, 4);
-   assert_size (i32, 4);
--  assert_size (struct LineDef, 14);
-+  assert_size (struct LineDef, 18);
-   assert_size (struct Sector,  26);
-   assert_size (struct SideDef, 30);
--  assert_size (struct Thing,   10);
-+  assert_size (struct Thing,   20);
-   assert_size (struct Vertex,   4);
-   assert_wrap (u8,          255,           0);
-   assert_wrap (i8,          127,        -128);
 diff -N -p -r -u yadex-1.7.0/src/t_prop.cc yadex-1.7.0-patched/src/t_prop.cc
 --- yadex-1.7.0/src/t_prop.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/t_prop.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/t_prop.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -36,17 +36,18 @@ Place, Suite 330, Boston, MA 02111-1307,
  #include "gfx.h"
  #include "levels.h"
@@ -3587,16 +3709,16 @@ diff -N -p -r -u yadex-1.7.0/src/t_prop.cc yadex-1.7.0-patched/src/t_prop.cc
  /* end of file */
 diff -N -p -r -u yadex-1.7.0/src/version.cc yadex-1.7.0-patched/src/version.cc
 --- yadex-1.7.0/src/version.cc	2003-12-28 11:34:08.000000000 -0800
-+++ yadex-1.7.0-patched/src/version.cc	2009-08-18 23:21:19.000000000 -0700
++++ yadex-1.7.0-patched/src/version.cc	2010-07-13 14:22:57.000000000 -0700
 @@ -1,4 +1,4 @@
  // DO NOT EDIT -- generated from VERSION
  
 -extern const char *const yadex_source_date = "2003-12-28";
-+extern const char *const yadex_source_date = "2009-08-18";
++extern const char *const yadex_source_date = "2010-07-13";
  extern const char *const yadex_version = "1.7.0";
 diff -N -p -r -u yadex-1.7.0/src/wadlist.cc yadex-1.7.0-patched/src/wadlist.cc
 --- yadex-1.7.0/src/wadlist.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/wadlist.cc	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/wadlist.cc	2010-07-13 14:21:19.000000000 -0700
 @@ -24,6 +24,9 @@ FOR A PARTICULAR PURPOSE. See the GNU Ge
  You should have received a copy of the GNU General Public License along with
  this program; if not, write to the Free Software Foundation, Inc., 59 Temple
@@ -3676,7 +3798,7 @@ diff -N -p -r -u yadex-1.7.0/src/wadlist.cc yadex-1.7.0-patched/src/wadlist.cc
 -
 diff -N -p -r -u yadex-1.7.0/src/wstructs.h yadex-1.7.0-patched/src/wstructs.h
 --- yadex-1.7.0/src/wstructs.h	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/wstructs.h	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/wstructs.h	2010-07-13 14:21:19.000000000 -0700
 @@ -84,14 +84,30 @@ typedef i16 wad_tangle_t;
  typedef i16 wad_tflags_t;
  struct Thing
@@ -3770,7 +3892,7 @@ diff -N -p -r -u yadex-1.7.0/src/wstructs.h yadex-1.7.0-patched/src/wstructs.h
  
 diff -N -p -r -u yadex-1.7.0/src/yadex.h yadex-1.7.0-patched/src/yadex.h
 --- yadex-1.7.0/src/yadex.h	2003-12-14 16:37:45.000000000 -0800
-+++ yadex-1.7.0-patched/src/yadex.h	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/src/yadex.h	2010-07-13 14:21:19.000000000 -0700
 @@ -479,6 +479,7 @@ void SetLinedefLength (SelPtr obj, int l
  
  // l_prop.cc (previously in editobj.cc)
@@ -3806,7 +3928,7 @@ diff -N -p -r -u yadex-1.7.0/src/yadex.h yadex-1.7.0-patched/src/yadex.h
  void DeleteVerticesJoinLineDefs (SelPtr ); /* SWAP! */
 diff -N -p -r -u yadex-1.7.0/yadex.dep yadex-1.7.0-patched/yadex.dep
 --- yadex-1.7.0/yadex.dep	2003-12-28 11:34:06.000000000 -0800
-+++ yadex-1.7.0-patched/yadex.dep	2009-08-18 23:21:18.000000000 -0700
++++ yadex-1.7.0-patched/yadex.dep	2010-07-13 14:22:45.000000000 -0700
 @@ -154,20 +154,22 @@ obj/0/editloop.o: src/editgrid.h src/edi
  dobj/0/editloop.o: src/editgrid.h src/editloop.h src/editobj.h src/editsave.h
  obj/0/editloop.o: src/editzoom.h src/entry.h src/entry2.h src/events.h
@@ -3918,9 +4040,69 @@ diff -N -p -r -u yadex-1.7.0/yadex.dep yadex-1.7.0-patched/yadex.dep
  obj/0/t_spin.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  dobj/0/t_spin.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  obj/0/t_spin.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
+@@ -958,8 +990,6 @@ obj/0/ytime.o: src/yerror.h src/ymemory.
+ dobj/0/ytime.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h src/wstructs.h
+ obj/0/ytime.o: src/input.h src/ytime.h
+ dobj/0/ytime.o: src/input.h src/ytime.h
+-obj/0/_edit.o: src/objid.h
+-dobj/0/_edit.o: src/objid.h
+ obj/0/acolours.o: src/colour.h
+ dobj/0/acolours.o: src/colour.h
+ obj/0/bitvec.o: src/yerror.h src/ymemory.h
+@@ -968,6 +998,8 @@ obj/0/disppic.o: src/lists.h src/img.h
+ dobj/0/disppic.o: src/lists.h src/img.h
+ obj/0/drawmap.o: src/_edit.h src/objid.h
+ dobj/0/drawmap.o: src/_edit.h src/objid.h
++obj/0/_edit.o: src/objid.h
++dobj/0/_edit.o: src/objid.h
+ obj/0/flats.o: src/lists.h src/img.h
+ dobj/0/flats.o: src/lists.h src/img.h
+ obj/0/game.o: src/rgb.h
+@@ -986,18 +1018,18 @@ obj/0/highlt.o: src/edwidget.h src/objid
+ dobj/0/highlt.o: src/edwidget.h src/objid.h
+ obj/0/infobar.o: src/edwidget.h
+ dobj/0/infobar.o: src/edwidget.h
+-obj/0/l_super.o: src/levels.h src/wstructs.h src/things.h src/objid.h
+-dobj/0/l_super.o: src/levels.h src/wstructs.h src/things.h src/objid.h
+-obj/0/l_vertices.o: src/selectn.h
+-dobj/0/l_vertices.o: src/selectn.h
+ obj/0/levels.o: src/wstructs.h src/things.h
+ dobj/0/levels.o: src/wstructs.h src/things.h
+ obj/0/lists.o: src/img.h
+ dobj/0/lists.o: src/img.h
+-obj/0/menu.o: src/edwidget.h
+-dobj/0/menu.o: src/edwidget.h
++obj/0/l_super.o: src/levels.h src/wstructs.h src/things.h src/objid.h
++dobj/0/l_super.o: src/levels.h src/wstructs.h src/things.h src/objid.h
++obj/0/l_vertices.o: src/selectn.h
++dobj/0/l_vertices.o: src/selectn.h
+ obj/0/menubar.o: src/edwidget.h
+ dobj/0/menubar.o: src/edwidget.h
++obj/0/menu.o: src/edwidget.h
++dobj/0/menu.o: src/edwidget.h
+ obj/0/modpopup.o: src/edwidget.h src/menu.h
+ dobj/0/modpopup.o: src/edwidget.h src/menu.h
+ obj/0/objects.o: src/objid.h
+@@ -1008,14 +1040,14 @@ obj/0/pic2img.o: src/img.h
+ dobj/0/pic2img.o: src/img.h
+ obj/0/s_centre.o: src/objid.h
+ dobj/0/s_centre.o: src/objid.h
+-obj/0/s_vertices.o: src/selectn.h
+-dobj/0/s_vertices.o: src/selectn.h
+ obj/0/selbox.o: src/edwidget.h
+ dobj/0/selbox.o: src/edwidget.h
+ obj/0/spot.o: src/edwidget.h src/gfx.h
+ dobj/0/spot.o: src/edwidget.h src/gfx.h
+ obj/0/spritdir.o: src/lumpdir.h
+ dobj/0/spritdir.o: src/lumpdir.h
++obj/0/s_vertices.o: src/selectn.h
++dobj/0/s_vertices.o: src/selectn.h
+ obj/0/textures.o: src/lists.h src/img.h
+ dobj/0/textures.o: src/lists.h src/img.h
+ obj/0/things.o: src/wstructs.h
 diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
 --- yadex-1.7.0/ygd/hexen.ygd	2002-12-30 18:53:33.000000000 -0800
-+++ yadex-1.7.0-patched/ygd/hexen.ygd	2009-08-18 22:38:56.000000000 -0700
++++ yadex-1.7.0-patched/ygd/hexen.ygd	2010-07-13 14:21:19.000000000 -0700
 @@ -108,6 +108,7 @@ ldt 100 x "?? Scroll left"   "??  Scroll
  ldt 101 x "?? Scroll right"  "??  Scroll_Texture_Right"
  ldt 102 x "?? Scroll up"     "??  Scroll_Texture_Up"
