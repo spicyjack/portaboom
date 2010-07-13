@@ -1,0 +1,16 @@
+2e
+                                 _          ___
+/\   /\_   ___   ___   _ _______| | __ _   /   \___   ___  _ __ ___
+\ \ / | | | \ \ / | | | |_  / _ | |/ _`   / /\ / _ \ / _ \| '_ ` _ \
+ \ V /| |_| |\ V /| |_| |/ |  __| | (_|  / /_/| (_) | (_) | | | | | |
+  \_/  \__,_| \_/  \__,_/___\___|_|\__,_/___,' \___/ \___/|_| |_| |_|
+0f
+       1bVuvuzela Doom - Based on ZDoom - A Portaboom Project0f
+
+1eRelease:0f :RELEASE_DATE:
+
+Options:
+
+- Press <1eEnter0f> to boot Vuvzela Doom
+- Type 'wm=flwm' then press <1eEnter0f> to start the FLWM Window Manager
+

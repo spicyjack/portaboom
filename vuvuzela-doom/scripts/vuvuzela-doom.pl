@@ -87,7 +87,7 @@ sub launch_terminal {
     #if ( 1 ) {
         if ( &dialog_move($top, q(notcenter)) == 1 ) {
             my $zdoom = q(touch /tmp/start_zdoom.pid; )
-                . q(DOOMWADDIR=/home/portaboom )
+                . q(DOOMWADDIR=/usr/share/doom )
                 . q(/usr/games/zdoom -iwad doom2.wad -file vuvuzela.wad;)
                 . q(rm /tmp/start_zdoom.pid);
             system( $zdoom );
@@ -129,7 +129,7 @@ sub check_terminal {
     } else {
         $b_term->set_sensitive(TRUE);
         $b_term_label->set_markup_with_mnemonic( 
-            q(<span color="Black">_Run ZDoom!</span>));
+            q(<span color="White">_Run ZDoom!</span>));
     } # if ( -e q(/tmp/start_zdoom.pid) )
     return TRUE;
 } # sub check_terminal
@@ -146,7 +146,7 @@ my $label_text = qq(<span weight="bold">WARNING!</span>\n)
     . qq(Both ZDoom and libfmod are not GPL'ed applications.\n)
     . qq(This means if you distribute this CD, you will be\n)
     . qq(violating the GPL.  You have been warned!!!\n\n)
-    . qq(Press the "Run ZDoom!" button below to start )
+    . qq(Press the "Run ZDoom!" button below to start\n)
     . qq(<span weight="bold">Vuvuzela Doom!</span>\n);
 my $label = Gtk2::Label->new();
 $label->set_justify(q(center));
@@ -158,7 +158,7 @@ $vbox->pack_start($label, TRUE, TRUE, 2);
 my $b_term_label = Gtk2::Label->new();
 my $b_term = Gtk2::Button->new();
 $b_term_label->set_markup_with_mnemonic(
-    q(<span color="Black">_Launch ZDoom!</span>));
+    q(<span color="White">_Run ZDoom!</span>));
 $b_term->add($b_term_label);
 
 # connect the button's 'click' signal to an action
