@@ -3,9 +3,15 @@
 # script for making an ISO filesystem, for CD burning
 
 # FIXME make a temporary directory and throw everything in there
-VERSION="2009.1"
-OUTPUT_DIR=/opt/sourcecode/ISO_Projects/
-INPUT_DIR=$OUTPUT_DIR/xlack
+TEMP_DIR=$(/bin/mktemp -d /tmp/tmp-mkisofs.XXXX)
+VERSION="2010.1"
+# set an output directory
+if [ "x$1" == "x" ]; then
+    OUTPUT_DIR=$TEMP_DIR
+else
+    OUTPUT_DIR=$1
+fi
+INPUT_DIR=~/src/po
 RELEASE_DATE=$(/bin/date "+%d%b%Y-%H.%M.%S")
 BANNER="/tmp/vuvuzela.banner.txt"
 
