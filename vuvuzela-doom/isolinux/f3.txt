@@ -1,0 +1,13 @@
+30
+      __                __                 __             
+.----|  |--.-----.---.-|  |_.----.-----.--|  .-----.-----.
+|  __|     |  -__|  _  |   _|  __|  _  |  _  |  -__|__ --|
+|____|__|__|_____|___._|____|____|_____|_____|_____|_____|
+0f
+Portaboom/Doom/Vuvuzela Doom Cheat Codes
+01wm=flwm0f - Run FLWM instead of Mayhem Doom launcher
+02wm=windowlab0f - Run Windowlab instead of Mayhem Doom launcher
+03wm=xterm0f - Run an xterm instead of Mayhem Doom launcher
+04x=1024x7680f - Run X at a screen resolution of 1024h x 768w
+05x=800x6000f - Run X at a screen resolution of 800h x 600w
+06x=640x4800f - Run X at a screen resolution of 640h x 480w
