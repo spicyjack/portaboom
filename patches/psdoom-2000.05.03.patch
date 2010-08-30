@@ -1,0 +1,825 @@
+diff -pruN psdoom-src.orig/psdoomdoc/README psdoom-src.patched/psdoomdoc/README
+--- psdoom-src.orig/psdoomdoc/README	2000-05-02 20:05:08.000000000 -0700
++++ psdoom-src.patched/psdoomdoc/README	2010-07-19 22:12:21.221134040 -0700
+@@ -120,6 +120,8 @@ distribution), as it applies to psDooM a
+ * psDooM is installed into the directory /usr/local/games/psdoom rather
+   than /usr/local/games/xdoom.  Shell scripts are still installed in
+   /usr/local/bin.
++* psDooM looks for its default configuration files (.doomrc, .xdlaunchrc)
++  and savegame files (doomsav?.dsg) in ~/.psdoom rather than in ~/.xdoom.
+ 
+ Now, with those out of the way, we can get to the good stuff. :-)
+ 
+@@ -275,3 +277,11 @@ There are several other command line fla
+    do in '-altdeath' games (Invun, Invis, and dropped items don't 
+    respawn; everything else does).  This flag has no effect when recording
+    or playing a demo because it messes up timing.
++
++The XDoom distribution includes a graphical front-end to xdoom, called
++xdlaunch.  It allows the user to specify XDoom command line flags by
++clicking option boxes and using dropdown lists.  This utility has been
++renamed to ps-xdlaunch and modified to run psDooM.  Also, a place in the
++front-end was added so a user can manually type additional command line
++flags to pass to ps-xdoom.  psDooM-specific options can be shown by
++pressing a button in ps-xdlaunch.  This utility requires TCL/TK.
+diff -pruN psdoom-src.orig/psdoomdoc/TODO psdoom-src.patched/psdoomdoc/TODO
+--- psdoom-src.orig/psdoomdoc/TODO	2000-05-02 20:05:08.000000000 -0700
++++ psdoom-src.patched/psdoomdoc/TODO	2010-07-19 22:13:27.637132721 -0700
+@@ -56,6 +56,8 @@ X-customized level map for managing proc
+   X-command line flag to disable automatic loading of custom level; manage
+       processes on stock E1M1 or MAP01
+       (-nopslev)
++  ?-custom level for shareware doom (psdooms.wad); must get permission
++      from id software before doing this
+ X-game acts like normal xdoom if not playing on E1M1/MAP01 or if playing
+     any 'Plutonia Experiment' or 'TNT - Evilution' level
+ X-command line flag to entirely disable 'ps' portion of the program
+@@ -130,12 +132,14 @@ X-the demo that plays immediately after 
+             * a point of origin and the length of the sides for a box (in
+               doom map units) on that level for processes to spawn in
+ 
+-            * the final argument is a field that is only used (and is
+-              mandatory) if the 'U' flag is given above: it gives the
+-              percent chance of a pid monster spawning in this spawnbox
++            * the final argument is a field that is only used if the 'U'
++              flag is given above: it gives the percent chance of a pid
++              monster spawning in this spawnbox
+               * if the running total of user-specified percentages becomes
+                 greater than 100%, the remaining spawnboxes will not have
+                 monsters spawn in them
++              * if the nn is not there for a given area, the remaining
++                part up to 100% is assigned to that spawnbox
+ --make pid monsters less aggressive towards (afraid of?) player
+ --pid text is not placed well when screen is not at largest or second
+     largest size; fix it
+@@ -144,15 +148,18 @@ X-the demo that plays immediately after 
+   --more text information (space limited)
+     NOTE: perhaps could print more info as the monster gets closer
+           and takes up more of the view
+---shutdown machine with psdoom*.wad level exit switch
++--shutdown/reboot machine with psdoom*.wad level exit switch(s)
+   NOTE: need to make a custom texture to notify user of this interface
+ --type of weapon determines what signal to send with the kill command
+     on monster death (eg. pistol=kill -1, shotgun=kill -2, ...
+                                             plasma & BFG=kill -9 ???)
+   NOTE: rocket launcher probably not a good choice because of collateral
+         damage (maybe protect pid monsters?)
+---modify xdlaunch (ps-xdlaunch) to run ps-xdoom
+-  --add psdoom-specific command line flags to ps-xdlaunch
++O-modify xdlaunch (ps-xdlaunch) to run ps-xdoom
++  O-add psdoom-specific command line flags to ps-xdlaunch
+ --incorporate the Back Orifice port of psdoom
+   --command line flag to use Back Orifice rather than local admining
+       (-psbo)
++O-use ~/.psdoom rather than ~/.xdoom for savegames, config files, etc
++O-add references to psdoom in startup header text, X resources, and window
++    title bar
+diff -pruN psdoom-src.orig/xdlaunch/xdlaunch psdoom-src.patched/xdlaunch/xdlaunch
+--- psdoom-src.orig/xdlaunch/xdlaunch	2000-03-13 22:08:07.000000000 -0800
++++ psdoom-src.patched/xdlaunch/xdlaunch	2010-07-19 22:12:21.253541860 -0700
+@@ -4,6 +4,7 @@ exec wish8.0 "$0" "$@"
+ 
+ #
+ # Copyright (C) 1998-2000 by Udo Munk (um@compuserve.com)
++# Copyright (C) 2000 by David Koppenhofer (djk@users.sourceforge.net)
+ #
+ # This program is free software; you can redistribute it and/or
+ # modify it under the terms of the GNU General Public License
+@@ -18,6 +19,12 @@ exec wish8.0 "$0" "$@"
+ # This program requires Tk 8.0 at least.
+ #
+ 
++# *** PID BEGIN ***
++# Removed the custom ps-management wad files from the pwad list,
++# changed so it will run ps-xdoom, and added psDooM-specific
++# command line options.
++# *** PID END ***
++
+ # ========================================================================
+ #			Initialization
+ # ========================================================================
+@@ -47,6 +54,12 @@ set unknown	"undeterminate"
+ # in the PWAD selection listbox
+ set xdoom	"xdoom.wad"
+ 
++# *** PID BEGIN ***
++# Don't show the custom ps-management wad files in the PWAD listbox
++set psdoom1	"psdoom1.wad"
++set psdoom2	"psdoom2.wad"
++# *** PID END ***
++
+ #
+ # the Doom save game filenames
+ #
+@@ -91,7 +104,11 @@ set str_fsize	"fontsize"
+ #
+ # set window title
+ #
+-wm title . "XDoom Launcher"
++# *** PID BEGIN ***
++wm title . "psDooM Launcher"
++# old code:
++#wm title . "XDoom Launcher"
++# *** PID END ***
+ 
+ #
+ # Define our own fonts
+@@ -337,11 +354,32 @@ grid .top.sav.f.s6 -sticky w -pady 2
+ #--
+ grid rowconfigure .top.sav 2 -weight 1
+ 
++
++# *** PID BEGIN ***
++#
++# Frame for additional command line input.
++#
++frame .top.cmdline -borderwidth 2 -relief raised
++label .top.cmdline.l -text "Additional psDooM Command Line Options" -font widgets
++entry .top.cmdline.i -width 100 -relief sunken -textvariable cmdline -font input
++button .top.cmdline.b -text "Show Options" -font widgets -command ShowOptions
++#++
++grid .top.cmdline.l -columnspan 2 -sticky nws
++grid .top.cmdline.i .top.cmdline.b -sticky news -padx 10
++# *** PID EMD ***
++
++
+ #
+ # Frame for XDoom's log output
+ #
+ frame .top.log -borderwidth 2 -relief raised
+-label .top.log.l -text "XDoom log" -font widgets
++
++# *** PID BEGIN ***
++label .top.log.l -text "psDooM log" -font widgets
++# old code:
++#label .top.log.l -text "XDoom log" -font widgets
++# *** PID END ***
++
+ set log [text .top.log.t -width 85 -heigh 5 -borderwidth 2 -relief sunken \
+ 	-yscrollcommand {.top.log.s set} -font input]
+ scrollbar .top.log.s -command {.top.log.t yview} -orient vertical -width 10
+@@ -395,12 +433,22 @@ grid .top.mon -row 1 -column 2 -columnsp
+ grid .top.mp -row 2 -column 0 -columnspan 1 -sticky news
+ grid .top.dem -row 2 -column 1 -columnspan 1 -sticky news
+ grid .top.sav -row 2 -column 2 -columnspan 1 -sticky news
+-grid .top.log -row 3 -columnspan 3 -sticky news
+-grid .top.cntl -row 4 -columnspan 3 -sticky news
++# *** PID BEGIN ***
++grid .top.cmdline -row 3 -columnspan 3 -sticky news
++grid .top.log -row 4 -columnspan 3 -sticky news
++grid .top.cntl -row 5 -columnspan 3 -sticky news
++# old code:
++#grid .top.log -row 3 -columnspan 3 -sticky news
++#grid .top.cntl -row 4 -columnspan 3 -sticky news
++# *** PID END ***
+ #--
+ grid rowconfigure .top.log 1 -weight 1
+ grid columnconfigure .top.log 0 -weight 1
+-grid rowconfigure .top 3 -weight 1
++# *** PID BEGIN ***
++grid rowconfigure .top 4 -weight 1 
++# old code:
++#grid rowconfigure .top 3 -weight 1
++# *** PID END ***
+ grid rowconfigure . 0 -weight 1
+ grid columnconfigure .top 0 -weight 1
+ grid columnconfigure . 0 -weight 1
+@@ -418,12 +466,19 @@ focus .top.wad.p
+ proc GetPwads {} {
+ 	global pwad pwaddir
+ 	global doom2 doomu doom doom1 plutonia tnt doom2f xdoom
++# *** PID BEGIN ***
++	global psdoom1 psdoom2
++# *** PID END ***
+ 
+ 	set pwd [pwd]
+ 	cd $pwaddir
+ 	$pwad delete 0 end
+ 	$pwad insert end "<none>"
+ 	foreach match [lsort [glob -nocomplain "*.wad"]] {
++
++# *** PID BEGIN ***
++# Added psdoom1 and psdoom2 conditions as well.
++# *** PID END ***
+ 	  if {[string compare $match $doom2] != 0 &&
+ 	      [string compare $match $doomu] != 0 &&
+ 	      [string compare $match $doom] != 0 &&
+@@ -431,6 +486,8 @@ proc GetPwads {} {
+ 	      [string compare $match $plutonia] != 0 &&
+ 	      [string compare $match $tnt] != 0 &&
+ 	      [string compare $match $doom2f] != 0 &&
++	      [string compare $match $psdoom1] != 0 &&
++	      [string compare $match $psdoom2] != 0 &&
+ 	      [string compare $match $xdoom] != 0} {
+ 		$pwad insert end $match
+ 	  }
+@@ -550,7 +607,12 @@ proc SaveSettings {} {
+ 	global str_port port str_dup dup str_demosz demosize
+ 	global str_fsize fsize
+ 
+-	set fd [open [file join "~/.xdoom" ".xdlaunchrc"] w 0600]
++# *** PID BEGIN ***
++# Change to using ~/.psdoom not ~/.xdoom
++	set fd [open [file join "~/.psdoom" ".xdlaunchrc"] w 0600]
++# old code:
++#	set fd [open [file join "~/.xdoom" ".xdlaunchrc"] w 0600]
++# *** PID END ***
+ 
+ 	puts $fd [format "%s\t%s" $str_mag $mag]
+ 	puts $fd [format "%s\t%s" $str_tran $translu]
+@@ -646,14 +708,25 @@ proc RestoreSettings {} {
+ 	global str_port port str_dup dup str_demosz demosize
+ 	global str_fsize fsize
+ 
+-	if {![file exists [file join "~/.xdoom" ".xdlaunchrc"]]} {
++# *** PID BEGIN ***
++# Change to using ~/.psdoom not ~/.xdoom
++	if {![file exists [file join "~/.psdoom" ".xdlaunchrc"]]} {
+ 		return
+ 	}
++#	if {![file exists [file join "~/.xdoom" ".xdlaunchrc"]]} {
++#		return
++#	}
++# *** PID END ***
+ 
+ 	set var ""
+ 	set val ""
+ 
+-	set fd [open [file join "~/.xdoom" ".xdlaunchrc"] r]
++# *** PID BEGIN ***
++# Change to using ~/.psdoom not ~/.xdoom
++	set fd [open [file join "~/.psdoom" ".xdlaunchrc"] r]
++# old code:
++#	set fd [open [file join "~/.xdoom" ".xdlaunchrc"] r]
++# *** PID END ***
+ 	while {[gets $fd line] != -1} {
+ 
+ 		scan $line "%s%s" var val
+@@ -809,7 +882,13 @@ RestoreSettings
+ # get the directory with the IWAD file
+ #
+ if [catch {set doomdir $env(DOOMWADDIR)} result] {
+-	set doomdir "/usr/local/games/xdoom"
++
++# *** PID BEGIN ***
++	set doomdir "/usr/local/games/psdoom"
++# old code:
++#	set doomdir "/usr/local/games/xdoom"
++# *** PID END ***
++
+ }
+ 
+ #
+@@ -828,7 +907,11 @@ set demo_selected ""
+ #
+ # look for saved games
+ #
+-set savedir [file join "~" ".xdoom"]
++# *** PID BEGIN ***
++# Change to using ~/.psdoom not ~/.xdoom
++set savedir [file join "~" ".psdoom"]
++#set savedir [file join "~" ".xdoom"]
++# *** PID END ***
+ GetSave
+ 
+ #
+@@ -1002,6 +1085,9 @@ proc Run {} {
+ 	global mp_coop mp_coop2 mp_death mp_death2
+ 	global player host1 host2 host3 port dup
+ 	global epie
++# *** PID BEGIN ***
++        global cmdline
++# *** PID END ***
+ 
+ 	# do we have an IWAD?
+ 	if {[string compare $iwad $unknown] == 0} {
+@@ -1170,6 +1256,12 @@ proc Run {} {
+ 	# we don't want the end text in the log
+ 	append options " -noendtxt"
+ 
++# *** PID BEGIN ***
++# Append additional command line options:
++        append options " "
++        append options $cmdline
++# *** PID END ***
++
+ 	# activate log and clear it
+ 	$log config -state normal
+ 	$log delete 1.0 99.0
+@@ -1178,7 +1270,10 @@ proc Run {} {
+ 	# puts stdout $options
+ 
+ 	# try to run xdoom with the options
+-	if [catch {open "|xdoom $options |& cat" r+} input] {
++# *** PID BEGIN ***
++# Put 'ps-xdoom' rather than 'xdoom' in the line below.
++	if [catch {open "|ps-xdoom $options |& cat" r+} input] {
++# *** PID END ***
+ 		$log insert end $input\n
+ 	} else {
+ 		fileevent $input readable Log
+@@ -1235,8 +1330,11 @@ proc BrowsePwads {} {
+ 	  {"PWAD file" {".wad"}}
+ 	}
+ 
++# *** PID BEGIN ***
++# Changed 'xdlaunch' to 'ps-xdlaunch' in window title.
+ 	set wadfile [tk_getOpenFile -initialdir $pwaddir -filetypes $typelist \
+-	-parent . -title "xdlaunch PWAD selection"]
++	-parent . -title "ps-xdlaunch PWAD selection"]
++# *** PID END ***
+ 
+ 	if {[string length $wadfile] != 0} {
+ 	    set pwaddir [file dirname $wadfile]
+@@ -1307,17 +1405,28 @@ proc About {} {
+ 	wm protocol .about WM_DELETE_WINDOW
+ 	wm resizable .about 0 0
+ 
+-	text .about.txt -width 65 -height 14 -borderwidth 2 -relief sunken \
++# *** PID BEGIN ***
++	text .about.txt -width 68 -height 16 -borderwidth 2 -relief sunken \
+ 		-font mytext
++# old code:
++#	text .about.txt -width 65 -height 14 -borderwidth 2 -relief sunken \
++#		-font mytext
++# *** PID END ***
+ 	button .about.ok -text "OK" -font widgets -command {destroy .about}
+ 	grid .about.txt -sticky news
+ 	grid .about.ok -sticky ns -pady 5
+ 
+ 	.about.txt config -state normal
+ 	.about.txt delete 1.0 end
+-	.about.txt insert end "\t\tXDoom Launcher Release 1.9\n"
+-	.about.txt insert end "\t\t==========================\n\n"
+-	.about.txt insert end "Copyright (C) 1998-2000 by Udo Munk (um@compuserve.com)\n\n"
++# *** PID BEGIN ***
++	.about.txt insert end "\t\tpsDooM Launcher Release 1.9-a\n"
++	.about.txt insert end "\t\t=============================\n\n"
++	.about.txt insert end "Copyright (C) 1998-2000 by Udo Munk (um@compuserve.com)\n"
++	.about.txt insert end "Copyright (C) 2000 by David Koppenhofer (djk@users.sourceforge.net)\n\n"
++#	.about.txt insert end "\t\tXDoom Launcher Release 1.9\n"
++#	.about.txt insert end "\t\t==========================\n\n"
++#	.about.txt insert end "Copyright (C) 1998-2000 by Udo Munk (um@compuserve.com)\n\n"
++# *** PID END ***
+ 	.about.txt insert end "This program is free software; you can redistribute it and/or\n"
+ 	.about.txt insert end "modify it under the terms of the GNU General Public License\n"
+ 	.about.txt insert end "as published by the Free Software Foundation; either version 2\n"
+@@ -1338,6 +1447,82 @@ proc About {} {
+ 	wm deiconify .about
+ }
+ 
++# *** PID BEGIN ***
++# ========================================================================
++#			ShowOptions
++# ========================================================================
++proc ShowOptions {} {
++	toplevel .options
++	wm title .options "Additional psDooM Options"
++	wm transient .options .
++	wm withdraw .options
++	wm protocol .options WM_DELETE_WINDOW
++	wm resizable .options 0 0
++
++	set opts [text .options.txt -width 75 -heigh 25 -borderwidth 2 -relief sunken \
++		-yscrollcommand {.options.s set} -font input]
++	scrollbar .options.s -command {.options.txt yview} -orient vertical -width 10
++	button .options.ok -text "OK" -font widgets -command {destroy .options}
++	grid .options.txt .options.s -sticky news
++	grid .options.ok -sticky ns -pady 5
++
++	.options.txt config -state normal
++	.options.txt delete 1.0 end
++
++	.options.txt insert end "\t\t\tAdditional psDooM Options\n"
++	.options.txt insert end "\t\t\t=========================\n\n"
++	.options.txt insert end " -nopssafety\n"
++	.options.txt insert end "   Causes the 'pid monsters' to not be protected against damage from each\n"
++	.options.txt insert end "   other, normal Doom monsters, and the environment.  Normally, only the \n"
++	.options.txt insert end "   player may inflict damage on 'pid monsters'.\n\n"
++	.options.txt insert end " -psallusers\n"
++	.options.txt insert end "   Effectively adds every username to the list of users whose processes   \n"
++	.options.txt insert end "   to show.\n\n"
++	.options.txt insert end " -psuser \[username \[username\]...\]\n"
++	.options.txt insert end "   Adds username(s) to the list of users whose processes to show.  If no\n"
++	.options.txt insert end "   username is specified, the current username (as determined by the   \n"
++	.options.txt insert end "   environment variables listed above) is added to this list.\n\n"
++	.options.txt insert end " -psnotuser \[username \[username\]...\]\n"
++	.options.txt insert end "   Adds username(s) to the list of users whose processes NOT to show.  If \n"
++	.options.txt insert end "   no username is specified, the current username (as determined by the\n"
++	.options.txt insert end "   environment variables listed above) is added to this list.\n\n"
++	.options.txt insert end " -nopslev\n"
++	.options.txt insert end "   Suppresses the automatic loading of the custom level psdoom*.wad and\n"
++	.options.txt insert end "   makes psDooM assume pid monster coordinates for the stock E1M1 or\n"
++	.options.txt insert end "   MAP01.  It has no effect if you don't have the custom level or if\n"
++	.options.txt insert end "   you're using shareware Doom 1.\n\n"
++	.options.txt insert end " -nopsmon\n"
++	.options.txt insert end "   Disables process monitoring entirely.  Nice if you want to play an E1M1\n"
++	.options.txt insert end "   or MAP01 level that isn't set up for process monitoring.\n\n"
++	.options.txt insert end " -nopsact\n"
++	.options.txt insert end "   Disables the system calls to 'renice' and 'kill' when 'pid monsters' \n"
++	.options.txt insert end "   are wounded and killed.  This is good if you only want to monitor\n"
++	.options.txt insert end "   processes, not manage them.\n\n"
++	.options.txt insert end " -nomonsters.\n"
++	.options.txt insert end "   Yes, there is a period at the end of this command.  It does the same\n"
++	.options.txt insert end "   thing as the '-nomonsters' flag, but is persistant across new games and\n"
++	.options.txt insert end "   level warps.\n"
++	.options.txt insert end "   NOTE: 'pid monsters' are NOT affected by the '-nomonsters' and\n"
++	.options.txt insert end "         '-nomonsters.' flags; use -nopsmon to turn them off instead. \n\n"
++	.options.txt insert end " -respawnitems\n"
++	.options.txt insert end "   Like you think it may work, this flag causes items to respawn as they\n"
++	.options.txt insert end "   do in '-altdeath' games (Invun, Invis, and dropped items don't\n"
++	.options.txt insert end "   respawn; everything else does).  This flag has no effect when recording\n"
++	.options.txt insert end "   or playing a demo because it messes up timing."
++ 
++	.options.txt config -state disabled
++
++	update idletasks
++	set x [expr [winfo screenwidth .options]/2 - [winfo reqwidth .options]/2 \
++		- [winfo vrootx [winfo parent .options]]]
++	set y [expr [winfo screenheight .options]/2 - [winfo reqheight .options]/2 \
++		- [winfo vrooty [winfo parent .options]]]
++	wm geom .options +$x+$y
++	wm minsize .options [winfo width .options] [winfo height .options]
++	wm deiconify .options
++}
++# *** PID END ***
++
+ # ========================================================================
+ #			Program exit
+ # ========================================================================
+diff -pruN psdoom-src.orig/xdoomsrc/contrib/glxdoom.sh psdoom-src.patched/xdoomsrc/contrib/glxdoom.sh
+--- psdoom-src.orig/xdoomsrc/contrib/glxdoom.sh	2000-04-04 20:15:45.000000000 -0700
++++ psdoom-src.patched/xdoomsrc/contrib/glxdoom.sh	2010-07-19 22:12:21.257136730 -0700
+@@ -17,7 +17,8 @@ PATH=${LDIR}:${PATH}
+ export DOOMWADDIR PATH
+ 
+ # *** PID BEGIN ***
+-exec ${LDIR}/ps-glxdoom $*
++cd ${LDIR}
++exec ./ps-glxdoom $*
+ # old code:
+ #exec ${LDIR}/glxdoom $*
+ # *** PID END ***
+diff -pruN psdoom-src.orig/xdoomsrc/contrib/sxdoom.sh psdoom-src.patched/xdoomsrc/contrib/sxdoom.sh
+--- psdoom-src.orig/xdoomsrc/contrib/sxdoom.sh	2000-04-04 20:15:42.000000000 -0700
++++ psdoom-src.patched/xdoomsrc/contrib/sxdoom.sh	2010-07-19 22:12:21.261144851 -0700
+@@ -17,7 +17,8 @@ PATH=${LDIR}:${PATH}
+ export DOOMWADDIR PATH
+ 
+ # *** PID BEGIN ***
+-exec ${LDIR}/ps-sxdoom $*
++cd ${LDIR}
++exec ./ps-sxdoom $*
+ # old code:
+ #exec ${LDIR}/sxdoom $*
+ # *** PID END ***
+diff -pruN psdoom-src.orig/xdoomsrc/contrib/xdoom.sh psdoom-src.patched/xdoomsrc/contrib/xdoom.sh
+--- psdoom-src.orig/xdoomsrc/contrib/xdoom.sh	2000-04-04 20:15:38.000000000 -0700
++++ psdoom-src.patched/xdoomsrc/contrib/xdoom.sh	2010-07-19 22:12:21.265144871 -0700
+@@ -17,7 +17,8 @@ PATH=${LDIR}:${PATH}
+ export DOOMWADDIR PATH
+ 
+ # *** PID BEGIN ***
+-exec ${LDIR}/ps-xdoom $*
++cd ${LDIR}
++exec ./ps-xdoom $*
+ # old code:
+ #exec ${LDIR}/xdoom $*
+ # *** PID END ***
+diff -pruN psdoom-src.orig/xdoomsrc/GNUmakefile psdoom-src.patched/xdoomsrc/GNUmakefile
+--- psdoom-src.orig/xdoomsrc/GNUmakefile	2000-04-02 12:43:06.000000000 -0700
++++ psdoom-src.patched/xdoomsrc/GNUmakefile	2010-07-19 22:12:21.257136730 -0700
+@@ -15,6 +15,7 @@
+ # *** PID BEGIN ***
+ # Modified install portion of makefile to install ps-*doom files.
+ # Didn't explicitly denote where this happens in the file.
++# Also install ps-xdlaunch.
+ # *** PID END ***
+ #
+ DESTDIR=/usr
+@@ -172,7 +173,7 @@ install-uw7:
+ 	cp sndserv/unixware7/sndserver $(DLIB)
+ 	cp xdoom/unixware7/ps-xdoom $(DLIB)
+ 	cp xdoom/unixware7/ps-sxdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/xdoom.sh $(DBIN)/ps-xdoom
+ 	cp contrib/sxdoom.sh $(DBIN)/ps-sxdoom
+ 	chmod 755 $(DLIB)/musserver.bin
+@@ -180,7 +181,7 @@ install-uw7:
+ 	chmod 755 $(DLIB)/sndserver
+ 	chmod 755 $(DLIB)/ps-xdoom
+ 	chmod 755 $(DLIB)/ps-sxdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-xdoom
+ 	chmod 755 $(DBIN)/ps-sxdoom
+ 	cp doc/xdoom.6 $(DMAN)/man6
+@@ -200,7 +201,7 @@ install-uw2:
+ 	cp sndserv/unixware2/sndserver $(DLIB)
+ 	cp xdoom/unixware2/ps-xdoom $(DLIB)
+ 	cp xdoom/unixware2/ps-sxdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/xdoom.sh $(DBIN)/ps-xdoom
+ 	cp contrib/sxdoom.sh $(DBIN)/ps-sxdoom
+ 	chmod 755 $(DLIB)/musserver.bin
+@@ -208,7 +209,7 @@ install-uw2:
+ 	chmod 755 $(DLIB)/sndserver
+ 	chmod 755 $(DLIB)/ps-xdoom
+ 	chmod 755 $(DLIB)/ps-sxdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-xdoom
+ 	chmod 755 $(DBIN)/ps-sxdoom
+ 	cp doc/xdoom.6 $(DMAN)/man6
+@@ -228,7 +229,7 @@ install-os5:
+ 	cp sndserv/openserver5/sndserver $(DLIB)
+ 	cp xdoom/openserver5/ps-xdoom $(DLIB)
+ 	cp xdoom/openserver5/ps-sxdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/xdoom.sh $(DBIN)/ps-xdoom
+ 	cp contrib/sxdoom.sh $(DBIN)/ps-sxdoom
+ 	chmod 755 $(DLIB)/musserver.bin
+@@ -236,7 +237,7 @@ install-os5:
+ 	chmod 755 $(DLIB)/sndserver
+ 	chmod 755 $(DLIB)/ps-xdoom
+ 	chmod 755 $(DLIB)/ps-sxdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-xdoom
+ 	chmod 755 $(DBIN)/ps-sxdoom
+ 	cp doc/xdoom.6 $(DMAN)/man.6
+@@ -255,13 +256,13 @@ install-linux-x86:
+ 	cp musserv/musserver.sh $(DLIB)/musserver
+ 	cp sndserv/linux/sndserver $(DLIB)
+ 	cp xdoom/linux-x86/ps-xdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/xdoom.sh $(DBIN)/ps-xdoom
+ 	chmod 755 $(DLIB)/musserver.bin
+ 	chmod 755 $(DLIB)/musserver
+ 	chmod 755 $(DLIB)/sndserver
+ 	chmod 755 $(DLIB)/ps-xdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-xdoom
+ 	cp doc/xdoom.6 $(DMAN)/man6
+ 	cp data/xdoom.wad $(DLIB)
+@@ -279,13 +280,13 @@ install-linux-x86-svga:
+ 	cp musserv/musserver.sh $(DLIB)/musserver
+ 	cp sndserv/linux/sndserver $(DLIB)
+ 	cp xdoom/linux-x86/ps-sxdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/sxdoom.sh $(DBIN)/ps-sxdoom
+ 	chmod 755 $(DLIB)/musserver.bin
+ 	chmod 755 $(DLIB)/musserver
+ 	chmod 755 $(DLIB)/sndserver
+ 	chmod 755 $(DLIB)/ps-sxdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-sxdoom
+ 	cp doc/xdoom.6 $(DMAN)/man6
+ 	cp data/xdoom.wad $(DLIB)
+@@ -303,13 +304,13 @@ install-linux-x86-3dfx:
+ 	cp musserv/musserver.sh $(DLIB)/musserver
+ 	cp sndserv/linux/sndserver $(DLIB)
+ 	cp xdoom/linux-x86/ps-glxdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/glxdoom.sh $(DBIN)/ps-glxdoom
+ 	chmod 755 $(DLIB)/musserver.bin
+ 	chmod 755 $(DLIB)/musserver
+ 	chmod 755 $(DLIB)/sndserver
+ 	chmod 755 $(DLIB)/ps-glxdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-glxdoom
+ 	cp doc/xdoom.6 $(DMAN)/man6
+ 	cp data/xdoom.wad $(DLIB)
+@@ -324,10 +325,10 @@ install-linux-alpha:
+ 	-mkdir -p $(LLIB)/acc/xdoom
+ 	-mkdir -p $(DMAN)
+ 	cp xdoom/linux-alpha/ps-xdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/xdoom.sh $(DBIN)/ps-xdoom
+ 	chmod 755 $(DLIB)/ps-xdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-xdoom
+ 	cp doc/xdoom.6 $(DMAN)/man6
+ 	cp data/xdoom.wad $(DLIB)
+@@ -345,7 +346,7 @@ install-freebsd: freebsd
+ 	${INSTALL} -C -s -m 755 musserv/musserver.sh $(DLIB)/musserver
+ 	${INSTALL} -C -s -m 755 sndserv/freebsd/sndserver $(DLIB)/sndserver
+ 	${INSTALL} -C -s -m 755 xdoom/freebsd/ps-xdoom $(DLIB)/ps-xdoom
+-	${INSTALL} -C -m 755 ../xdlaunch/xdlaunch $(DBIN)/xdlaunch
++	${INSTALL} -C -m 755 ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	${INSTALL} -C -m 755 contrib/xdoom.sh $(DBIN)/ps-xdoom
+ 	${INSTALL} -C -m 644 doc/xdoom.6 $(DMAN)/man6/xdoom.6
+ 	${INSTALL} -C -m 644 data/xdoom.wad $(DLIB)/xdoom.wad
+@@ -362,7 +363,7 @@ install-freebsd-svga: freebsd
+ 	${INSTALL} -C -s -m 755 musserv/musserver.sh $(DLIB)/musserver
+ 	${INSTALL} -C -s -m 755 sndserv/freebsd/sndserver $(DLIB)/sndserver
+ 	${INSTALL} -C -s -m 755 xdoom/freebsd/ps-sxdoom $(DLIB)/ps-sxdoom
+-	${INSTALL} -C -m 755 ../xdlaunch/xdlaunch $(DBIN)/xdlaunch
++	${INSTALL} -C -m 755 ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	${INSTALL} -C -m 755 contrib/sxdoom.sh $(DBIN)/ps-sxdoom
+ 	${INSTALL} -C -m 644 doc/xdoom.6 $(DMAN)/man6/xdoom.6
+ 	${INSTALL} -C -m 644 data/xdoom.wad $(DLIB)/xdoom.wad
+@@ -376,10 +377,10 @@ install-solsparc:
+ 	-mkdir -p $(LLIB)/acc/xdoom
+ 	-mkdir -p $(DMAN)
+ 	cp xdoom/solarissparc/ps-xdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/xdoom.sh $(DBIN)/ps-xdoom
+ 	chmod 755 $(DLIB)/ps-xdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-xdoom
+ 	cp doc/xdoom.6 $(DMAN)/man6
+ 	cp data/xdoom.wad $(DLIB)
+@@ -394,10 +395,10 @@ install-aix:
+ 	-mkdir -p $(LLIB)/acc/xdoom
+ 	-mkdir -p $(DMAN)
+ 	cp xdoom/aix/ps-xdoom $(DLIB)
+-	cp ../xdlaunch/xdlaunch $(DBIN)
++	cp ../xdlaunch/xdlaunch $(DBIN)/ps-xdlaunch
+ 	cp contrib/xdoom.sh $(DBIN)/ps-xdoom
+ 	chmod 755 $(DLIB)/ps-xdoom
+-	chmod 755 $(DBIN)/xdlaunch
++	chmod 755 $(DBIN)/ps-xdlaunch
+ 	chmod 755 $(DBIN)/ps-xdoom
+ 	cp doc/xdoom.6 $(DMAN)/man6
+ 	cp data/xdoom.wad $(DLIB)
+diff -pruN psdoom-src.orig/xdoomsrc/xdoom/d_main.c psdoom-src.patched/xdoomsrc/xdoom/d_main.c
+--- psdoom-src.orig/xdoomsrc/xdoom/d_main.c	2000-04-09 19:28:23.000000000 -0700
++++ psdoom-src.patched/xdoomsrc/xdoom/d_main.c	2010-07-19 22:12:21.281144670 -0700
+@@ -638,7 +638,14 @@ void IdentifyVersion(void)
+     home = getenv("HOME");
+     if (!home)
+       I_Error("Please set $HOME to your home directory");
+-    sprintf(basedefault, "%s/.xdoom/.doomrc", home);
++
++// *** PID BEGIN ***
++// Make a ~/.psdoom directory for savegames, configs, etc.
++    sprintf(basedefault, "%s/.psdoom/.doomrc", home);
++// old code:
++//    sprintf(basedefault, "%s/.xdoom/.doomrc", home);
++// *** PID END ***
++
+ #endif
+ 
+     if (M_CheckParm("-shdev"))
+@@ -1129,9 +1136,19 @@ void D_DoomMain(void)
+     }
+ 
+     printf("%s\n",title);
++
++// *** PID BEGIN ***
++    printf("                         psDooM version - %s\n", PSVERSION);
++    printf("                                  based on:\n");
++// *** PID END ***
++
+     printf("                             XDoom build %i\n\n", BUILD);
+ 
+-    printf("\tXDoom is released under the GNU General Public License 2.0.\n");
++// *** PID BEGIN ***
++    printf("\tpsDooM is released under the GNU General Public License 2.0.\n");
++// old code:
++//    printf("\tXDoom is released under the GNU General Public License 2.0.\n");
++// *** PID END ***
+     printf("\tYou are welcome to redistribute it under certain conditions.\n");
+     printf("\tIt comes with ABSOLUTELY NO WARRANTY. See file COPYING for"
+            " details.\n\n");
+@@ -1430,8 +1447,16 @@ void D_DoomMain(void)
+     p = M_CheckParm("-loadgame");
+     if (p && p < myargc - 1)
+     {
+-	sprintf(file, "%s/.xdoom/"SAVEGAMENAME"%c.dsg", home,
++
++// *** PID BEGIN ***
++// Make a ~/.psdoom directory for savegames, configs, etc.
++	sprintf(file, "%s/.psdoom/"SAVEGAMENAME"%c.dsg", home,
+ 		    myargv[p + 1][0]);
++// old code:
++//	sprintf(file, "%s/.xdoom/"SAVEGAMENAME"%c.dsg", home,
++//		    myargv[p + 1][0]);
++// *** PID END ***
++
+ 	G_LoadGame(file);
+     }
+ 
+diff -pruN psdoom-src.orig/xdoomsrc/xdoom/g_game.c psdoom-src.patched/xdoomsrc/xdoom/g_game.c
+--- psdoom-src.orig/xdoomsrc/xdoom/g_game.c	2000-04-09 19:39:32.000000000 -0700
++++ psdoom-src.patched/xdoomsrc/xdoom/g_game.c	2010-07-19 22:12:21.281144670 -0700
+@@ -1309,7 +1309,11 @@ void G_DoSaveGame(void)
+     int		i;
+     extern char	*home;
+ 
+-    sprintf(name, "%s/.xdoom/"SAVEGAMENAME"%d.dsg", home, savegameslot);
++// *** PID BEGIN ***
++    sprintf(name, "%s/.psdoom/"SAVEGAMENAME"%d.dsg", home, savegameslot);
++// old code:
++//    sprintf(name, "%s/.xdoom/"SAVEGAMENAME"%d.dsg", home, savegameslot);
++// *** PID END ***
+     description = savedescription;
+ 
+     save_p = savebuffer = screens[1] + 0x4000;
+diff -pruN psdoom-src.orig/xdoomsrc/xdoom/i_video_xshm.c psdoom-src.patched/xdoomsrc/xdoom/i_video_xshm.c
+--- psdoom-src.orig/xdoomsrc/xdoom/i_video_xshm.c	2000-03-13 22:08:07.000000000 -0800
++++ psdoom-src.patched/xdoomsrc/xdoom/i_video_xshm.c	2010-07-19 22:12:21.281144670 -0700
+@@ -8,6 +8,7 @@
+ // Copyright (C) 1997-2000 by Udo Munk
+ // Copyright (C) 1999 by Achim Oppelt
+ // Copyright (C) 1999 by Oliver Kraus
++// Copyright (C) 2000 by David Koppenhofer
+ //
+ // This program is free software; you can redistribute it and/or
+ // modify it under the terms of the GNU General Public License
+@@ -1172,7 +1173,12 @@ static void grabsharedmemory(int size)
+ void I_InitGraphics(void)
+ {
+     char		*displayname;
+-    char		*window_name = "XDoom";
++// *** PID BEGIN ***
++// Change window title for psDooM:
++    char		*window_name = "psDooM";
++// old code:
++//    char		*window_name = "XDoom";
++// *** PID END ***
+     char		*icon_name = window_name;
+     char		*d;
+     int			n;
+@@ -1481,8 +1487,14 @@ void I_InitGraphics(void)
+     X_wm.flags = StateHint | InputHint | IconPixmapHint;
+ 
+     // resource class, in case we get a resource configuration file sometime
+-    X_class.res_name = "xdoom";
+-    X_class.res_class = "Xdoom";
++// *** PID BEGIN ***
++// Change to psdoom values:
++    X_class.res_name = "psdoom";
++    X_class.res_class = "Psdoom";
++// old code:
++//    X_class.res_name = "xdoom";
++//    X_class.res_class = "Xdoom";
++// *** PID END ***
+ 
+     // set the properties
+     XSetWMProperties(X_display, X_mainWindow, &windowName, &iconName,
+diff -pruN psdoom-src.orig/xdoomsrc/xdoom/m_menu.c psdoom-src.patched/xdoomsrc/xdoom/m_menu.c
+--- psdoom-src.orig/xdoomsrc/xdoom/m_menu.c	2000-03-13 22:08:08.000000000 -0800
++++ psdoom-src.patched/xdoomsrc/xdoom/m_menu.c	2010-07-19 22:12:21.285163756 -0700
+@@ -6,6 +6,7 @@
+ //
+ // Copyright (C) 1993-1996 by id Software, Inc.
+ // Copyright (C) 1997-2000 by Udo Munk
++// Copyright (C) 2000 by David Koppenhofer
+ //
+ // This program is free software; you can redistribute it and/or
+ // modify it under the terms of the GNU General Public License
+@@ -533,7 +534,11 @@ void M_ReadSaveStrings(void)
+ 
+     for (i = 0; i < load_end; i++)
+     {
+-	sprintf(name, "%s/.xdoom/"SAVEGAMENAME"%d.dsg", home, i);
++// *** PID BEGIN ***
++	sprintf(name, "%s/.psdoom/"SAVEGAMENAME"%d.dsg", home, i);
++// old code:
++//	sprintf(name, "%s/.xdoom/"SAVEGAMENAME"%d.dsg", home, i);
++// *** PID END ***
+ 
+ 	handle = open(name, O_RDONLY | 0, 0666);
+ 	if (handle == -1)
+@@ -589,7 +594,12 @@ void M_LoadSelect(int choice)
+     char	name[256];
+     extern char	*home;
+ 
+-    sprintf(name, "%s/.xdoom/"SAVEGAMENAME"%d.dsg", home, choice);
++// *** PID BEGIN ***
++    sprintf(name, "%s/.psdoom/"SAVEGAMENAME"%d.dsg", home, choice);
++// old code:
++//    sprintf(name, "%s/.xdoom/"SAVEGAMENAME"%d.dsg", home, choice);
++// *** PID END ***
++
+     G_LoadGame(name);
+     M_ClearMenus();
+ }
+diff -pruN psdoom-src.orig/xdoomsrc/xdoom/pr_process.h psdoom-src.patched/xdoomsrc/xdoom/pr_process.h
+--- psdoom-src.orig/xdoomsrc/xdoom/pr_process.h	2000-04-09 19:34:19.000000000 -0700
++++ psdoom-src.patched/xdoomsrc/xdoom/pr_process.h	2010-07-19 22:12:21.285163756 -0700
+@@ -7,6 +7,9 @@
+ #define IS_NOT_PID_MOBJ		0
+ #define IS_PID_MOBJ		1
+ 
++// Define the version to print in startup banner.
++#define PSVERSION		"2000.05.03.b"
++
+ // All flags below are generally set up in d_main.c, D_DoomMain().
+ 
+ // Need to have a flag to tell if we loaded the special process
