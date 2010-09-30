@@ -6,7 +6,7 @@ Standards-Version: 3.6.2
 
 Package: fake-doom-engine
 Version: 22Sep2009
-Maintainer: Brian Manning <elspicyjack@gmail.com>
+Maintainer: Brian Manning <brian@portaboom.com>
 # Pre-Depends: <comma-separated list of packages>
 # Depends: <comma-separated list of packages>
 # Recommends: <comma-separated list of packages>
