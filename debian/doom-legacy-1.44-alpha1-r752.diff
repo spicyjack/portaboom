@@ -1,105 +1,5 @@
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/changelog doomlegacy-1.44-alpha1-r752-patched/debian/changelog
---- doomlegacy-1.44-alpha1-r752/debian/changelog	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/changelog	2010-09-29 17:57:52.000000000 -0700
-@@ -0,0 +1,5 @@
-+doom-legacy (1.44-alpha1-r752-1) unstable; urgency=low
-+
-+  * Initial packaging
-+
-+ -- Brian Manning <brian@portaboom.com>  Wed, 29 Sep 2010 17:56:20 -0700
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/compat doomlegacy-1.44-alpha1-r752-patched/debian/compat
---- doomlegacy-1.44-alpha1-r752/debian/compat	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/compat	2010-09-29 17:56:31.000000000 -0700
-@@ -0,0 +1 @@
-+7
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/control doomlegacy-1.44-alpha1-r752-patched/debian/control
---- doomlegacy-1.44-alpha1-r752/debian/control	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/control	2010-09-29 18:01:52.000000000 -0700
-@@ -0,0 +1,14 @@
-+Source: doom-legacy
-+Section: games
-+Priority: optional
-+Maintainer: Brian Manning <brian@portaboom.com>
-+Build-Depends: debhelper (>= 7)
-+Standards-Version: 3.8.1
-+Homepage: http://legacywiki.net/index.php/Main_Page
-+
-+Package: doom-legacy
-+Architecture: any
-+Depends: ${shlibs:Depends}, ${misc:Depends}
-+Description: Doom Legacy is a source port of Doom.
-+ Legacy was originally written as a fork of DOSDoom introducing mouse-look,
-+ jumping, a console, 32 player deathmatch, skins and a native win32 mode. 
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/copyright doomlegacy-1.44-alpha1-r752-patched/debian/copyright
---- doomlegacy-1.44-alpha1-r752/debian/copyright	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/copyright	2010-09-29 18:15:14.000000000 -0700
-@@ -0,0 +1,52 @@
-+This package was debianized by:
-+
-+    Brian Manning <brian@portaboom.com> on Wed, 29 Sep 2010 17:56:20 -0700
-+
-+It was downloaded from:
-+
-+    <url://example.com>
-+
-+Upstream Author(s):
-+
-+    <put author's name and email here>
-+    <likewise for another author>
-+
-+Copyright:
-+
-+    <Copyright (C) YYYY Firtname Lastname>
-+    <likewise for another author>
-+
-+License:
-+
-+### SELECT: ###
-+    This package is free software; you can redistribute it and/or modify
-+    it under the terms of the GNU General Public License as published by
-+    the Free Software Foundation; either version 2 of the License, or
-+    (at your option) any later version.
-+### OR ###
-+   This package is free software; you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License version 2 as
-+   published by the Free Software Foundation.
-+##########
-+
-+    This package is distributed in the hope that it will be useful,
-+    but WITHOUT ANY WARRANTY; without even the implied warranty of
-+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+    GNU General Public License for more details.
-+
-+    You should have received a copy of the GNU General Public License
-+    along with this package; if not, write to the Free Software
-+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-+
-+On Debian systems, the complete text of the GNU General
-+Public License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
-+
-+The Debian packaging is:
-+
-+    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
-+
-+and is licensed under the GPL version 3, 
-+see `/usr/share/common-licenses/GPL-3'.
-+
-+# Please also look if there are files or directories which have a
-+# different copyright/license attached and list them here.
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/dirs doomlegacy-1.44-alpha1-r752-patched/debian/dirs
---- doomlegacy-1.44-alpha1-r752/debian/dirs	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/dirs	2010-09-29 18:32:39.000000000 -0700
-@@ -0,0 +1 @@
-+usr/games
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/docs doomlegacy-1.44-alpha1-r752-patched/debian/docs
---- doomlegacy-1.44-alpha1-r752/debian/docs	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/docs	2010-09-29 17:56:31.000000000 -0700
-@@ -0,0 +1,2 @@
-+ChangeLog.txt
-+files.txt
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/doom-legacy.doc-base.EX doomlegacy-1.44-alpha1-r752-patched/debian/doom-legacy.doc-base.EX
---- doomlegacy-1.44-alpha1-r752/debian/doom-legacy.doc-base.EX	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/doom-legacy.doc-base.EX	2010-09-29 17:56:31.000000000 -0700
+--- doom-legacy-1.44-alpha1-r752.orig/debian/doom-legacy.doc-base.EX
++++ doom-legacy-1.44-alpha1-r752/debian/doom-legacy.doc-base.EX
 @@ -0,0 +1,20 @@
 +Document: doom-legacy
 +Title: Debian doom-legacy Manual
@@ -121,15 +21,21 @@ diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/doom-legacy.doc-base.EX doom
 +Format: HTML
 +Index: /usr/share/doc/doom-legacy/html/index.html
 +Files: /usr/share/doc/doom-legacy/html/*.html
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/files doomlegacy-1.44-alpha1-r752-patched/debian/files
---- doomlegacy-1.44-alpha1-r752/debian/files	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/files	2010-09-29 18:33:17.000000000 -0700
+--- doom-legacy-1.44-alpha1-r752.orig/debian/docs
++++ doom-legacy-1.44-alpha1-r752/debian/docs
 @@ -0,0 +1,2 @@
-+doom-legacy_1.44-alpha1-r752-1_amd64.deb games optional
-+doom-legacy_1.44-alpha1-r752-1_amd64.deb games optional
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/manpage.1.ex doomlegacy-1.44-alpha1-r752-patched/debian/manpage.1.ex
---- doomlegacy-1.44-alpha1-r752/debian/manpage.1.ex	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/manpage.1.ex	2010-09-29 18:15:33.000000000 -0700
++ChangeLog.txt
++files.txt
+--- doom-legacy-1.44-alpha1-r752.orig/debian/dirs
++++ doom-legacy-1.44-alpha1-r752/debian/dirs
+@@ -0,0 +1 @@
++usr/games
+--- doom-legacy-1.44-alpha1-r752.orig/debian/compat
++++ doom-legacy-1.44-alpha1-r752/debian/compat
+@@ -0,0 +1 @@
++7
+--- doom-legacy-1.44-alpha1-r752.orig/debian/manpage.1.ex
++++ doom-legacy-1.44-alpha1-r752/debian/manpage.1.ex
 @@ -0,0 +1,59 @@
 +.\"                                      Hey, EMACS: -*- nroff -*-
 +.\" First parameter, NAME, should be all caps
@@ -190,16 +96,112 @@ diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/manpage.1.ex doomlegacy-1.44
 +.PP
 +This manual page was written by Brian Manning <brian@portaboom.com>,
 +for the Debian project (and may be used by others).
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/menu doomlegacy-1.44-alpha1-r752-patched/debian/menu
---- doomlegacy-1.44-alpha1-r752/debian/menu	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/menu	2010-09-29 18:02:36.000000000 -0700
+--- doom-legacy-1.44-alpha1-r752.orig/debian/copyright
++++ doom-legacy-1.44-alpha1-r752/debian/copyright
+@@ -0,0 +1,52 @@
++This package was debianized by:
++
++    Brian Manning <brian@portaboom.com> on Wed, 29 Sep 2010 17:56:20 -0700
++
++It was downloaded from:
++
++    <url://example.com>
++
++Upstream Author(s):
++
++    <put author's name and email here>
++    <likewise for another author>
++
++Copyright:
++
++    <Copyright (C) YYYY Firtname Lastname>
++    <likewise for another author>
++
++License:
++
++### SELECT: ###
++    This package is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++### OR ###
++   This package is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License version 2 as
++   published by the Free Software Foundation.
++##########
++
++    This package is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this package; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
++
++On Debian systems, the complete text of the GNU General
++Public License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
++
++The Debian packaging is:
++
++    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
++
++and is licensed under the GPL version 3, 
++see `/usr/share/common-licenses/GPL-3'.
++
++# Please also look if there are files or directories which have a
++# different copyright/license attached and list them here.
+--- doom-legacy-1.44-alpha1-r752.orig/debian/menu
++++ doom-legacy-1.44-alpha1-r752/debian/menu
 @@ -0,0 +1,2 @@
 +?package(doom-legacy):needs="X11" section="Applications/Games"\
 +  title="doom-legacy" command="/usr/bin/doom-legacy"
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/rules doomlegacy-1.44-alpha1-r752-patched/debian/rules
---- doomlegacy-1.44-alpha1-r752/debian/rules	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/rules	2010-09-29 18:32:27.000000000 -0700
-@@ -0,0 +1,86 @@
+--- doom-legacy-1.44-alpha1-r752.orig/debian/watch
++++ doom-legacy-1.44-alpha1-r752/debian/watch
+@@ -0,0 +1,23 @@
++# Example watch control file for uscan
++# Rename this file to "watch" and then you can run the "uscan" command
++# to check for upstream updates and more.
++# See uscan(1) for format
++
++# Compulsory line, this is a version 3 file
++version=3
++
++# Uncomment to examine a Webpage
++# <Webpage URL> <string match>
++#http://www.example.com/downloads.php doom-legacy-(.*)\.tar\.gz
++
++# Uncomment to examine a Webserver directory
++#http://www.example.com/pub/doom-legacy-(.*)\.tar\.gz
++
++# Uncommment to examine a FTP server
++#ftp://ftp.example.com/pub/doom-legacy-(.*)\.tar\.gz debian uupdate
++
++# Uncomment to find new files on sourceforge, for devscripts >= 2.9
++# http://sf.net/doom-legacy/doom-legacy-(.*)\.tar\.gz
++
++# Uncomment to find new files on GooglePages
++# http://example.googlepages.com/foo.html doom-legacy-(.*)\.tar\.gz
+--- doom-legacy-1.44-alpha1-r752.orig/debian/control
++++ doom-legacy-1.44-alpha1-r752/debian/control
+@@ -0,0 +1,14 @@
++Source: doom-legacy
++Section: games
++Priority: optional
++Maintainer: Brian Manning <brian@portaboom.com>
++Build-Depends: debhelper (>= 7)
++Standards-Version: 3.8.1
++Homepage: http://legacywiki.net/index.php/Main_Page
++
++Package: doom-legacy
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}
++Description: Doom Legacy is a source port of Doom.
++ Legacy was originally written as a fork of DOSDoom introducing mouse-look,
++ jumping, a console, 32 player deathmatch, skins and a native win32 mode. 
+--- doom-legacy-1.44-alpha1-r752.orig/debian/rules
++++ doom-legacy-1.44-alpha1-r752/debian/rules
+@@ -0,0 +1,88 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
 +# Sample debian/rules that uses debhelper.
@@ -234,7 +236,9 @@ diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/rules doomlegacy-1.44-alpha1
 +	dh_testdir
 +	dh_testroot
 +	rm -f build-stamp configure-stamp
++	rm -f debian/files
 +	rm -rf ../objs ../bin
++	rm -rf debian/doom-legacy
 +	# Add here commands to clean up after the build process.
 +	#$(MAKE) clean
 +
@@ -286,30 +290,3 @@ diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/rules doomlegacy-1.44-alpha1
 +
 +binary: binary-indep binary-arch
 +.PHONY: build clean binary-indep binary-arch binary install configure
-diff -N -p -r -u doomlegacy-1.44-alpha1-r752/debian/watch doomlegacy-1.44-alpha1-r752-patched/debian/watch
---- doomlegacy-1.44-alpha1-r752/debian/watch	1969-12-31 16:00:00.000000000 -0800
-+++ doomlegacy-1.44-alpha1-r752-patched/debian/watch	2010-09-29 17:56:31.000000000 -0700
-@@ -0,0 +1,23 @@
-+# Example watch control file for uscan
-+# Rename this file to "watch" and then you can run the "uscan" command
-+# to check for upstream updates and more.
-+# See uscan(1) for format
-+
-+# Compulsory line, this is a version 3 file
-+version=3
-+
-+# Uncomment to examine a Webpage
-+# <Webpage URL> <string match>
-+#http://www.example.com/downloads.php doom-legacy-(.*)\.tar\.gz
-+
-+# Uncomment to examine a Webserver directory
-+#http://www.example.com/pub/doom-legacy-(.*)\.tar\.gz
-+
-+# Uncommment to examine a FTP server
-+#ftp://ftp.example.com/pub/doom-legacy-(.*)\.tar\.gz debian uupdate
-+
-+# Uncomment to find new files on sourceforge, for devscripts >= 2.9
-+# http://sf.net/doom-legacy/doom-legacy-(.*)\.tar\.gz
-+
-+# Uncomment to find new files on GooglePages
-+# http://example.googlepages.com/foo.html doom-legacy-(.*)\.tar\.gz
