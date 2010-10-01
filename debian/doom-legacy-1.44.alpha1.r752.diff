@@ -1,5 +1,5 @@
---- doom-legacy-1.44-alpha1-r752.orig/debian/doom-legacy.doc-base.EX
-+++ doom-legacy-1.44-alpha1-r752/debian/doom-legacy.doc-base.EX
+--- doom-legacy-1.44.alpha1.r752.orig/debian/doom-legacy.doc-base.EX
++++ doom-legacy-1.44.alpha1.r752/debian/doom-legacy.doc-base.EX
 @@ -0,0 +1,20 @@
 +Document: doom-legacy
 +Title: Debian doom-legacy Manual
@@ -21,21 +21,21 @@
 +Format: HTML
 +Index: /usr/share/doc/doom-legacy/html/index.html
 +Files: /usr/share/doc/doom-legacy/html/*.html
---- doom-legacy-1.44-alpha1-r752.orig/debian/docs
-+++ doom-legacy-1.44-alpha1-r752/debian/docs
+--- doom-legacy-1.44.alpha1.r752.orig/debian/docs
++++ doom-legacy-1.44.alpha1.r752/debian/docs
 @@ -0,0 +1,2 @@
 +ChangeLog.txt
 +files.txt
---- doom-legacy-1.44-alpha1-r752.orig/debian/dirs
-+++ doom-legacy-1.44-alpha1-r752/debian/dirs
+--- doom-legacy-1.44.alpha1.r752.orig/debian/dirs
++++ doom-legacy-1.44.alpha1.r752/debian/dirs
 @@ -0,0 +1 @@
 +usr/games
---- doom-legacy-1.44-alpha1-r752.orig/debian/compat
-+++ doom-legacy-1.44-alpha1-r752/debian/compat
+--- doom-legacy-1.44.alpha1.r752.orig/debian/compat
++++ doom-legacy-1.44.alpha1.r752/debian/compat
 @@ -0,0 +1 @@
 +7
---- doom-legacy-1.44-alpha1-r752.orig/debian/manpage.1.ex
-+++ doom-legacy-1.44-alpha1-r752/debian/manpage.1.ex
+--- doom-legacy-1.44.alpha1.r752.orig/debian/manpage.1.ex
++++ doom-legacy-1.44.alpha1.r752/debian/manpage.1.ex
 @@ -0,0 +1,59 @@
 +.\"                                      Hey, EMACS: -*- nroff -*-
 +.\" First parameter, NAME, should be all caps
@@ -96,39 +96,36 @@
 +.PP
 +This manual page was written by Brian Manning <brian@portaboom.com>,
 +for the Debian project (and may be used by others).
---- doom-legacy-1.44-alpha1-r752.orig/debian/copyright
-+++ doom-legacy-1.44-alpha1-r752/debian/copyright
-@@ -0,0 +1,52 @@
+--- doom-legacy-1.44.alpha1.r752.orig/debian/copyright
++++ doom-legacy-1.44.alpha1.r752/debian/copyright
+@@ -0,0 +1,46 @@
 +This package was debianized by:
 +
 +    Brian Manning <brian@portaboom.com> on Wed, 29 Sep 2010 17:56:20 -0700
 +
 +It was downloaded from:
 +
-+    <url://example.com>
++    <http://legacywiki.net/index.php/Main_Page>
 +
 +Upstream Author(s):
 +
-+    <put author's name and email here>
-+    <likewise for another author>
++    Boris Pereira
++    Fabrice "faB" Denis
++    Thierry "Hurdler" Van Elsuwé
++    Ville "smite-meister" Bergholm
++    Steven "SoM" McGranahan
 +
 +Copyright:
 +
-+    <Copyright (C) YYYY Firtname Lastname>
-+    <likewise for another author>
++    <Copyright (C) 1993-1996 by id Software, Inc.>
++    <Copyright (C) 1998-2010 by DooM Legacy Team>
 +
 +License:
 +
-+### SELECT: ###
 +    This package is free software; you can redistribute it and/or modify
 +    it under the terms of the GNU General Public License as published by
 +    the Free Software Foundation; either version 2 of the License, or
 +    (at your option) any later version.
-+### OR ###
-+   This package is free software; you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License version 2 as
-+   published by the Free Software Foundation.
-+##########
 +
 +    This package is distributed in the hope that it will be useful,
 +    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -148,16 +145,13 @@
 +
 +and is licensed under the GPL version 3, 
 +see `/usr/share/common-licenses/GPL-3'.
-+
-+# Please also look if there are files or directories which have a
-+# different copyright/license attached and list them here.
---- doom-legacy-1.44-alpha1-r752.orig/debian/menu
-+++ doom-legacy-1.44-alpha1-r752/debian/menu
+--- doom-legacy-1.44.alpha1.r752.orig/debian/menu
++++ doom-legacy-1.44.alpha1.r752/debian/menu
 @@ -0,0 +1,2 @@
 +?package(doom-legacy):needs="X11" section="Applications/Games"\
 +  title="doom-legacy" command="/usr/bin/doom-legacy"
---- doom-legacy-1.44-alpha1-r752.orig/debian/watch
-+++ doom-legacy-1.44-alpha1-r752/debian/watch
+--- doom-legacy-1.44.alpha1.r752.orig/debian/watch
++++ doom-legacy-1.44.alpha1.r752/debian/watch
 @@ -0,0 +1,23 @@
 +# Example watch control file for uscan
 +# Rename this file to "watch" and then you can run the "uscan" command
@@ -182,25 +176,25 @@
 +
 +# Uncomment to find new files on GooglePages
 +# http://example.googlepages.com/foo.html doom-legacy-(.*)\.tar\.gz
---- doom-legacy-1.44-alpha1-r752.orig/debian/control
-+++ doom-legacy-1.44-alpha1-r752/debian/control
+--- doom-legacy-1.44.alpha1.r752.orig/debian/control
++++ doom-legacy-1.44.alpha1.r752/debian/control
 @@ -0,0 +1,14 @@
 +Source: doom-legacy
 +Section: games
 +Priority: optional
 +Maintainer: Brian Manning <brian@portaboom.com>
-+Build-Depends: debhelper (>= 7)
++Build-Depends: debhelper (>= 7), libsdl-mixer1.2-dev, libsdl-net1.2-dev
 +Standards-Version: 3.8.1
 +Homepage: http://legacywiki.net/index.php/Main_Page
 +
 +Package: doom-legacy
 +Architecture: any
-+Depends: ${shlibs:Depends}, ${misc:Depends}
++Depends: ${shlibs:Depends}, ${misc:Depends}, libsdl1.2debian, libsdl-mixer1.2, libsdl-net1.2, libvorbisfile3, libvorbis0a, libogg0, libsmpeg0
 +Description: Doom Legacy is a source port of Doom.
 + Legacy was originally written as a fork of DOSDoom introducing mouse-look,
 + jumping, a console, 32 player deathmatch, skins and a native win32 mode. 
---- doom-legacy-1.44-alpha1-r752.orig/debian/rules
-+++ doom-legacy-1.44-alpha1-r752/debian/rules
+--- doom-legacy-1.44.alpha1.r752.orig/debian/rules
++++ doom-legacy-1.44.alpha1.r752/debian/rules
 @@ -0,0 +1,88 @@
 +#!/usr/bin/make -f
 +# -*- makefile -*-
