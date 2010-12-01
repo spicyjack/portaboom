@@ -6,6 +6,8 @@
 # program locations
 CAT=$(which cat)
 SED=$(which sed)
+GIT=$(which git)
+PERL_GTK2_SRC="/tmp/perl-Gtk2"
 
 if [ -z $FILELIST ]; then 
     echo "ERROR: FILELIST variable empty!"
@@ -15,6 +17,26 @@ if [ -z $TEMP_DIR ]; then
     echo "ERROR: TEMP_DIR variable empty!"
     exit 1
 fi # if [ -z $FILELIST ]; then
+
+# grab a copy of the gtk2-Perl source via git
+if [ ! -d $PERL_GTK2_SRC ]; then
+    if [ -z $GIT ]; then
+        echo "ERROR: 'git' command not found!"
+        echo "ERROR: git is required to sync perl-Gtk2 examples"
+        exit 1
+    fi # if [ -z $GIT ]
+    echo "Cloning perl-Gtk2 source for 'examples' and 'gtk-demo'..."
+    git clone git://git.gnome.org/perl-Gtk2 $PERL_GTK2_SRC
+fi # if [ ! -d "/tmp/gtk2-perl-examples" ];
+
+# copy the combined SSL key/cert for shellinabox
+if [ -f ~/stuff_tars/lack.googlecode.com.key-cert.pem ]; then
+    cp ~/stuff_tars/lack.googlecode.com.key-cert.pem $TEMP_DIR/certificate.pem
+else
+    echo "ERROR: missing SSL key/cert for shellinabox"
+    echo "ERROR checked ${HOME}/stuff_tars"
+    exit 1
+fi # if [ -f ~/stuff_tars/lack.googlecode.com.key-cert.pem ]
 
 # any files in this list get enumerated over and the substitutions below are
 # performed on them
