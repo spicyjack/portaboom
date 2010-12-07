@@ -10,20 +10,20 @@
 # slink <new name> <original file> <mode> <uid> <gid>
 #
 # 
-file /usr/share/doom/doom0_2.wad /home/lack/doom/doom0_2.wad 644 1000 1000
-file /usr/share/doom/doom0_4.wad /home/lack/doom/doom0_4.wad 644 1000 1000
-file /usr/share/doom/doom0_5.wad /home/lack/doom/doom0_5.wad 644 1000 1000
-file /usr/share/doom/doom1.wad /home/lack/doom/doom1.wad 644 1000 1000
-file /usr/share/doom/doom2.17a.wad /home/lack/doom/doom2.17a.wad 644 1000 1000
-file /usr/share/doom/doom2.wad /home/lack/doom/doom2.wad 644 1000 1000
-file /usr/share/doom/doomu.wad /home/lack/doom/doomu.wad 644 1000 1000
-file /usr/share/doom/doom.wad /home/lack/doom/doom.wad 644 1000 1000
-file /usr/share/doom/freedoom1.wad /home/lack/doom/freedoom1.wad 644 1000 1000
-file /usr/share/doom/freedoom2.wad /home/lack/doom/freedoom2.wad 644 1000 1000
-file /usr/share/doom/heretic_share.wad /home/lack/doom/heretic_share.wad 644 1000 1000
-file /usr/share/doom/heretic.wad /home/lack/doom/heretic.wad 644 1000 1000
-file /usr/share/doom/hexen.wad /home/lack/doom/hexen.wad 644 1000 1000
-file /usr/share/doom/plutonia.wad /home/lack/doom/plutonia.wad 644 1000 1000
-file /usr/share/doom/prboom.wad /home/lack/doom/prboom.wad 644 1000 1000
-file /usr/share/doom/tnt.wad /home/lack/doom/tnt.wad 644 1000 1000
+file /usr/share/doom/doom0_2.wad /home/lack/idGames/doom0_2.wad 644 1000 1000
+file /usr/share/doom/doom0_4.wad /home/lack/idGames/doom0_4.wad 644 1000 1000
+file /usr/share/doom/doom0_5.wad /home/lack/idGames/doom0_5.wad 644 1000 1000
+file /usr/share/doom/doom1.wad /home/lack/idGames/doom1.wad 644 1000 1000
+file /usr/share/doom/doom2.17a.wad /home/lack/idGames/doom2.17a.wad 644 1000 1000
+file /usr/share/doom/doom2.wad /home/lack/idGames/doom2.wad 644 1000 1000
+file /usr/share/doom/doomu.wad /home/lack/idGames/doomu.wad 644 1000 1000
+file /usr/share/doom/doom.wad /home/lack/idGames/doom.wad 644 1000 1000
+file /usr/share/doom/freedoom1.wad /home/lack/idGames/freedoom1.wad 644 1000 1000
+file /usr/share/doom/freedoom2.wad /home/lack/idGames/freedoom2.wad 644 1000 1000
+file /usr/share/doom/heretic_share.wad /home/lack/idGames/heretic_share.wad 644 1000 1000
+file /usr/share/doom/heretic.wad /home/lack/idGames/heretic.wad 644 1000 1000
+file /usr/share/doom/hexen.wad /home/lack/idGames/hexen.wad 644 1000 1000
+file /usr/share/doom/plutonia.wad /home/lack/idGames/plutonia.wad 644 1000 1000
+file /usr/share/doom/prboom.wad /home/lack/idGames/prboom.wad 644 1000 1000
+file /usr/share/doom/tnt.wad /home/lack/idGames/tnt.wad 644 1000 1000
 # vi: set sw=4 ts=4 paste:

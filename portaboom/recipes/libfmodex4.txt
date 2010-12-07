@@ -10,13 +10,9 @@
 # slink <new name> <original file> <mode> <uid> <gid>
 #
 # libfmodex4
-dir /usr/lib 755 0 0
 file /usr/lib/libfmodex-4.28.14.so /usr/lib/libfmodex-4.28.14.so 644 0 0
 file /usr/lib/libfmodexL-4.28.14.so /usr/lib/libfmodexL-4.28.14.so 644 0 0
-slink /usr/lib/libfmodexL.so /usr/lib/libfmodexL-4.28.14.so 777 0 0
 file /usr/lib/libfmodexp-4.28.14.so /usr/lib/libfmodexp-4.28.14.so 644 0 0
-slink /usr/lib/libfmodexp.so /usr/lib/libfmodexp-4.28.14.so 777 0 0
-slink /usr/lib/libfmodex.so /usr/lib/libfmodex-4.28.14.so 777 0 0
 dir /usr/share/libfmodex4 755 0 0
 dir /usr/share/libfmodex4/plugins 755 0 0
 file /usr/share/libfmodex4/plugins/codec_aiff.so /usr/share/libfmodex4/plugins/codec_aiff.so 644 0 0
@@ -61,4 +57,8 @@ file /usr/share/libfmodex4/plugins/output_nosound.so /usr/share/libfmodex4/plugi
 file /usr/share/libfmodex4/plugins/output_oss.so /usr/share/libfmodex4/plugins/output_oss.so 644 0 0
 file /usr/share/libfmodex4/plugins/output_wavwriter_nrt.so /usr/share/libfmodex4/plugins/output_wavwriter_nrt.so 644 0 0
 file /usr/share/libfmodex4/plugins/output_wavwriter.so /usr/share/libfmodex4/plugins/output_wavwriter.so 644 0 0
+# symlinks
+slink /usr/lib/libfmodexp.so /usr/lib/libfmodexp-4.28.14.so 777 0 0
+slink /usr/lib/libfmodexL.so /usr/lib/libfmodexL-4.28.14.so 777 0 0
+slink /usr/lib/libfmodex.so /usr/lib/libfmodex-4.28.14.so 777 0 0
 # vi: set sw=4 ts=4 paste:
