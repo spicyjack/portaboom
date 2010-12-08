@@ -11,7 +11,7 @@ dir /home/nobody 0755 65535 65535
 
 # /bin
 # make sure you get busybox in each project's specific initramfs file list now
-file /bin/busybox /tmp/busybox-1.14.3-x86-run-parts 0755 0 0
+file /bin/busybox :TEMP_DIR:/busybox-1.18.0.git-x86 0755 0 0
 # busybox getopt hides in /bin
 slink /usr/bin/getopt /bin/getopt 0755 0 0
 # /etc
@@ -45,7 +45,7 @@ file /etc/shellinabox/styles.css :PROJECT_DIR:/etcfiles/styles.css 0644 0 0
 # shellinabox certs
 dir /etc/ssl 0755 0 0
 dir /etc/ssl/certs 0755 0 0
-file /etc/ssl/certs/certificate.pem /tmp/certificate.pem 0644 0 0
+file /etc/ssl/certs/certificate.pem :TEMP_DIR:/certificate.pem 0644 0 0
 # system/textmenu/helper scripts
 dir /etc/scripts 0755 0 0
 file /etc/scripts/streaming.sh :BUILD_BASE:/common/scripts/streaming.sh 0755 0 0
