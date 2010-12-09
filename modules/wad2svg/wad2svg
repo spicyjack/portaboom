@@ -14,7 +14,7 @@ use lib '.';
 my %opts;
 getopts("m:d:",\%opts);
 
-my ($xsize,$ysize) = (250,250);
+my ($xsize,$ysize) = (1000,1000);
 
 sub wadtoimgcoords {
     @_ == 3 or die "bad params";
