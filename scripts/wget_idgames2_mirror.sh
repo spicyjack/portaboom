@@ -6,6 +6,10 @@ CUT_DIRS=3
 LOGFILE="~/bin/wget_idgames2_mirror.log"
 MIRROR_DIR=/home/ftp/doom/idgames2_mirror
 
+DATE=$(date --rfc-2822)
+echo "=== Starting mirror run: $DATE ===" >> $LOGFILE
+
+
 /usr/bin/wget \
     --verbose \
     --mirror \
