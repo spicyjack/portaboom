@@ -16,7 +16,7 @@ kernel/drivers/firewire
 kernel/drivers/gpu
 kernel/drivers/hwmon
 kernel/drivers/i2c
-kernel/drivers/ide
+#kernel/drivers/ide
 kernel/drivers/ieee1394
 kernel/drivers/infiniband
 kernel/drivers/input/gameport
