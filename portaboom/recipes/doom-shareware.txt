@@ -10,5 +10,8 @@
 # slink <new name> <original file> <mode> <uid> <gid>
 # doom2 
 #file /usr/share/doom/doom1.wad /home/src/idGames/doom1.wad 0644 0 0
+dir /usr 0755 0 0
+dir /usr/share 0755 0 0
+dir /usr/share/doom 0755 0 0
 file /usr/share/doom/doom1.wad /usr/share/games/doom/doom1.wad 0644 0 0
 # vi: set sw=4 ts=4 paste:

@@ -10,10 +10,10 @@
 # slink <new name> <original file> <mode> <uid> <gid>
 #
 # chocolate-doom
+dir /usr 755 0 0
 dir /usr/bin 755 0 0
 dir /usr/games 755 0 0
 file /usr/games/chocolate-doom /usr/games/chocolate-doom 755 0 0
 file /usr/games/chocolate-server /usr/games/chocolate-server 755 0 0
 file /usr/games/chocolate-setup /usr/games/chocolate-setup 755 0 0
-dir /usr/sbin 755 0 0
 # vi: set sw=4 ts=4 paste:

@@ -92,6 +92,7 @@ file /etc/init.d/remount-rootfs :BUILD_BASE:/common/initscripts/remount-rootfs 0
 file /etc/init.d/rootvol :BUILD_BASE:/common/initscripts/rootvol 0755 0 0
 file /etc/init.d/run-program :BUILD_BASE:/common/initscripts/run-program 0755 0 0
 file /etc/init.d/shellinaboxd :BUILD_BASE:/common/initscripts/shellinaboxd 0755 0 0
+file /etc/init.d/squashfs_mountall :BUILD_BASE:/common/initscripts/squashfs_mountall 0755 0 0
 file /etc/init.d/setvolume :BUILD_BASE:/common/initscripts/setvolume 0755 0 0
 file /etc/init.d/streaming :BUILD_BASE:/common/initscripts/streaming 0755 0 0
 file /etc/init.d/syslogd :BUILD_BASE:/common/initscripts/syslogd 0755 0 0

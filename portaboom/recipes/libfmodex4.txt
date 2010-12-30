@@ -10,9 +10,12 @@
 # slink <new name> <original file> <mode> <uid> <gid>
 #
 # libfmodex4
+dir /usr 0755 0 0
+dir /usr/lib 0755 0 0
 file /usr/lib/libfmodex-4.28.14.so /usr/lib/libfmodex-4.28.14.so 644 0 0
 file /usr/lib/libfmodexL-4.28.14.so /usr/lib/libfmodexL-4.28.14.so 644 0 0
 file /usr/lib/libfmodexp-4.28.14.so /usr/lib/libfmodexp-4.28.14.so 644 0 0
+dir /usr/share 0755 0 0
 dir /usr/share/libfmodex4 755 0 0
 dir /usr/share/libfmodex4/plugins 755 0 0
 file /usr/share/libfmodex4/plugins/codec_aiff.so /usr/share/libfmodex4/plugins/codec_aiff.so 644 0 0

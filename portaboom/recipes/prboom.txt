@@ -10,11 +10,11 @@
 # slink <new name> <original file> <mode> <uid> <gid>
 #
 # prboom
+dir /usr 755 0 0
 dir /usr/bin 755 0 0
 dir /usr/games 755 0 0
 file /usr/games/prboom /usr/games/prboom 755 0 0
 file /usr/games/prboom-game-server /usr/games/prboom-game-server 755 0 0
-dir /usr/sbin 755 0 0
 dir /usr/share/games 755 0 0
 dir /usr/share/games/doom 755 0 0
 file /usr/share/games/doom/prboom.wad /usr/share/games/doom/prboom.wad 644 0 0
