@@ -3,7 +3,7 @@
 FTP_SITE="ftp://ftp.fu-berlin.de/pc/games/idgames2/"
 # this changes depending on how many trailing directories we want to cut off
 CUT_DIRS=3
-LOGFILE="~/bin/wget_idgames2_mirror.log"
+LOGFILE=~/bin/wget_idgames2_mirror.log
 MIRROR_DIR=/home/ftp/doom/idgames2_mirror
 
 DATE=$(date --rfc-2822)
