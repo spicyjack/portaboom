@@ -2,7 +2,7 @@
 +++ yadex-1.7.0/README
 @@ -1,4 +1,4 @@
 -Yadex 1.7.0 (2003-12-28)
-+Yadex 1.7.0 (2011-01-04)
++Yadex 1.7.0 (2011-01-05)
  
  WHAT IS YADEX ?
      Yadex is a Doom level (wad) editor for Unix systems running X,
@@ -431,6 +431,17 @@
  
  # To see the generated assembly code
  # for the modules of Yadex
+@@ -875,7 +878,9 @@
+ # The images are just symlinked from docsrc/ to doc/
+ doc/%.png: docsrc/%.png
+ 	@rm -f $@
+-	@ln -s ../$< $@
++#@ln -s ../$< $@
++# remove the -s ../ so the files get hardlinked correctly
++	@ln $< $@
+ 
+ $(OBJDIR)/ftime: scripts/ftime.c
+ 	$(CC) $< -o $@
 --- yadex-1.7.0.orig/atclib/al_adigits.c
 +++ yadex-1.7.0/atclib/al_adigits.c
 @@ -29,5 +29,11 @@
@@ -451,7 +462,7 @@
 @@ -1 +1 @@
 -2003-12-28
 \ No newline at end of file
-+2011-01-04
++2011-01-05
 \ No newline at end of file
 --- yadex-1.7.0.orig/cache/pixlist
 +++ yadex-1.7.0/cache/pixlist
@@ -1329,7 +1340,7 @@
  this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  Place, Suite 330, Boston, MA 02111-1307, USA.
 +
-+patched using a patch from redhat, 18Aug2009, bmanning (elspicyjack at gmail)
++patched using a patch from redhat, 18Aug2009, brian at portaboom dot com
 +https://bugzilla.redhat.com/attachment.cgi?id=126273
  */
  
@@ -1898,8 +1909,8 @@
 +  ".",
 +  "~/.yadex/%v",
 +  "~/.yadex",
-+  "/local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc/yadex/%v",
-+  "/local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc",
++  "/local/src/yadex/yadex-1.7.0/debian/yadex/etc/yadex/%v",
++  "/local/src/yadex/yadex-1.7.0/debian/yadex/etc/yadex",
 +  0
 +};
 +
@@ -1908,8 +1919,8 @@
 +  ".",
 +  "~/.yadex/%v",
 +  "~/.yadex",
-+  "/local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/yadex/%v",
-+  "/local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/games/yadex",
++  "/local/src/yadex/yadex-1.7.0/debian/yadex/share/yadex/%v",
++  "/local/src/yadex/yadex-1.7.0/debian/yadex/share/games/yadex",
 +  0
 +};
 +
@@ -3996,7 +4007,7 @@
  // DO NOT EDIT -- generated from VERSION
  
 -extern const char *const yadex_source_date = "2003-12-28";
-+extern const char *const yadex_source_date = "2011-01-04";
++extern const char *const yadex_source_date = "2011-01-05";
  extern const char *const yadex_version = "1.7.0";
 --- yadex-1.7.0.orig/src/s_split.cc
 +++ yadex-1.7.0/src/s_split.cc
@@ -4181,101 +4192,35 @@
 +   }
 +}
 +
---- yadex-1.7.0.orig/debian/manpage.1.ex
-+++ yadex-1.7.0/debian/manpage.1.ex
-@@ -0,0 +1,59 @@
-+.\"                                      Hey, EMACS: -*- nroff -*-
-+.\" First parameter, NAME, should be all caps
-+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
-+.\" other parameters are allowed: see man(7), man(1)
-+.TH YADEX SECTION "January  4, 2011"
-+.\" Please adjust this date whenever revising the manpage.
-+.\"
-+.\" Some roff macros, for reference:
-+.\" .nh        disable hyphenation
-+.\" .hy        enable hyphenation
-+.\" .ad l      left justify
-+.\" .ad b      justify to both left and right margins
-+.\" .nf        disable filling
-+.\" .fi        enable filling
-+.\" .br        insert line break
-+.\" .sp <n>    insert n+1 empty lines
-+.\" for manpage-specific macros, see man(7)
-+.SH NAME
-+yadex \- program to do something
-+.SH SYNOPSIS
-+.B yadex
-+.RI [ options ] " files" ...
-+.br
-+.B bar
-+.RI [ options ] " files" ...
-+.SH DESCRIPTION
-+This manual page documents briefly the
-+.B yadex
-+and
-+.B bar
-+commands.
-+.PP
-+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
-+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
-+.\" respectively.
-+\fByadex\fP is a program that...
-+.SH OPTIONS
-+These programs follow the usual GNU command line syntax, with long
-+options starting with two dashes (`-').
-+A summary of options is included below.
-+For a complete description, see the Info files.
-+.TP
-+.B \-h, \-\-help
-+Show summary of options.
-+.TP
-+.B \-v, \-\-version
-+Show version of program.
-+.SH SEE ALSO
-+.BR bar (1),
-+.BR baz (1).
-+.br
-+The programs are documented fully by
-+.IR "The Rise and Fall of a Fooish Bar" ,
-+available via the Info system.
-+.SH AUTHOR
-+yadex was written by <upstream author>.
-+.PP
-+This manual page was written by Brian Manning <bmanning@quicinc.com>,
-+for the Debian project (and may be used by others).
 --- yadex-1.7.0.orig/debian/copyright
 +++ yadex-1.7.0/debian/copyright
-@@ -0,0 +1,52 @@
+@@ -0,0 +1,45 @@
 +This package was debianized by:
 +
-+    Brian Manning <bmanning@quicinc.com> on Tue, 04 Jan 2011 18:12:36 -0800
++    Brian Manning <brian@portaboom.com> on Tue, 04 Jan 2011 18:12:36 -0800
 +
 +It was downloaded from:
 +
-+    <url://example.com>
++    http://www.teaser.fr/~amajorel/yadex/
 +
 +Upstream Author(s):
 +
-+    <put author's name and email here>
-+    <likewise for another author>
++    André Majorel <amajorel@teaser.fr>
 +
 +Copyright:
 +
-+    <Copyright (C) YYYY Firtname Lastname>
-+    <likewise for another author>
++    Andrew Apted 2000-2001
++    André Majorel 1997-2003
++    Matthew W. Miller 2000
++    Raphaël Quinet (copyright date unknown)
++    Brendon Wyber (copyright date unknown)
 +
 +License:
 +
-+### SELECT: ###
 +    This package is free software; you can redistribute it and/or modify
 +    it under the terms of the GNU General Public License as published by
 +    the Free Software Foundation; either version 2 of the License, or
 +    (at your option) any later version.
-+### OR ###
-+   This package is free software; you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License version 2 as
-+   published by the Free Software Foundation.
-+##########
 +
 +    This package is distributed in the hope that it will be useful,
 +    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -4291,13 +4236,10 @@
 +
 +The Debian packaging is:
 +
-+    Copyright (C) 2011 Brian Manning <bmanning@quicinc.com>
++    Copyright (C) 2011 Brian Manning <brian@portaboom.com>
 +
-+and is licensed under the GPL version 3, 
-+see `/usr/share/common-licenses/GPL-3'.
-+
-+# Please also look if there are files or directories which have a
-+# different copyright/license attached and list them here.
++and is licensed under the GPL version 2, 
++see `/usr/share/common-licenses/GPL-2'.
 --- yadex-1.7.0.orig/debian/postrm.ex
 +++ yadex-1.7.0/debian/postrm.ex
 @@ -0,0 +1,37 @@
@@ -4380,26 +4322,6 @@
 +#DEBHELPER#
 +
 +exit 0
---- yadex-1.7.0.orig/debian/yadex.default.ex
-+++ yadex-1.7.0/debian/yadex.default.ex
-@@ -0,0 +1,10 @@
-+# Defaults for yadex initscript
-+# sourced by /etc/init.d/yadex
-+# installed at /etc/default/yadex by the maintainer scripts
-+
-+#
-+# This is a POSIX shell fragment
-+#
-+
-+# Additional options that are passed to the Daemon.
-+DAEMON_OPTS=""
---- yadex-1.7.0.orig/debian/cron.d.ex
-+++ yadex-1.7.0/debian/cron.d.ex
-@@ -0,0 +1,4 @@
-+#
-+# Regular cron jobs for the yadex package
-+#
-+0 4	* * *	root	[ -x /usr/bin/yadex_maintenance ] && /usr/bin/yadex_maintenance
 --- yadex-1.7.0.orig/debian/preinst.ex
 +++ yadex-1.7.0/debian/preinst.ex
 @@ -0,0 +1,35 @@
@@ -4462,163 +4384,6 @@
 + on the flip side allows you to control very precisely what you are doing. In
 + addition, it has many advanced functions that DEU didn't have, to make certain
 + tedious tasks easy.
---- yadex-1.7.0.orig/debian/manpage.sgml.ex
-+++ yadex-1.7.0/debian/manpage.sgml.ex
-@@ -0,0 +1,154 @@
-+<!doctype refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
-+
-+<!-- Process this file with docbook-to-man to generate an nroff manual
-+     page: `docbook-to-man manpage.sgml > manpage.1'.  You may view
-+     the manual page with: `docbook-to-man manpage.sgml | nroff -man |
-+     less'.  A typical entry in a Makefile or Makefile.am is:
-+
-+manpage.1: manpage.sgml
-+	docbook-to-man $< > $@
-+
-+
-+	The docbook-to-man binary is found in the docbook-to-man package.
-+	Please remember that if you create the nroff version in one of the
-+	debian/rules file targets (such as build), you will need to include
-+	docbook-to-man in your Build-Depends control field.
-+
-+  -->
-+
-+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
-+  <!ENTITY dhfirstname "<firstname>FIRSTNAME</firstname>">
-+  <!ENTITY dhsurname   "<surname>SURNAME</surname>">
-+  <!-- Please adjust the date whenever revising the manpage. -->
-+  <!ENTITY dhdate      "<date>January  4, 2011</date>">
-+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
-+       allowed: see man(7), man(1). -->
-+  <!ENTITY dhsection   "<manvolnum>SECTION</manvolnum>">
-+  <!ENTITY dhemail     "<email>bmanning@quicinc.com</email>">
-+  <!ENTITY dhusername  "Brian Manning">
-+  <!ENTITY dhucpackage "<refentrytitle>YADEX</refentrytitle>">
-+  <!ENTITY dhpackage   "yadex">
-+
-+  <!ENTITY debian      "<productname>Debian</productname>">
-+  <!ENTITY gnu         "<acronym>GNU</acronym>">
-+  <!ENTITY gpl         "&gnu; <acronym>GPL</acronym>">
-+]>
-+
-+<refentry>
-+  <refentryinfo>
-+    <address>
-+      &dhemail;
-+    </address>
-+    <author>
-+      &dhfirstname;
-+      &dhsurname;
-+    </author>
-+    <copyright>
-+      <year>2003</year>
-+      <holder>&dhusername;</holder>
-+    </copyright>
-+    &dhdate;
-+  </refentryinfo>
-+  <refmeta>
-+    &dhucpackage;
-+
-+    &dhsection;
-+  </refmeta>
-+  <refnamediv>
-+    <refname>&dhpackage;</refname>
-+
-+    <refpurpose>program to do something</refpurpose>
-+  </refnamediv>
-+  <refsynopsisdiv>
-+    <cmdsynopsis>
-+      <command>&dhpackage;</command>
-+
-+      <arg><option>-e <replaceable>this</replaceable></option></arg>
-+
-+      <arg><option>--example <replaceable>that</replaceable></option></arg>
-+    </cmdsynopsis>
-+  </refsynopsisdiv>
-+  <refsect1>
-+    <title>DESCRIPTION</title>
-+
-+    <para>This manual page documents briefly the
-+      <command>&dhpackage;</command> and <command>bar</command>
-+      commands.</para>
-+
-+    <para>This manual page was written for the &debian; distribution
-+      because the original program does not have a manual page.
-+      Instead, it has documentation in the &gnu;
-+      <application>Info</application> format; see below.</para>
-+
-+    <para><command>&dhpackage;</command> is a program that...</para>
-+
-+  </refsect1>
-+  <refsect1>
-+    <title>OPTIONS</title>
-+
-+    <para>These programs follow the usual &gnu; command line syntax,
-+      with long options starting with two dashes (`-').  A summary of
-+      options is included below.  For a complete description, see the
-+      <application>Info</application> files.</para>
-+
-+    <variablelist>
-+      <varlistentry>
-+        <term><option>-h</option>
-+          <option>--help</option>
-+        </term>
-+        <listitem>
-+          <para>Show summary of options.</para>
-+        </listitem>
-+      </varlistentry>
-+      <varlistentry>
-+        <term><option>-v</option>
-+          <option>--version</option>
-+        </term>
-+        <listitem>
-+          <para>Show version of program.</para>
-+        </listitem>
-+      </varlistentry>
-+    </variablelist>
-+  </refsect1>
-+  <refsect1>
-+    <title>SEE ALSO</title>
-+
-+    <para>bar (1), baz (1).</para>
-+
-+    <para>The programs are documented fully by <citetitle>The Rise and
-+      Fall of a Fooish Bar</citetitle> available via the
-+      <application>Info</application> system.</para>
-+  </refsect1>
-+  <refsect1>
-+    <title>AUTHOR</title>
-+
-+    <para>This manual page was written by &dhusername; &dhemail; for
-+      the &debian; system (and may be used by others).  Permission is
-+      granted to copy, distribute and/or modify this document under
-+      the terms of the &gnu; General Public License, Version 2 any
-+      later version published by the Free Software Foundation.
-+    </para>
-+    <para>
-+      On Debian systems, the complete text of the GNU General Public
-+      License can be found in /usr/share/common-licenses/GPL.
-+    </para>
-+
-+  </refsect1>
-+</refentry>
-+
-+<!-- Keep this comment at the end of the file
-+Local variables:
-+mode: sgml
-+sgml-omittag:t
-+sgml-shorttag:t
-+sgml-minimize-attributes:nil
-+sgml-always-quote-attributes:t
-+sgml-indent-step:2
-+sgml-indent-data:t
-+sgml-parent-document:nil
-+sgml-default-dtd-file:nil
-+sgml-exposed-tags:nil
-+sgml-local-catalogs:nil
-+sgml-local-ecat-files:nil
-+End:
-+-->
 --- yadex-1.7.0.orig/debian/watch.ex
 +++ yadex-1.7.0/debian/watch.ex
 @@ -0,0 +1,23 @@
@@ -4655,10 +4420,11 @@
 + -- Brian Manning <brian@portaboom.com>  Tue, 04 Jan 2011 18:12:36 -0800
 --- yadex-1.7.0.orig/debian/docs
 +++ yadex-1.7.0/debian/docs
-@@ -0,0 +1,3 @@
+@@ -0,0 +1,4 @@
 +FAQ
 +README
 +TODO
++doc/*
 --- yadex-1.7.0.orig/debian/menu.ex
 +++ yadex-1.7.0/debian/menu.ex
 @@ -0,0 +1,2 @@
@@ -4668,29 +4434,6 @@
 +++ yadex-1.7.0/debian/compat
 @@ -0,0 +1 @@
 +7
---- yadex-1.7.0.orig/debian/yadex.doc-base.EX
-+++ yadex-1.7.0/debian/yadex.doc-base.EX
-@@ -0,0 +1,20 @@
-+Document: yadex
-+Title: Debian yadex Manual
-+Author: <insert document author here>
-+Abstract: This manual describes what yadex is
-+ and how it can be used to
-+ manage online manuals on Debian systems.
-+Section: unknown
-+
-+Format: debiandoc-sgml
-+Files: /usr/share/doc/yadex/yadex.sgml.gz
-+
-+Format: postscript
-+Files: /usr/share/doc/yadex/yadex.ps.gz
-+
-+Format: text
-+Files: /usr/share/doc/yadex/yadex.text.gz
-+
-+Format: HTML
-+Index: /usr/share/doc/yadex/html/index.html
-+Files: /usr/share/doc/yadex/html/*.html
 --- yadex-1.7.0.orig/debian/prerm.ex
 +++ yadex-1.7.0/debian/prerm.ex
 @@ -0,0 +1,38 @@
@@ -4740,301 +4483,7 @@
 +
 +<possible notes regarding this package - if none, delete this file>
 +
-+ -- Brian Manning <bmanning@quicinc.com>  Tue, 04 Jan 2011 18:12:36 -0800
---- yadex-1.7.0.orig/debian/manpage.xml.ex
-+++ yadex-1.7.0/debian/manpage.xml.ex
-@@ -0,0 +1,291 @@
-+<?xml version='1.0' encoding='UTF-8'?>
-+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-+
-+<!--
-+
-+`xsltproc -''-nonet \
-+          -''-param man.charmap.use.subset "0" \
-+          -''-param make.year.ranges "1" \
-+          -''-param make.single.year.ranges "1" \
-+          /usr/share/xml/docbook/stylesheet/nwalsh/manpages/docbook.xsl \
-+          manpage.xml'
-+
-+A manual page <package>.<section> will be generated. You may view the
-+manual page with: nroff -man <package>.<section> | less'. A typical entry
-+in a Makefile or Makefile.am is:
-+
-+DB2MAN = /usr/share/sgml/docbook/stylesheet/xsl/nwalsh/manpages/docbook.xsl
-+XP     = xsltproc -''-nonet -''-param man.charmap.use.subset "0"
-+
-+manpage.1: manpage.xml
-+        $(XP) $(DB2MAN) $<
-+
-+The xsltproc binary is found in the xsltproc package. The XSL files are in
-+docbook-xsl. A description of the parameters you can use can be found in the
-+docbook-xsl-doc-* packages. Please remember that if you create the nroff
-+version in one of the debian/rules file targets (such as build), you will need
-+to include xsltproc and docbook-xsl in your Build-Depends control field.
-+Alternatively use the xmlto command/package. That will also automatically
-+pull in xsltproc and docbook-xsl.
-+
-+Notes for using docbook2x: docbook2x-man does not automatically create the
-+AUTHOR(S) and COPYRIGHT sections. In this case, please add them manually as
-+<refsect1> ... </refsect1>.
-+
-+To disable the automatic creation of the AUTHOR(S) and COPYRIGHT sections
-+read /usr/share/doc/docbook-xsl/doc/manpages/authors.html. This file can be
-+found in the docbook-xsl-doc-html package.
-+
-+Validation can be done using: `xmllint -''-noout -''-valid manpage.xml`
-+
-+General documentation about man-pages and man-page-formatting:
-+man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
-+
-+-->
-+
-+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
-+  <!ENTITY dhfirstname "FIRSTNAME">
-+  <!ENTITY dhsurname   "SURNAME">
-+  <!-- dhusername could also be set to "&firstname; &surname;". -->
-+  <!ENTITY dhusername  "Brian Manning">
-+  <!ENTITY dhemail     "bmanning@quicinc.com">
-+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
-+       allowed: see man(7), man(1) and
-+       http://www.tldp.org/HOWTO/Man-Page/q2.html. -->
-+  <!ENTITY dhsection   "SECTION">
-+  <!-- TITLE should be something like "User commands" or similar (see
-+       http://www.tldp.org/HOWTO/Man-Page/q2.html). -->
-+  <!ENTITY dhtitle     "yadex User Manual">
-+  <!ENTITY dhucpackage "YADEX">
-+  <!ENTITY dhpackage   "yadex">
-+]>
-+
-+<refentry>
-+  <refentryinfo>
-+    <title>&dhtitle;</title>
-+    <productname>&dhpackage;</productname>
-+    <authorgroup>
-+      <author>
-+       <firstname>&dhfirstname;</firstname>
-+        <surname>&dhsurname;</surname>
-+        <contrib>Wrote this manpage for the Debian system.</contrib>
-+        <address>
-+          <email>&dhemail;</email>
-+        </address>
-+      </author>
-+    </authorgroup>
-+    <copyright>
-+      <year>2007</year>
-+      <holder>&dhusername;</holder>
-+    </copyright>
-+    <legalnotice>
-+      <para>This manual page was written for the Debian system
-+        (and may be used by others).</para>
-+      <para>Permission is granted to copy, distribute and/or modify this
-+        document under the terms of the GNU General Public License,
-+        Version 2 or (at your option) any later version published by
-+        the Free Software Foundation.</para>
-+      <para>On Debian systems, the complete text of the GNU General Public
-+        License can be found in
-+        <filename>/usr/share/common-licenses/GPL</filename>.</para>
-+    </legalnotice>
-+  </refentryinfo>
-+  <refmeta>
-+    <refentrytitle>&dhucpackage;</refentrytitle>
-+    <manvolnum>&dhsection;</manvolnum>
-+  </refmeta>
-+  <refnamediv>
-+    <refname>&dhpackage;</refname>
-+    <refpurpose>program to do something</refpurpose>
-+  </refnamediv>
-+  <refsynopsisdiv>
-+    <cmdsynopsis>
-+      <command>&dhpackage;</command>
-+      <!-- These are several examples, how syntaxes could look -->
-+      <arg choice="plain"><option>-e <replaceable>this</replaceable></option></arg>
-+      <arg choice="opt"><option>--example=<parameter>that</parameter></option></arg>
-+      <arg choice="opt">
-+        <group choice="req">
-+          <arg choice="plain"><option>-e</option></arg>
-+          <arg choice="plain"><option>--example</option></arg>
-+        </group>
-+        <replaceable class="option">this</replaceable>
-+      </arg>
-+      <arg choice="opt">
-+        <group choice="req">
-+          <arg choice="plain"><option>-e</option></arg>
-+          <arg choice="plain"><option>--example</option></arg>
-+        </group>
-+        <group choice="req">
-+          <arg choice="plain"><replaceable>this</replaceable></arg>
-+          <arg choice="plain"><replaceable>that</replaceable></arg>
-+        </group>
-+      </arg>
-+    </cmdsynopsis>
-+    <cmdsynopsis>
-+      <command>&dhpackage;</command>
-+      <!-- Normally the help and version options make the programs stop
-+           right after outputting the requested information. -->
-+      <group choice="opt">
-+        <arg choice="plain">
-+          <group choice="req">
-+            <arg choice="plain"><option>-h</option></arg>
-+            <arg choice="plain"><option>--help</option></arg>
-+          </group>
-+        </arg>
-+        <arg choice="plain">
-+          <group choice="req">
-+            <arg choice="plain"><option>-v</option></arg>
-+            <arg choice="plain"><option>--version</option></arg>
-+          </group>
-+        </arg>
-+      </group>
-+    </cmdsynopsis>
-+  </refsynopsisdiv>
-+  <refsect1 id="description">
-+    <title>DESCRIPTION</title>
-+    <para>This manual page documents briefly the
-+      <command>&dhpackage;</command> and <command>bar</command>
-+      commands.</para>
-+    <para>This manual page was written for the Debian distribution
-+      because the original program does not have a manual page.
-+      Instead, it has documentation in the GNU <citerefentry>
-+        <refentrytitle>info</refentrytitle>
-+        <manvolnum>1</manvolnum>
-+      </citerefentry> format; see below.</para>
-+    <para><command>&dhpackage;</command> is a program that...</para>
-+  </refsect1>
-+  <refsect1 id="options">
-+    <title>OPTIONS</title>
-+    <para>The program follows the usual GNU command line syntax,
-+      with long options starting with two dashes (`-').  A summary of
-+      options is included below.  For a complete description, see the
-+      <citerefentry>
-+        <refentrytitle>info</refentrytitle>
-+        <manvolnum>1</manvolnum>
-+      </citerefentry> files.</para>
-+    <variablelist>
-+      <!-- Use the variablelist.term.separator and the
-+           variablelist.term.break.after parameters to
-+           control the term elements. -->
-+      <varlistentry>
-+        <term><option>-e <replaceable>this</replaceable></option></term>
-+        <term><option>--example=<replaceable>that</replaceable></option></term>
-+        <listitem>
-+          <para>Does this and that.</para>
-+        </listitem>
-+      </varlistentry>
-+      <varlistentry>
-+        <term><option>-h</option></term>
-+        <term><option>--help</option></term>
-+        <listitem>
-+          <para>Show summary of options.</para>
-+        </listitem>
-+      </varlistentry>
-+      <varlistentry>
-+        <term><option>-v</option></term>
-+        <term><option>--version</option></term>
-+        <listitem>
-+          <para>Show version of program.</para>
-+        </listitem>
-+      </varlistentry>
-+    </variablelist>
-+  </refsect1>
-+  <refsect1 id="files">
-+    <title>FILES</title>
-+    <variablelist>
-+      <varlistentry>
-+        <term><filename>/etc/foo.conf</filename></term>
-+        <listitem>
-+          <para>The system-wide configuration file to control the
-+            behaviour of <application>&dhpackage;</application>. See
-+            <citerefentry>
-+              <refentrytitle>foo.conf</refentrytitle>
-+              <manvolnum>5</manvolnum>
-+            </citerefentry> for further details.</para>
-+        </listitem>
-+      </varlistentry>
-+      <varlistentry>
-+        <term><filename>${HOME}/.foo.conf</filename></term>
-+        <listitem>
-+          <para>The per-user configuration file to control the
-+             behaviour of <application>&dhpackage;</application>. See
-+             <citerefentry>
-+               <refentrytitle>foo.conf</refentrytitle>
-+               <manvolnum>5</manvolnum>
-+             </citerefentry> for further details.</para>
-+        </listitem>
-+      </varlistentry>
-+    </variablelist>
-+  </refsect1>
-+  <refsect1 id="environment">
-+    <title>ENVIONMENT</title>
-+    <variablelist>
-+      <varlistentry>
-+        <term><envar>FOO_CONF</envar></term>
-+        <listitem>
-+          <para>If used, the defined file is used as configuration
-+            file (see also <xref linkend="files"/>).</para>
-+        </listitem>
-+      </varlistentry>
-+    </variablelist>
-+  </refsect1>
-+  <refsect1 id="diagnostics">
-+    <title>DIAGNOSTICS</title>
-+    <para>The following diagnostics may be issued
-+      on <filename class="devicefile">stderr</filename>:</para>
-+    <variablelist>
-+      <varlistentry>
-+        <term><errortext>Bad configuration file. Exiting.</errortext></term>
-+        <listitem>
-+          <para>The configuration file seems to contain a broken configuration
-+            line. Use the <option>--verbose</option> option, to get more info.
-+          </para>
-+        </listitem>
-+      </varlistentry>
-+    </variablelist>
-+    <para><command>&dhpackage;</command> provides some return codes, that can
-+      be used in scripts:</para>
-+    <segmentedlist>
-+      <segtitle>Code</segtitle>
-+      <segtitle>Diagnostic</segtitle>
-+      <seglistitem>
-+        <seg><errorcode>0</errorcode></seg>
-+        <seg>Program exited successfully.</seg>
-+      </seglistitem>
-+      <seglistitem>
-+        <seg><errorcode>1</errorcode></seg>
-+        <seg>The configuration file seems to be broken.</seg>
-+      </seglistitem>
-+    </segmentedlist>
-+  </refsect1>
-+  <refsect1 id="bugs">
-+    <!-- Or use this section to tell about upstream BTS. -->
-+    <title>BUGS</title>
-+    <para>The program is currently limited to only work
-+      with the <package>foobar</package> library.</para>
-+    <para>The upstreams <acronym>BTS</acronym> can be found
-+      at <ulink url="http://bugzilla.foo.tld"/>.</para>
-+  </refsect1>
-+  <refsect1 id="see_also">
-+    <title>SEE ALSO</title>
-+    <!-- In alpabetical order. -->
-+    <para><citerefentry>
-+        <refentrytitle>bar</refentrytitle>
-+        <manvolnum>1</manvolnum>
-+      </citerefentry>, <citerefentry>
-+        <refentrytitle>baz</refentrytitle>
-+        <manvolnum>1</manvolnum>
-+      </citerefentry>, <citerefentry>
-+        <refentrytitle>foo.conf</refentrytitle>
-+        <manvolnum>5</manvolnum>
-+      </citerefentry></para>
-+    <para>The programs are documented fully by <citetitle>The Rise and
-+      Fall of a Fooish Bar</citetitle> available via the <citerefentry>
-+        <refentrytitle>info</refentrytitle>
-+        <manvolnum>1</manvolnum>
-+      </citerefentry> system.</para>
-+  </refsect1>
-+</refentry>
-+
++ -- Brian Manning <brian@portaboom.com>  Tue, 04 Jan 2011 18:12:36 -0800
 --- yadex-1.7.0.orig/debian/rules
 +++ yadex-1.7.0/debian/rules
 @@ -0,0 +1,98 @@
@@ -5504,98 +4953,3 @@
 +thing 10000 S -   20 "Spawn fog *"     SPIRK0
 +thing 10225 S -   20 "Spawn bat *"     ABATC3C7
  
---- yadex-1.7.0.orig/obj/xaoc_203674967190/config.etc
-+++ yadex-1.7.0/obj/xaoc_203674967190/config.etc
-@@ -0,0 +1,5 @@
-+.
-+~/.yadex/%v
-+~/.yadex
-+/local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc/yadex/%v
-+/local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc
---- yadex-1.7.0.orig/obj/xaoc_203674967190/config.h
-+++ yadex-1.7.0/obj/xaoc_203674967190/config.h
-@@ -0,0 +1,14 @@
-+// DO NOT EDIT -- generated by ./configure
-+
-+//#define Y_DOS
-+#define Y_UNIX
-+//#define Y_BGI
-+#define Y_X11
-+#define Y_GETTIMEOFDAY
-+#define Y_NANOSLEEP
-+#define Y_SNPRINTF
-+#define Y_USLEEP
-+
-+extern const char *yadex_etc_path[];
-+extern const char *yadex_share_path[];
-+
---- yadex-1.7.0.orig/obj/xaoc_203674967190/config.cc
-+++ yadex-1.7.0/obj/xaoc_203674967190/config.cc
-@@ -0,0 +1,24 @@
-+// DO NOT EDIT -- generated by ./configure
-+
-+#include "config.h"
-+
-+extern const char *yadex_etc_path[] =
-+{
-+  ".",
-+  "~/.yadex/%v",
-+  "~/.yadex",
-+  "/local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc/yadex/%v",
-+  "/local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc",
-+  0
-+};
-+
-+extern const char *yadex_share_path[] =
-+{
-+  ".",
-+  "~/.yadex/%v",
-+  "~/.yadex",
-+  "/local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/yadex/%v",
-+  "/local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/games/yadex",
-+  0
-+};
-+
---- yadex-1.7.0.orig/obj/xaoc_203674967190/files_etc.man
-+++ yadex-1.7.0/obj/xaoc_203674967190/files_etc.man
-@@ -0,0 +1,5 @@
-+.B ./yadex.cfg
-+.B ~/.yadex/1.7.0/yadex.cfg
-+.B ~/.yadex/yadex.cfg
-+.B /local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc/yadex/1.7.0/yadex.cfg
-+.B /local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc/yadex.cfg
---- yadex-1.7.0.orig/obj/xaoc_203674967190/Makefile.config
-+++ yadex-1.7.0/obj/xaoc_203674967190/Makefile.config
-@@ -0,0 +1,16 @@
-+# DO NOT EDIT -- generated by ./configure
-+
-+BINDIR            = /local/src/yadex/yadex-1.7.0/debian/yadex/usr/games
-+CC                = gcc
-+CXX               = g++
-+ETCDIR            = /local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc/yadex/1.7.0
-+ETCDIRNV          = /local/src/yadex/yadex-1.7.0/debian/yadex/usr/etc
-+HAVE_GETTIMEOFDAY = 1
-+HAVE_NANOSLEEP    = 1
-+HAVE_SNPRINTF     = 1
-+HAVE_USLEEP       = 1
-+INTERFACE         = x11
-+MANDIR            = /local/src/yadex/yadex-1.7.0/debian/yadex/usr/man
-+PLATFORM          = unix
-+SHAREDIR          = /local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/yadex/1.7.0
-+SHAREDIRNV        = /local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/games/yadex
---- yadex-1.7.0.orig/obj/xaoc_203674967190/files_share.man
-+++ yadex-1.7.0/obj/xaoc_203674967190/files_share.man
-@@ -0,0 +1,5 @@
-+.BI ./ game .ygd
-+.BI ~/.yadex/1.7.0/ game .ygd
-+.BI ~/.yadex/ game .ygd
-+.BI /local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/yadex/1.7.0/ game .ygd
-+.BI /local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/games/yadex/ game .ygd
---- yadex-1.7.0.orig/obj/xaoc_203674967190/config.share
-+++ yadex-1.7.0/obj/xaoc_203674967190/config.share
-@@ -0,0 +1,5 @@
-+.
-+~/.yadex/%v
-+~/.yadex
-+/local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/yadex/%v
-+/local/src/yadex/yadex-1.7.0/debian/yadex/usr/share/games/yadex
