@@ -75,6 +75,14 @@ file /sbin/getty /sbin/getty 0755 0 0
 file /usr/bin/host :BUILD_BASE:/common/scripts/host.sh 0755 0 0
 # for testing installation using debootstrap
 dir /mnt/rootvol 0755 0 0
+# allow for updating the X font files once the system is running; creating the
+# directory should make stow stow files inside of the directory instead of
+# symlinking the directory itself
+dir /usr 0755 0 0
+dir /usr/share 0755 0 0
+dir /usr/share/fonts 0755 0 0
+dir /usr/share/fonts/X11 0755 0 0
+dir /usr/share/fonts/X11/misc 0755 0 0
 ### INITSCRIPTS
 # get the full set of init helper scripts
 dir /etc/init.d 0755 0 0
