@@ -86,6 +86,8 @@ dir /usr/share/fonts/X11/misc 0755 0 0
 ### INITSCRIPTS
 # get the full set of init helper scripts
 dir /etc/init.d 0755 0 0
+# for debugging module mismatch issue
+#file /etc/init.d/debug_modversion_mismatch :PROJECT_DIR:/scripts/debug_modversion_mismatch.sh 0755 0 0
 file /etc/init.d/bb-install :BUILD_BASE:/common/initscripts/bb-install 0755 0 0
 file /etc/init.d/hostname :BUILD_BASE:/common/initscripts/hostname 0755 0 0
 file /etc/init.d/kernel-modules :BUILD_BASE:/common/initscripts/kernel-modules 0755 0 0
@@ -118,6 +120,7 @@ slink /etc/start/02bb-install /etc/init.d/bb-install 0755 0 0
 slink /etc/start/05procfs /etc/init.d/procfs 0755 0 0
 slink /etc/start/06sysfs /etc/init.d/sysfs 0755 0 0
 slink /etc/start/07hostname /etc/init.d/hostname 0755 0 0
+#slink /etc/start/08debug_modversion_mismatch /etc/init.d/debug_modversion_mismatch 0755 0 0
 slink /etc/start/10udev /etc/init.d/udev 0755 0 0
 slink /etc/start/15syslogd /etc/init.d/syslogd 0755 0 0
 slink /etc/start/16klogd /etc/init.d/klogd 0755 0 0
