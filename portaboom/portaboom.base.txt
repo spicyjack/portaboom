@@ -69,7 +69,7 @@ dir /usr/share/udhcpc 0755 0 0
 file /usr/share/udhcpc/default.script :BUILD_BASE:/common/scripts/simple.script 0755 0 0
 # /sbin
 file /sbin/modprobe /sbin/modprobe 0755 0 0
-file /sbin/getty /sbin/getty 0755 0 0
+#file /sbin/getty /sbin/getty 0755 0 0
 # /usr/bin
 # a script that runs nslookup
 file /usr/bin/host :BUILD_BASE:/common/scripts/host.sh 0755 0 0
