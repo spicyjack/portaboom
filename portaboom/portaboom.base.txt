@@ -11,7 +11,8 @@ dir /home/nobody 0755 65535 65535
 
 # /bin
 # make sure you get busybox in each project's specific initramfs file list now
-file /bin/busybox :TEMP_DIR:/busybox-1.19.0.git-x86 0755 0 0
+#file /bin/busybox :TEMP_DIR:/busybox-1.19.0.git-x86 0755 0 0
+file /bin/busybox :TEMP_DIR:/busybox-1.14.3-x86-run-parts 0755 0 0
 # busybox getopt hides in /bin
 slink /usr/bin/getopt /bin/getopt 0755 0 0
 # /etc
@@ -69,7 +70,7 @@ dir /usr/share/udhcpc 0755 0 0
 file /usr/share/udhcpc/default.script :BUILD_BASE:/common/scripts/simple.script 0755 0 0
 # /sbin
 file /sbin/modprobe /sbin/modprobe 0755 0 0
-#file /sbin/getty /sbin/getty 0755 0 0
+file /sbin/getty /sbin/getty 0755 0 0
 # /usr/bin
 # a script that runs nslookup
 file /usr/bin/host :BUILD_BASE:/common/scripts/host.sh 0755 0 0
