@@ -2,6 +2,7 @@
 
 # simple systemwide ksh-style profile file
 # busybox sets the below path already
-#PATH=/bin:/sbin:/usr/bin:/usr/sbin
+PATH=$PATH:/usr/games
+GTK2_RC_FILES="/usr/share/themes/Nodoka-Fuego/gtk-2.0/gtkrc"
 LACK_FUNCTIONS="/etc/scripts/lack_functions.sh"
-export LACK_FUNCTIONS
+export PATH GTK2_RC_FILES LACK_FUNCTIONS
