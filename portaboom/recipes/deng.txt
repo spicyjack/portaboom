@@ -1,0 +1,36 @@
+# name: deng
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+
+# Depends: libc6, libcurl3, libgl1-mesa-glx | libgl1, libglu1-mesa | libglu1,
+# libice6, libncurses5, libpng12-0, libsdl-mixer1.2, libsdl-net1.2, 
+# libsdl1.2debian, libsm6, libx11-6, libxext6, zlib1g, timidity
+
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# deng
+dir /usr 755 0 0
+dir /usr/games 755 0 0
+file /usr/games/doomsday /usr/games/doomsday 755 0 0
+dir /usr/share 755 0 0
+dir /usr/share/deng 755 0 0
+dir /usr/share/deng/data 755 0 0
+file /usr/share/deng/data/doomsday.pk3 /usr/share/deng/data/doomsday.pk3 644 0 0
+dir /usr/share/deng/data/jdoom 755 0 0
+file /usr/share/deng/data/jdoom/jdoom.pk3 /usr/share/deng/data/jdoom/jdoom.pk3 644 0 0
+dir /usr/share/deng/data/jheretic 755 0 0
+file /usr/share/deng/data/jheretic/jheretic.pk3 /usr/share/deng/data/jheretic/jheretic.pk3 644 0 0
+dir /usr/share/deng/data/jhexen 755 0 0
+file /usr/share/deng/data/jhexen/jhexen.pk3 /usr/share/deng/data/jhexen/jhexen.pk3 644 0 0
+dir /usr/lib 755 0 0
+file /usr/lib/libdpdehread.so /usr/lib/libdpdehread.so 644 0 0
+file /usr/lib/libdpwadmapconverter.so /usr/lib/libdpwadmapconverter.so 644 0 0
+file /usr/lib/libjdoom.so /usr/lib/libjdoom.so 644 0 0
+file /usr/lib/libjheretic.so /usr/lib/libjheretic.so 644 0 0
+file /usr/lib/libjhexen.so /usr/lib/libjhexen.so 644 0 0
+# vi: set shiftwidth=4 tabstop=4 paste:

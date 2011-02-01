@@ -1,0 +1,49 @@
+# name: eternity
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+
+# Depends: libc6, libsdl-mixer1.2, libsdl-net1.2, libsdl1.2debian
+
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# eternity
+dir /usr 755 0 0
+dir /usr/games 755 0 0
+file /usr/games/eternity /usr/games/eternity 755 0 0
+dir /usr/share 755 0 0
+dir /usr/share/eternity 755 0 0
+dir /usr/share/eternity/base 755 0 0
+dir /usr/share/eternity/base/tnt 755 0 0
+file /usr/share/eternity/base/player.edf /usr/share/eternity/base/player.edf 644 0 0
+file /usr/share/eternity/base/root.edf /usr/share/eternity/base/root.edf 644 0 0
+file /usr/share/eternity/base/startup.wad /usr/share/eternity/base/startup.wad 644 0 0
+dir /usr/share/eternity/base/hacx 755 0 0
+dir /usr/share/eternity/base/doom2 755 0 0
+file /usr/share/eternity/base/things.edf /usr/share/eternity/base/things.edf 644 0 0
+file /usr/share/eternity/base/sprites.edf /usr/share/eternity/base/sprites.edf 644 0 0
+file /usr/share/eternity/base/misc.edf /usr/share/eternity/base/misc.edf 644 0 0
+file /usr/share/eternity/base/sounds.edf /usr/share/eternity/base/sounds.edf 644 0 0
+dir /usr/share/eternity/base/heretic 755 0 0
+file /usr/share/eternity/base/heretic/things.edf /usr/share/eternity/base/heretic/things.edf 644 0 0
+file /usr/share/eternity/base/heretic/sounds.edf /usr/share/eternity/base/heretic/sounds.edf 644 0 0
+file /usr/share/eternity/base/heretic/eternity.wad /usr/share/eternity/base/heretic/eternity.wad 644 0 0
+file /usr/share/eternity/base/heretic/fonts.edf /usr/share/eternity/base/heretic/fonts.edf 644 0 0
+file /usr/share/eternity/base/heretic/frames.edf /usr/share/eternity/base/heretic/frames.edf 644 0 0
+file /usr/share/eternity/base/fonts.edf /usr/share/eternity/base/fonts.edf 644 0 0
+dir /usr/share/eternity/base/doom 755 0 0
+file /usr/share/eternity/base/doom/things.edf /usr/share/eternity/base/doom/things.edf 644 0 0
+file /usr/share/eternity/base/doom/sounds.edf /usr/share/eternity/base/doom/sounds.edf 644 0 0
+file /usr/share/eternity/base/doom/eternity.wad /usr/share/eternity/base/doom/eternity.wad 644 0 0
+file /usr/share/eternity/base/doom/fonts.edf /usr/share/eternity/base/doom/fonts.edf 644 0 0
+file /usr/share/eternity/base/doom/frames.edf /usr/share/eternity/base/doom/frames.edf 644 0 0
+file /usr/share/eternity/base/cast.edf /usr/share/eternity/base/cast.edf 644 0 0
+file /usr/share/eternity/base/terrain.edf /usr/share/eternity/base/terrain.edf 644 0 0
+dir /usr/share/eternity/base/shots 755 0 0
+dir /usr/share/eternity/base/plutonia 755 0 0
+file /usr/share/eternity/base/frames.edf /usr/share/eternity/base/frames.edf 644 0 0
+# vi: set shiftwidth=4 tabstop=4 paste:
