@@ -4,7 +4,10 @@
 # helpcommand: /usr/bin/somebin --help
 # versioncommand: /usr/bin/somebin --version
 # examplecommand: /usr/bin/somebin -x -y -z 10
-#
+
+# Depends: libc6, libsdl-mixer1.2, libsdl-net1.2, libsdl1.2debian,
+# libvorbisfile3, libvorbis0a, libogg0, libsmpeg0
+
 # dir <name> <mode> <uid> <gid>
 # file <name> <source> <mode> <uid> <gid>
 # slink <new name> <original file> <mode> <uid> <gid>

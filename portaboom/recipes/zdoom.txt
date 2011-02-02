@@ -4,7 +4,10 @@
 # helpcommand: /usr/bin/somebin --help
 # versioncommand: /usr/bin/somebin --version
 # examplecommand: /usr/bin/somebin -x -y -z 10
-#
+
+# Depends: libbz2-1.0, libc6, libgcc1, libjpeg62, libsdl1.2debian, libstdc++6
+# zlib1g, libfmodex4
+
 # dir <name> <mode> <uid> <gid>
 # file <name> <source> <mode> <uid> <gid>
 # slink <new name> <original file> <mode> <uid> <gid>
