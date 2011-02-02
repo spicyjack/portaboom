@@ -21,8 +21,8 @@ dir /usr/share/applications 755 0 0
 dir /usr/share/games 755 0 0
 dir /usr/share/games/doom 755 0 0
 file /usr/share/games/doom/remood.wad /usr/share/games/doom/remood.wad 644 0 0
-dir /usr/share/menu 755 0 0
-file /usr/share/menu/remood /usr/share/menu/remood 644 0 0
+#dir /usr/share/menu 755 0 0
+#file /usr/share/menu/remood /usr/share/menu/remood 644 0 0
 dir /usr/games 755 0 0
 file /usr/games/remood /usr/games/remood 755 0 0
 # vi: set shiftwidth=4 tabstop=4 paste:
