@@ -17,11 +17,6 @@
 # odamex
 dir /usr 755 0 0
 dir /usr/games 755 0 0
-file /usr/games/odasrv /usr/games/odasrv 755 0 0
-file /usr/games/odamex /usr/games/odamex 755 0 0
-#file /usr/games/odalaunch /usr/games/odalaunch 755 0 0
-dir /usr/share 755 0 0
-dir /usr/share/doom 755 0 0
-file /usr/share/doom/odamex.wad /usr/share/doom/odamex.wad 755 0 0
+file /usr/games/odalaunch /usr/games/odalaunch 755 0 0
 # vi: set shiftwidth=4 tabstop=4 paste:
 
