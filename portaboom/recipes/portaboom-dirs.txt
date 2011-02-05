@@ -15,4 +15,7 @@ dir /usr/share/games 0755 0 0
 dir /usr/share/games/doom 0755 0 0
 dir /usr/share/games/quake 0755 0 0
 dir /usr/share/doom 0755 0 0
+# FIXME hack to get wad/pak files in the correct places
+slink /usr/share/games/doom/zdoom.pk3 /usr/share/zdoom/zdoom.pk3 644 0 0
+slink /usr/share/games/doom/odamex.wad /usr/share/doom/odamex.wad 755 0 0
 # vi: set sw=4 ts=4 paste:

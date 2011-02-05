@@ -48,4 +48,76 @@ slink /usr/lib/libk5crypto.so.3 /usr/lib/libk5crypto.so.3.1 777 0 0
 slink /usr/lib/libkrb4.so.2 /usr/lib/libkrb4.so.2.0 777 0 0
 slink /usr/lib/libkrb5.so.3 /usr/lib/libkrb5.so.3.3 777 0 0
 slink /usr/lib/libkrb5support.so.0 /usr/lib/libkrb5support.so.0.1 777 0 0
+# libkeyutils1
+dir /lib 755 0 0
+file /lib/libkeyutils-1.2.so /lib/libkeyutils-1.2.so 644 0 0
+slink /lib/libkeyutils.so.1 /lib/libkeyutils-1.2.so 777 0 0
+# vi: set shiftwidth=4 tabstop=4 paste:
+# libsasl2-2
+dir /usr/lib 755 0 0
+dir /usr/lib/sasl2 755 0 0
+file /usr/lib/sasl2/libsasldb.a /usr/lib/sasl2/libsasldb.a 644 0 0
+file /usr/lib/sasl2/libsasldb.so.2.0.22 /usr/lib/sasl2/libsasldb.so.2.0.22 644 0 0
+file /usr/lib/sasl2/libsasldb.la /usr/lib/sasl2/libsasldb.la 644 0 0
+file /usr/lib/libsasl2.so.2.0.22 /usr/lib/libsasl2.so.2.0.22 644 0 0
+slink /usr/lib/sasl2/libsasldb.so.2 /usr/lib/sasl2/libsasldb.so.2.0.22 777 0 0
+slink /usr/lib/sasl2/libsasldb.so /usr/lib/sasl2/libsasldb.so.2.0.22 777 0 0
+slink /usr/lib/libsasl2.so.2 /usr/lib/libsasl2.so.2.0.22 777 0 0
+# libgpg-error0
+file /usr/lib/libgpg-error.so.0.3.0 /usr/lib/libgpg-error.so.0.3.0 644 0 0
+dir /usr/share/locale 755 0 0
+dir /usr/share/locale/de 755 0 0
+dir /usr/share/locale/de/LC_MESSAGES 755 0 0
+file /usr/share/locale/de/LC_MESSAGES/libgpg-error.mo /usr/share/locale/de/LC_MESSAGES/libgpg-error.mo 644 0 0
+dir /usr/share/locale/pl 755 0 0
+dir /usr/share/locale/pl/LC_MESSAGES 755 0 0
+file /usr/share/locale/pl/LC_MESSAGES/libgpg-error.mo /usr/share/locale/pl/LC_MESSAGES/libgpg-error.mo 644 0 0
+dir /usr/share/locale/ro 755 0 0
+dir /usr/share/locale/ro/LC_MESSAGES 755 0 0
+file /usr/share/locale/ro/LC_MESSAGES/libgpg-error.mo /usr/share/locale/ro/LC_MESSAGES/libgpg-error.mo 644 0 0
+dir /usr/share/locale/fr 755 0 0
+dir /usr/share/locale/fr/LC_MESSAGES 755 0 0
+file /usr/share/locale/fr/LC_MESSAGES/libgpg-error.mo /usr/share/locale/fr/LC_MESSAGES/libgpg-error.mo 644 0 0
+dir /usr/share/locale/vi 755 0 0
+dir /usr/share/locale/vi/LC_MESSAGES 755 0 0
+file /usr/share/locale/vi/LC_MESSAGES/libgpg-error.mo /usr/share/locale/vi/LC_MESSAGES/libgpg-error.mo 644 0 0
+slink /usr/lib/libgpg-error.so.0 /usr/lib/libgpg-error.so.0.3.0 777 0 0
+# libgcrypt11
+file /usr/lib/libgcrypt.so.11.4.4 /usr/lib/libgcrypt.so.11.4.4 644 0 0
+slink /usr/lib/libgcrypt.so.11 /usr/lib/libgcrypt.so.11.4.4 777 0 0
+# libgnutls26
+file /usr/lib/libgnutls-extra.so.26.4.6 /usr/lib/libgnutls-extra.so.26.4.6 644 0 0
+file /usr/lib/libgnutls.so.26.4.6 /usr/lib/libgnutls.so.26.4.6 644 0 0
+file /usr/lib/libgnutls-openssl.so.26.4.6 /usr/lib/libgnutls-openssl.so.26.4.6 644 0 0
+dir /usr/share/locale 755 0 0
+dir /usr/share/locale/en@boldquot 755 0 0
+dir /usr/share/locale/en@boldquot/LC_MESSAGES 755 0 0
+file /usr/share/locale/en@boldquot/LC_MESSAGES/gnutls26.mo /usr/share/locale/en@boldquot/LC_MESSAGES/gnutls26.mo 644 0 0
+dir /usr/share/locale/ms 755 0 0
+dir /usr/share/locale/ms/LC_MESSAGES 755 0 0
+file /usr/share/locale/ms/LC_MESSAGES/gnutls26.mo /usr/share/locale/ms/LC_MESSAGES/gnutls26.mo 644 0 0
+dir /usr/share/locale/nl 755 0 0
+dir /usr/share/locale/nl/LC_MESSAGES 755 0 0
+file /usr/share/locale/nl/LC_MESSAGES/gnutls26.mo /usr/share/locale/nl/LC_MESSAGES/gnutls26.mo 644 0 0
+dir /usr/share/locale/sv 755 0 0
+dir /usr/share/locale/sv/LC_MESSAGES 755 0 0
+file /usr/share/locale/sv/LC_MESSAGES/gnutls26.mo /usr/share/locale/sv/LC_MESSAGES/gnutls26.mo 644 0 0
+dir /usr/share/locale/vi 755 0 0
+dir /usr/share/locale/vi/LC_MESSAGES 755 0 0
+file /usr/share/locale/vi/LC_MESSAGES/gnutls26.mo /usr/share/locale/vi/LC_MESSAGES/gnutls26.mo 644 0 0
+dir /usr/share/locale/en@quot 755 0 0
+dir /usr/share/locale/en@quot/LC_MESSAGES 755 0 0
+file /usr/share/locale/en@quot/LC_MESSAGES/gnutls26.mo /usr/share/locale/en@quot/LC_MESSAGES/gnutls26.mo 644 0 0
+dir /usr/share/locale/de 755 0 0
+dir /usr/share/locale/de/LC_MESSAGES 755 0 0
+file /usr/share/locale/de/LC_MESSAGES/gnutls26.mo /usr/share/locale/de/LC_MESSAGES/gnutls26.mo 644 0 0
+dir /usr/share/locale/pl 755 0 0
+dir /usr/share/locale/pl/LC_MESSAGES 755 0 0
+file /usr/share/locale/pl/LC_MESSAGES/gnutls26.mo /usr/share/locale/pl/LC_MESSAGES/gnutls26.mo 644 0 0
+slink /usr/lib/libgnutls-openssl.so.26 /usr/lib/libgnutls-openssl.so.26.4.6 777 0 0
+slink /usr/lib/libgnutls.so.26 /usr/lib/libgnutls.so.26.4.6 777 0 0
+slink /usr/lib/libgnutls-extra.so.26 /usr/lib/libgnutls-extra.so.26.4.6 777 0 0
+# libtasn1-3
+file /usr/lib/libtasn1.so.3.0.15 /usr/lib/libtasn1.so.3.0.15 644 0 0
+slink /usr/lib/libtasn1.so.3 /usr/lib/libtasn1.so.3.0.15 777 0 0
 # vi: set shiftwidth=4 tabstop=4 paste:
