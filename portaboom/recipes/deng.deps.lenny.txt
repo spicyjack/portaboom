@@ -1,0 +1,51 @@
+# name: deng.deps.lenny.txt
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+#
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+dir /usr 755 0 0
+dir /usr/lib 755 0 0
+dir /usr/share 755 0 0
+# libidn11
+file /usr/lib/libidn.so.11.5.37 /usr/lib/libidn.so.11.5.37 644 0 0
+file /usr/lib/libidn.la /usr/lib/libidn.la 644 0 0
+slink /usr/lib/libidn.so.11 /usr/lib/libidn.so.11.5.37 777 0 0
+# libssh2-1
+file /usr/lib/libssh2.so.1.0.0 /usr/lib/libssh2.so.1.0.0 644 0 0
+slink /usr/lib/libssh2.so.1 /usr/lib/libssh2.so.1.0.0 777 0 0
+# libldap-2.4-2
+dir /etc 755 0 0
+dir /etc/ldap 755 0 0
+file /etc/ldap/ldap.conf /etc/ldap/ldap.conf 644 0 0
+file /usr/lib/libldap_r-2.4.so.2.1.0 /usr/lib/libldap_r-2.4.so.2.1.0 644 0 0
+file /usr/lib/liblber-2.4.so.2.1.0 /usr/lib/liblber-2.4.so.2.1.0 644 0 0
+slink /usr/lib/libldap-2.4.so.2 /usr/lib/libldap_r-2.4.so.2.1.0 777 0 0
+slink /usr/lib/libldap_r-2.4.so.2 /usr/lib/libldap_r-2.4.so.2.1.0 777 0 0
+slink /usr/lib/liblber-2.4.so.2 /usr/lib/liblber-2.4.so.2.1.0 777 0 0
+# libkrb53
+dir /usr/lib/krb5 755 0 0
+dir /usr/lib/krb5/plugins 755 0 0
+dir /usr/lib/krb5/plugins/krb5 755 0 0
+file /usr/lib/libdes425.so.3.0 /usr/lib/libdes425.so.3.0 644 0 0
+file /usr/lib/libgssapi_krb5.so.2.2 /usr/lib/libgssapi_krb5.so.2.2 644 0 0
+file /usr/lib/libk5crypto.so.3.1 /usr/lib/libk5crypto.so.3.1 644 0 0
+file /usr/lib/libkrb4.so.2.0 /usr/lib/libkrb4.so.2.0 644 0 0
+file /usr/lib/libkrb5.so.3.3 /usr/lib/libkrb5.so.3.3 644 0 0
+file /usr/lib/libkrb5support.so.0.1 /usr/lib/libkrb5support.so.0.1 644 0 0
+#dir /usr/share 755 0 0
+#dir /usr/share/lintian 755 0 0
+#dir /usr/share/lintian/overrides 755 0 0
+#file /usr/share/lintian/overrides/libkrb53 /usr/share/lintian/overrides/libkrb53 644 0 0
+slink /usr/lib/libdes425.so.3 /usr/lib/libdes425.so.3.0 777 0 0
+slink /usr/lib/libgssapi_krb5.so.2 /usr/lib/libgssapi_krb5.so.2.2 777 0 0
+slink /usr/lib/libk5crypto.so.3 /usr/lib/libk5crypto.so.3.1 777 0 0
+slink /usr/lib/libkrb4.so.2 /usr/lib/libkrb4.so.2.0 777 0 0
+slink /usr/lib/libkrb5.so.3 /usr/lib/libkrb5.so.3.3 777 0 0
+slink /usr/lib/libkrb5support.so.0 /usr/lib/libkrb5support.so.0.1 777 0 0
+# vi: set shiftwidth=4 tabstop=4 paste:
