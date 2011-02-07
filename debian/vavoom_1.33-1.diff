@@ -1,0 +1,234 @@
+--- vavoom-1.33.orig/debian/compat
++++ vavoom-1.33/debian/compat
+@@ -0,0 +1 @@
++7
+--- vavoom-1.33.orig/debian/menu
++++ vavoom-1.33/debian/menu
+@@ -0,0 +1,2 @@
++?package(vavoom):needs="X11|text|vc|wm" section="Applications/see-menu-manual"\
++  title="vavoom" command="/usr/bin/vavoom"
+--- vavoom-1.33.orig/debian/rules
++++ vavoom-1.33/debian/rules
+@@ -0,0 +1,84 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++# Sample debian/rules that uses debhelper.
++# This file was originally written by Joey Hess and Craig Small.
++# As a special exception, when this file is copied by dh-make into a
++# dh-make output file, you may use that output file without restriction.
++# This special exception was added by Craig Small in version 0.37 of dh-make.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++builddir/Makefile:
++	dh_testdir
++	# Add here commands to configure the package.
++	/bin/sh fixunix.sh
++	mkdir -p builddir
++	cd builddir && cmake .. -DCMAKE_INSTALL_PREFIX=../debian/vavoom/usr -DCMAKE_C_FLAGS="$(CFLAGS)" -DCMAKE_LD_FLAGS="-Wl,-z,defs" -DCMAKE_CXX_FLAGS="$(CXXFLAGS)" -DCMAKE_SKIP_RPATH=ON -DCMAKE_VERBOSE_MAKEFILE=ON
++
++build: build-stamp
++
++build-stamp:  builddir/Makefile 
++	dh_testdir
++
++	# Add here commands to compile the package.
++	$(MAKE) -C builddir
++	touch $@
++
++clean: 
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp 
++
++	# Add here commands to clean up after the build process.
++	rm -rf builddir
++	dh_clean 
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_prep  
++	dh_installdirs
++
++	# Add here commands to install the package into debian/vavoom.
++	#$(MAKE) -C builddir DESTDIR=$(CURDIR)/debian/vavoom install
++	$(MAKE) -C builddir install
++	mv debian/vavoom/usr/bin/* debian/vavoom/usr/games; rmdir debian/vavoom/usr/bin
++
++# Build architecture-independent files here.
++binary-indep: install
++# We have nothing to do by default.
++
++# Build architecture-dependent files here.
++binary-arch: install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs 
++	dh_installdocs
++	dh_installexamples
++#	dh_install
++#	dh_installmenu
++#	dh_installdebconf
++#	dh_installlogrotate
++#	dh_installemacsen
++#	dh_installpam
++#	dh_installmime
++#	dh_python
++#	dh_installinit
++#	dh_installcron
++#	dh_installinfo
++	dh_installman
++	dh_link
++	dh_strip
++	dh_compress
++	dh_fixperms
++#	dh_perl
++#	dh_makeshlibs
++	dh_installdeb
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install 
+--- vavoom-1.33.orig/debian/dirs
++++ vavoom-1.33/debian/dirs
+@@ -0,0 +1 @@
++usr/games
+--- vavoom-1.33.orig/debian/vavoom.doc-base.EX
++++ vavoom-1.33/debian/vavoom.doc-base.EX
+@@ -0,0 +1,20 @@
++Document: vavoom
++Title: Debian vavoom Manual
++Author: <insert document author here>
++Abstract: This manual describes what vavoom is
++ and how it can be used to
++ manage online manuals on Debian systems.
++Section: unknown
++
++Format: debiandoc-sgml
++Files: /usr/share/doc/vavoom/vavoom.sgml.gz
++
++Format: postscript
++Files: /usr/share/doc/vavoom/vavoom.ps.gz
++
++Format: text
++Files: /usr/share/doc/vavoom/vavoom.text.gz
++
++Format: HTML
++Index: /usr/share/doc/vavoom/html/index.html
++Files: /usr/share/doc/vavoom/html/*.html
+--- vavoom-1.33.orig/debian/copyright
++++ vavoom-1.33/debian/copyright
+@@ -0,0 +1,42 @@
++This package was debianized by:
++
++    Brian Manning <brian@portaboom.com> on Thu, 24 Jun 2010 18:27:20 -0700
++
++It was downloaded from:
++
++    <http://vavoom-engine.com/download.php>
++
++Upstream Author(s):
++
++    Jānis Legzdiņš <vavoom@vavoom-engine.com>
++
++Copyright:
++
++    Copyright (C) 1993-1996 by id Software, Inc.
++    Copyright (C) 1999-2006 Jānis Legzdiņš
++
++License:
++
++    This package is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This package is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this package; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
++
++On Debian systems, the complete text of the GNU General
++Public License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
++
++The Debian packaging is:
++
++    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
++
++and is licensed under the GPL version 2, 
++see `/usr/share/common-licenses/GPL-2'.
+--- vavoom-1.33.orig/debian/control
++++ vavoom-1.33/debian/control
+@@ -0,0 +1,19 @@
++Source: vavoom
++Section: games
++Priority: optional
++Maintainer: Brian Manning <brian@portaboom.com>
++Build-Depends: debhelper (>= 7), cmake, libflac++-dev
++Standards-Version: 3.8.1
++Homepage: http://vavoom-engine.com/
++
++Package: vavoom
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}
++Description: A source port of Doom based on Doom/Heretic/Hexen/Quake.
++ Vavoom is a source port based on sources of Doom, Heretic, Hexen and a little
++ bit from Quake. Features support higher (and lower) resolutions, 16 and 32
++ bit colours for all the drivers, 24 bit for OpenGL and Direct3D,
++ polygon-based software rendering, OpenGL rendering, lightmapped lighting,
++ static light sources with sight checking (i.e. true shadows), dynamic
++ lighting, colored lighting, specular highlights, particles, mipmapping,
++ skyboxes, freelook, zooming, jumping and models.
+--- vavoom-1.33.orig/debian/changelog
++++ vavoom-1.33/debian/changelog
+@@ -0,0 +1,11 @@
++vavoom (1.33-1) unstable; urgency=low
++
++  * New upstream version
++
++ -- Brian Manning <brian@portaboom.com>  Mon, 07 Feb 2011 01:07:50 -0800
++
++vavoom (1.32-1) unstable; urgency=low
++
++  * Initial packaging.
++
++ -- Brian Manning <brian@portaboom.com>  Thu, 24 Jun 2010 18:27:20 -0700
+--- vavoom-1.33.orig/debian/watch
++++ vavoom-1.33/debian/watch
+@@ -0,0 +1,23 @@
++# Example watch control file for uscan
++# Rename this file to "watch" and then you can run the "uscan" command
++# to check for upstream updates and more.
++# See uscan(1) for format
++
++# Compulsory line, this is a version 3 file
++version=3
++
++# Uncomment to examine a Webpage
++# <Webpage URL> <string match>
++#http://www.example.com/downloads.php vavoom-(.*)\.tar\.gz
++
++# Uncomment to examine a Webserver directory
++#http://www.example.com/pub/vavoom-(.*)\.tar\.gz
++
++# Uncommment to examine a FTP server
++#ftp://ftp.example.com/pub/vavoom-(.*)\.tar\.gz debian uupdate
++
++# Uncomment to find new files on sourceforge, for devscripts >= 2.9
++http://sf.net/vavoom/vavoom-(.*)\.tar\.gz
++
++# Uncomment to find new files on GooglePages
++# http://example.googlepages.com/foo.html vavoom-(.*)\.tar\.gz
+--- vavoom-1.33.orig/debian/docs
++++ vavoom-1.33/debian/docs
+@@ -0,0 +1 @@
++docs/*

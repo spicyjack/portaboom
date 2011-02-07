@@ -1,0 +1,297 @@
+--- doom-legacy-1.44.r778.orig/debian/doom-legacy.doc-base.EX
++++ doom-legacy-1.44.r778/debian/doom-legacy.doc-base.EX
+@@ -0,0 +1,20 @@
++Document: doom-legacy
++Title: Debian doom-legacy Manual
++Author: <insert document author here>
++Abstract: This manual describes what doom-legacy is
++ and how it can be used to
++ manage online manuals on Debian systems.
++Section: unknown
++
++Format: debiandoc-sgml
++Files: /usr/share/doc/doom-legacy/doom-legacy.sgml.gz
++
++Format: postscript
++Files: /usr/share/doc/doom-legacy/doom-legacy.ps.gz
++
++Format: text
++Files: /usr/share/doc/doom-legacy/doom-legacy.text.gz
++
++Format: HTML
++Index: /usr/share/doc/doom-legacy/html/index.html
++Files: /usr/share/doc/doom-legacy/html/*.html
+--- doom-legacy-1.44.r778.orig/debian/docs
++++ doom-legacy-1.44.r778/debian/docs
+@@ -0,0 +1,2 @@
++ChangeLog.txt
++files.txt
+--- doom-legacy-1.44.r778.orig/debian/dirs
++++ doom-legacy-1.44.r778/debian/dirs
+@@ -0,0 +1 @@
++usr/games
+--- doom-legacy-1.44.r778.orig/debian/compat
++++ doom-legacy-1.44.r778/debian/compat
+@@ -0,0 +1 @@
++7
+--- doom-legacy-1.44.r778.orig/debian/manpage.1.ex
++++ doom-legacy-1.44.r778/debian/manpage.1.ex
+@@ -0,0 +1,59 @@
++.\"                                      Hey, EMACS: -*- nroff -*-
++.\" First parameter, NAME, should be all caps
++.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
++.\" other parameters are allowed: see man(7), man(1)
++.TH DOOM-LEGACY SECTION "September 29, 2010"
++.\" Please adjust this date whenever revising the manpage.
++.\"
++.\" Some roff macros, for reference:
++.\" .nh        disable hyphenation
++.\" .hy        enable hyphenation
++.\" .ad l      left justify
++.\" .ad b      justify to both left and right margins
++.\" .nf        disable filling
++.\" .fi        enable filling
++.\" .br        insert line break
++.\" .sp <n>    insert n+1 empty lines
++.\" for manpage-specific macros, see man(7)
++.SH NAME
++doom-legacy \- program to do something
++.SH SYNOPSIS
++.B doom-legacy
++.RI [ options ] " files" ...
++.br
++.B bar
++.RI [ options ] " files" ...
++.SH DESCRIPTION
++This manual page documents briefly the
++.B doom-legacy
++and
++.B bar
++commands.
++.PP
++.\" TeX users may be more comfortable with the \fB<whatever>\fP and
++.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
++.\" respectively.
++\fBdoom-legacy\fP is a program that...
++.SH OPTIONS
++These programs follow the usual GNU command line syntax, with long
++options starting with two dashes (`-').
++A summary of options is included below.
++For a complete description, see the Info files.
++.TP
++.B \-h, \-\-help
++Show summary of options.
++.TP
++.B \-v, \-\-version
++Show version of program.
++.SH SEE ALSO
++.BR bar (1),
++.BR baz (1).
++.br
++The programs are documented fully by
++.IR "The Rise and Fall of a Fooish Bar" ,
++available via the Info system.
++.SH AUTHOR
++doom-legacy was written by <upstream author>.
++.PP
++This manual page was written by Brian Manning <brian@portaboom.com>,
++for the Debian project (and may be used by others).
+--- doom-legacy-1.44.r778.orig/debian/copyright
++++ doom-legacy-1.44.r778/debian/copyright
+@@ -0,0 +1,46 @@
++This package was debianized by:
++
++    Brian Manning <brian@portaboom.com> on Wed, 29 Sep 2010 17:56:20 -0700
++
++It was downloaded from:
++
++    <http://legacywiki.net/index.php/Main_Page>
++
++Upstream Author(s):
++
++    Boris Pereira
++    Fabrice "faB" Denis
++    Thierry "Hurdler" Van Elsuwé
++    Ville "smite-meister" Bergholm
++    Steven "SoM" McGranahan
++
++Copyright:
++
++    <Copyright (C) 1993-1996 by id Software, Inc.>
++    <Copyright (C) 1998-2010 by DooM Legacy Team>
++
++License:
++
++    This package is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This package is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this package; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
++
++On Debian systems, the complete text of the GNU General
++Public License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
++
++The Debian packaging is:
++
++    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
++
++and is licensed under the GPL version 3, 
++see `/usr/share/common-licenses/GPL-3'.
+--- doom-legacy-1.44.r778.orig/debian/menu
++++ doom-legacy-1.44.r778/debian/menu
+@@ -0,0 +1,2 @@
++?package(doom-legacy):needs="X11" section="Applications/Games"\
++  title="doom-legacy" command="/usr/bin/doom-legacy"
+--- doom-legacy-1.44.r778.orig/debian/watch
++++ doom-legacy-1.44.r778/debian/watch
+@@ -0,0 +1,23 @@
++# Example watch control file for uscan
++# Rename this file to "watch" and then you can run the "uscan" command
++# to check for upstream updates and more.
++# See uscan(1) for format
++
++# Compulsory line, this is a version 3 file
++version=3
++
++# Uncomment to examine a Webpage
++# <Webpage URL> <string match>
++#http://www.example.com/downloads.php doom-legacy-(.*)\.tar\.gz
++
++# Uncomment to examine a Webserver directory
++#http://www.example.com/pub/doom-legacy-(.*)\.tar\.gz
++
++# Uncommment to examine a FTP server
++#ftp://ftp.example.com/pub/doom-legacy-(.*)\.tar\.gz debian uupdate
++
++# Uncomment to find new files on sourceforge, for devscripts >= 2.9
++# http://sf.net/doom-legacy/doom-legacy-(.*)\.tar\.gz
++
++# Uncomment to find new files on GooglePages
++# http://example.googlepages.com/foo.html doom-legacy-(.*)\.tar\.gz
+--- doom-legacy-1.44.r778.orig/debian/control
++++ doom-legacy-1.44.r778/debian/control
+@@ -0,0 +1,14 @@
++Source: doom-legacy
++Section: games
++Priority: optional
++Maintainer: Brian Manning <brian@portaboom.com>
++Build-Depends: debhelper (>= 7), libsdl-mixer1.2-dev, libsdl-net1.2-dev
++Standards-Version: 3.8.1
++Homepage: http://legacywiki.net/index.php/Main_Page
++
++Package: doom-legacy
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}, libsdl1.2debian, libsdl-mixer1.2, libsdl-net1.2, libvorbisfile3, libvorbis0a, libogg0, libsmpeg0
++Description: Doom Legacy is a source port of Doom.
++ Legacy was originally written as a fork of DOSDoom introducing mouse-look,
++ jumping, a console, 32 player deathmatch, skins and a native win32 mode. 
+--- doom-legacy-1.44.r778.orig/debian/rules
++++ doom-legacy-1.44.r778/debian/rules
+@@ -0,0 +1,90 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++# Sample debian/rules that uses debhelper.
++# This file was originally written by Joey Hess and Craig Small.
++# As a special exception, when this file is copied by dh-make into a
++# dh-make output file, you may use that output file without restriction.
++# This special exception was added by Craig Small in version 0.37 of dh-make.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++configure: configure-stamp
++configure-stamp:
++	dh_testdir
++	# Add here commands to configure the package.
++
++	touch configure-stamp
++
++
++build: build-stamp
++
++build-stamp: configure-stamp  
++	dh_testdir
++	mkdir ../bin
++	# Add here commands to compile the package.
++	$(MAKE)
++	#docbook-to-man debian/doom-legacy.sgml > doom-legacy.1
++
++	touch $@
++
++clean: 
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp configure-stamp
++	rm -f debian/files
++	rm -rf ../objs ../bin
++	rm -rf debian/doom-legacy
++	# Add here commands to clean up after the build process.
++	#$(MAKE) clean
++
++	#dh_clean 
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_prep  
++	dh_installdirs
++	# Add here commands to install the package into debian/doom-legacy.
++	#$(MAKE) DESTDIR=$(CURDIR)/debian/doom-legacy install
++	mv ../bin/doomlegacy debian/doom-legacy/usr/games/doom-legacy
++	mkdir -p debian/doom-legacy/usr/share/games/doom
++	cp ../legacy.wad debian/doom-legacy/usr/share/games/doom
++
++# Build architecture-independent files here.
++binary-indep: install
++# We have nothing to do by default.
++
++# Build architecture-dependent files here.
++binary-arch: install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs ChangeLog.txt
++	dh_installdocs
++	dh_installexamples
++#	dh_install
++#	dh_installmenu
++#	dh_installdebconf
++#	dh_installlogrotate
++#	dh_installemacsen
++#	dh_installpam
++#	dh_installmime
++#	dh_python
++#	dh_installinit
++#	dh_installcron
++#	dh_installinfo
++	dh_installman
++	dh_link
++	dh_strip
++	dh_compress
++	dh_fixperms
++#	dh_perl
++#	dh_makeshlibs
++	dh_installdeb
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install configure
+--- doom-legacy-1.44.r778.orig/debian/changelog
++++ doom-legacy-1.44.r778/debian/changelog
+@@ -0,0 +1,6 @@
++doom-legacy (1.44.r778-1) unstable; urgency=low
++
++  * New version from upstream SVN tag
++
++ -- Brian Manning <brian@portaboom.com>  Sun, 06 Feb 2011 22:40:42 -0800
++

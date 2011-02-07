@@ -1,0 +1,3042 @@
+--- odamex-0.5.1.orig/Makefile
++++ odamex-0.5.1/Makefile
+@@ -1,339 +1,341 @@
+-# Setup tools
+-SHELL = /bin/sh
+-OBJDIR = obj
+-# denis - fixme - remove mkdir -p
+-MKDIR = mkdir -p
+-CC = g++
+-LD = g++
+-INSTALL = cp
+-DEUTEX = deutex
+-
+-# Detect OS
+-win32     := false
+-freebsd   := false
+-linux     := false
+-mingw	  := false
+-bigendian := false
+-cygwin	  := false
+-osx     := false
+-solaris	:= false
+-
+-ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "FreeBSD")),)
+- freebsd = true
+-endif
+-
+-ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "Linux")),)
+- linux = true
+-endif
+-
+-ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "linux")),)
+- linux = true
+-endif
+-
+-ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "mingw")),)
+- win32 = true
+- mingw = true
+-endif
+-
+-ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "target=powerpc")),)
+- bigendian = true
+-endif
+-
+-ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "Apple Computer, Inc")),)
+- osx = true
+-endif
+-
+-ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "cygming")),)
+- cygwin = true
+-endif
+-
+-ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "solaris")),)
+- solaris = true
+-endif
+-
+-# warn if using non-gnu make
+-
+-ifeq ($(strip $(shell make -v |grep "GNU")),)
+- $(warning WARNING: You are using non-gnu make, try "gmake" if build fails)
+-endif
+-
+-# Flags to deutex
+-
+-DEUTEX_FLAGS = -rgb 0 255 255 
+-
+-# Platform and sdl-config flags
+-X11_LFLAGS = -L/usr/X11R6/lib -lX11
+-
+-SDL_CFLAGS_COMMAND = sdl-config --cflags
+-SDL_LFLAGS_COMMAND = sdl-config --libs
+-
+-SDL_DETECT = sdl-config --version
+-SDL_CFLAGS = $(shell $(SDL_CFLAGS_COMMAND))
+-SDL_LFLAGS = $(shell $(SDL_LFLAGS_COMMAND)) $(X11_LFLAGS)
+-
+-CFLAGS_PLATFORM = -DUNIX
+-LFLAGS_PLATFORM =
+-
+-ifeq ($(strip $(osx)), true)
+-# osx does not use X11 for copy&paste, it uses Carbon
+-CFLAGS_PLATFORM = -DUNIX -DOSX
+-LFLAGS_PLATFORM =
+-OSX_FRAMEWORKS = -framework Carbon -framework AudioToolbox -framework AudioUnit
+-SDL_LFLAGS := $(SDL_LFLAGS) $(OSX_FRAMEWORKS)
+-X11_LFLAGS = 
+-endif
+-
+-ifeq ($(strip $(freebsd)), true)
+-ifeq ($(SDL_CFLAGS),)
+-SDL_CFLAGS_COMMAND = sdl11-config --cflags
+-SDL_LFLAGS_COMMAND = sdl11-config --libs
+-SDL_CFLAGS = $(shell $(SDL_CFLAGS_COMMAND))
+-SDL_LFLAGS = $(shell $(SDL_LFLAGS_COMMAND)) $(X11_LFLAGS)
+-endif
+-endif
+-
+-ifeq ($(strip $(cygwin)), true)
+-SDL_CFLAGS = $(shell $(SDL_CFLAGS_COMMAND))
+-SDL_LFLAGS = $(shell $(SDL_LFLAGS_COMMAND))
+-LFLAGS_PLATFORM = -mno-cygwin -lwsock32 -lwinmm
+-CFLAGS_PLATFORM = -mno-cygwin -DWIN32 -D_WIN32
+-endif
+-
+-ifeq ($(strip $(win32)), true)
+-LFLAGS_PLATFORM = -lwsock32
+-CFLAGS_PLATFORM = -DWIN32 -D_WIN32
+-endif
+-
+-ifeq ($(strip $(linux)), true)
+-CFLAGS_PLATFORM = -DUNIX -DLINUX
+-endif
+-
+-ifeq ($(strip $(solaris)), true)
+-LFLAGS_PLATFORM = -lsocket -lnsl
+-CFLAGS_PLATFORM = -DSOLARIS -DUNIX -DBSD_COMP -gstabs+
+-endif
+-
+-ifeq ($(strip $(bigendian)), true)
+-CFLAGS_PLATFORM := $(CFLAGS_PLATFORM) -D__BIG_ENDIAN__
+-endif
+-
+-# Directories
+-BINDIR = .
+-INSTALLDIR = /usr/local/bin
+-RESDIR = /usr/local/share
+-
+-# Textscreen
+-TEXTSCREEN_DIR = textscreen
+-TEXTSCREEN_HEADERS = $(wildcard $(TEXTSCREEN_DIR)/*.h)
+-TEXTSCREEN_SOURCES = $(wildcard $(TEXTSCREEN_DIR)/*.cpp)
+-TEXTSCREEN_OBJS = $(patsubst $(TEXTSCREEN_DIR)/%.cpp,$(OBJDIR)/$(TEXTSCREEN_DIR)/%.o,$(TEXTSCREEN_SOURCES))
+-
+-# Common
+-COMMON_DIR = common
+-COMMON_HEADERS = $(wildcard $(COMMON_DIR)/*.h)
+-COMMON_SOURCES = $(wildcard $(COMMON_DIR)/*.cpp)
+-COMMON_OBJS = $(patsubst $(COMMON_DIR)/%.cpp,$(OBJDIR)/$(COMMON_DIR)/%.o,$(COMMON_SOURCES))
+-COMMON_OBJS_SERVER = $(patsubst $(COMMON_DIR)/%.cpp,$(OBJDIR)/$(COMMON_DIR)/server_%.o,$(COMMON_SOURCES))
+-COMMON_OBJS_CLIENT = $(patsubst $(COMMON_DIR)/%.cpp,$(OBJDIR)/$(COMMON_DIR)/client_%.o,$(COMMON_SOURCES))
+-
+-# Server
+-SERVER_DIR = server/src
+-SERVER_HEADERS = $(wildcard $(SERVER_DIR)/*.h)
+-SERVER_SOURCES = $(wildcard $(SERVER_DIR)/*.cpp)
+-SERVER_OBJS = $(patsubst $(SERVER_DIR)/%.cpp,$(OBJDIR)/$(SERVER_DIR)/%.o,$(SERVER_SOURCES))
+-SERVER_TARGET = $(BINDIR)/odasrv
+-SERVER_CFLAGS = -I../server/src -Iserver/src
+-SERVER_LFLAGS =
+-
+-# Client
+-CLIENT_DIR = client/src
+-CLIENT_HEADERS = $(wildcard $(CLIENT_DIR)/*.h)
+-CLIENT_SOURCES = $(wildcard $(CLIENT_DIR)/*.cpp)
+-CLIENT_OBJS = $(patsubst $(CLIENT_DIR)/%.cpp,$(OBJDIR)/$(CLIENT_DIR)/%.o,$(CLIENT_SOURCES))
+-CLIENT_TARGET = $(BINDIR)/odamex
+-CLIENT_CFLAGS = -I../client/src -Iclient/src
+-CLIENT_LFLAGS =
+-
+-# Master
+-MASTER_DIR = master
+-MASTER_HEADERS = master/i_net.h
+-MASTER_SOURCES = master/i_net.cpp master/main.cpp
+-MASTER_OBJS = $(patsubst $(MASTER_DIR)/%.cpp,$(OBJDIR)/$(MASTER_DIR)/%.o,$(MASTER_SOURCES))
+-MASTER_TARGET = $(BINDIR)/odamaster
+-MASTER_CFLAGS =
+-
+-# WAD file
+-
+-WADFILE_TARGET = $(BINDIR)/odamex.wad
+-
+-# Fix cygwin targets, as they will be postfixed with ".EXE"
+-ifeq ($(strip $(cygwin)), true)
+-SERVER_TARGET := $(SERVER_TARGET).exe
+-CLIENT_TARGET := $(CLIENT_TARGET).exe
+-MASTER_TARGET := $(MASTER_TARGET).exe
+-endif
+-
+-# Targets
+-TARGETS = $(SERVER_TARGET) $(CLIENT_TARGET) $(MASTER_TARGET) $(WADFILE_TARGET)
+-
+-# denis - fixme - cflags are quite messy, but removing these is a very delicate act, also use -Wall -Werror
+-CFLAGS = $(CFLAGS_PLATFORM) -DNOASM -Icommon -g -Wall -O2
+-LFLAGS = $(LFLAGS_PLATFORM)
+-
+-CFLAGS_RELEASE = $(CFLAGS_PLATFORM) -DNOASM -Icommon -O3
+-LFLAGS_RELEASE = $(LFLAGS_PLATFORM)
+-
+-# denis - fixme - mingw32 hack
+-ifeq ("$(findstring mingw32, $(MAKE))","mingw32")
+-SERVER_HEADERS_2 = $(wildcard $(SERVER_DIR)/*.h)
+-SERVER_HEADERS_WIN32 = $(wildcard $(SERVER_DIR)/../win32/*.h)
+-SERVER_SOURCES_2 = $(wildcard $(SERVER_DIR)/*.cpp)
+-SERVER_SOURCES_WIN32 = $(wildcard $(SERVER_DIR)/../win32/*.cpp)
+-SERVER_OBJS = $(patsubst $(SERVER_DIR)/%.cpp,$(OBJDIR)/$(SERVER_DIR)/%.o,$(SERVER_SOURCES_2)) $(patsubst $(SERVER_DIR)/../win32/%.cpp,$(OBJDIR)/$(SERVER_DIR)/../win32/%.o,$(SERVER_SOURCES_WIN32))
+-SERVER_SOURCES = $(SERVER_SOURCES_2) $(SERVER_SOURCES_WIN32)
+-SERVER_HEADERS = $(SERVER_HEADERS_2) $(SERVER_HEADERS_WIN32)
+-SERVER_CFLAGS = -I../server/win32 -Iserver/win32 -I../server/src -Iserver/src
+-MKDIR = echo *** PLEASE CREATE THIS DIRECTORY: 
+-CFLAGS = -D_WIN32 -D_CONSOLE -DNOASM -Icommon -ggdb
+-LFLAGS = -lwsock32 -lwinmm 
+-endif
+-# denis - end fixme - mingw32 hack
+-
+-# denis - fixme - sdl client hack for linux
+-CLIENT_HEADERS_2 = $(wildcard $(CLIENT_DIR)/*.h)
+-CLIENT_HEADERS_WIN32 = $(wildcard $(CLIENT_DIR)/../sdl/*.h)
+-CLIENT_SOURCES_2 = $(wildcard $(CLIENT_DIR)/*.cpp)
+-CLIENT_SOURCES_WIN32 = $(wildcard $(CLIENT_DIR)/../sdl/*.cpp)
+-CLIENT_OBJS = $(patsubst $(CLIENT_DIR)/%.cpp,$(OBJDIR)/$(CLIENT_DIR)/%.o,$(CLIENT_SOURCES_2)) $(patsubst $(CLIENT_DIR)/../sdl/%.cpp,$(OBJDIR)/$(CLIENT_DIR)/../sdl/%.o,$(CLIENT_SOURCES_WIN32))
+-CLIENT_SOURCES = $(CLIENT_SOURCES_2) $(CLIENT_SOURCES_WIN32)
+-CLIENT_HEADERS = $(CLIENT_HEADERS_2) $(CLIENT_HEADERS_WIN32)
+-CLIENT_CFLAGS = -Itextscreen -I../client/sdl -Iclient/sdl -I../client/src -Iclient/src $(SDL_CFLAGS)
+-CLIENT_LFLAGS =  $(SDL_LFLAGS) -lSDL_mixer
+-#-ldmalloc
+-# denis - end fixme
+-
+-# All
+-all: $(SERVER_TARGET) $(CLIENT_TARGET) $(WADFILE_TARGET)
+-
+-# Textscreen
+-$(OBJDIR)/$(TEXTSCREEN_DIR)/%.o: $(TEXTSCREEN_DIR)/%.cpp $(TEXTSCREEN_HEADERS) $(COMMON_HEADERS)
+-	@$(MKDIR) $(dir $@)
+-	$(CC) $(CFLAGS) $(CLIENT_CFLAGS) -c $< -o $@
+-
+-# Common for server
+-$(OBJDIR)/$(COMMON_DIR)/server_%.o: $(COMMON_DIR)/%.cpp $(COMMON_HEADERS) $(SERVER_HEADERS)
+-	@$(MKDIR) $(dir $@)
+-	$(CC) $(CFLAGS) $(SERVER_CFLAGS) -c $< -o $@
+-
+-# Common for client
+-$(OBJDIR)/$(COMMON_DIR)/client_%.o: $(COMMON_DIR)/%.cpp $(COMMON_HEADERS) $(CLIENT_HEADERS)
+-	@$(MKDIR) $(dir $@)
+-	$(CC) $(CFLAGS) $(CLIENT_CFLAGS) -c $< -o $@
+-
+-# Client
+-client: $(CLIENT_TARGET)
+-	@echo Detected SDL: $(shell $(SDL_DETECT))
+-
+-$(CLIENT_TARGET): $(TEXTSCREEN_OBJS) $(COMMON_OBJS_CLIENT) $(CLIENT_OBJS)
+-	$(LD) $(CLIENT_OBJS) $(TEXTSCREEN_OBJS) $(COMMON_OBJS_CLIENT) $(CLIENT_LFLAGS) $(LFLAGS) -o $(CLIENT_TARGET)
+-
+-$(OBJDIR)/$(CLIENT_DIR)/%.o: $(CLIENT_DIR)/%.cpp $(CLIENT_HEADERS) $(COMMON_HEADERS) $(TEXTSCREEN_HEADERS)
+-ifeq ($(SDL_CFLAGS),)
+-	@echo Make sure SDL is installed and sdl-config is accessible
+-	@exit 2
+-endif
+-	@$(MKDIR) $(dir $@)
+-	$(CC) $(CFLAGS) $(CLIENT_CFLAGS) -c $< -o $@
+-
+-# Server
+-server: $(SERVER_TARGET)
+-$(SERVER_TARGET): $(COMMON_OBJS_SERVER) $(SERVER_OBJS)
+-	$(LD) $(SERVER_OBJS) $(COMMON_OBJS_SERVER) $(SERVER_LFLAGS) $(LFLAGS) -o $(SERVER_TARGET)
+-
+-$(OBJDIR)/$(SERVER_DIR)/%.o: $(SERVER_DIR)/%.cpp $(SERVER_HEADERS) $(COMMON_HEADERS)
+-	@$(MKDIR) $(dir $@)
+-	$(CC) $(CFLAGS) $(SERVER_CFLAGS) -c $< -o $@
+-
+-# Master
+-master: $(MASTER_TARGET)
+-$(MASTER_TARGET): $(MASTER_OBJS)
+-	$(LD) $(LFLAGS) $(MASTER_OBJS) -o $(MASTER_TARGET)
+-
+-$(OBJDIR)/$(MASTER_DIR)/%.o: $(MASTER_DIR)/%.cpp
+-	@$(MKDIR) $(dir $@)
+-	$(CC) $(MASTER_CFLAGS) $(CFLAGS) -c $< -o $@
+-
+-$(WADFILE_TARGET) :
+-	(cd wad; $(DEUTEX) $(DEUTEX_FLAGS) -doom2 bootstrap -build wadinfo.txt ../$@)
+-
+-odalaunch/odalaunch:
+-	cd odalaunch && make && cd ..
+-
+-# Checker
+-check: test
+-test: server client
+-	tests/all.tcl
+-
+-# Installer
+-install: $(CLIENT_TARGET) $(SERVER_TARGET) odalaunch/odalaunch
+-	$(MKDIR) $(INSTALLDIR)
+-	$(INSTALL) $(SERVER_TARGET) $(INSTALLDIR)
+-	$(INSTALL) $(CLIENT_TARGET) $(INSTALLDIR)
+-ifneq ($(wildcard $(MASTER_TARGET)),)
+-	$(INSTALL) $(MASTER_TARGET) $(INSTALLDIR)
+-endif
+-	$(INSTALL) odalaunch/odalaunch $(INSTALLDIR)
+-	$(MKDIR) $(RESDIR)/doom
+-	cp odamex.wad $(RESDIR)/doom
+-
+-uninstall:
+-	rm $(INSTALLDIR)/$(CLIENT_TARGET)
+-	rm $(INSTALLDIR)/$(SERVER_TARGET)
+-ifneq ($(wildcard $(INSTALLDIR)/$(MASTER_TARGET)),)
+-	rm $(INSTALLDIR)/$(MASTER_TARGET)
+-endif
+-	rm $(INSTALLDIR)/odalaunch
+-	rm $(RESDIR)/doom/odamex.wad
+-
+-install-res: 
+-	$(MKDIR) $(RESDIR)
+-	$(INSTALL) $(BINDIR)/media/icon_odamex_96.png $(RESDIR)/pixmaps/odamex.png
+-	$(INSTALL) $(BINDIR)/media/icon_odasrv_96.png $(RESDIR)/pixmaps/odasrv.png
+-	$(INSTALL) $(BINDIR)/media/icon_odalaunch_96.png $(RESDIR)/pixmaps/odalaunch.png
+-	$(INSTALL) $(BINDIR)/installer/arch/odamex.desktop $(RESDIR)/applications
+-	$(INSTALL) $(BINDIR)/installer/arch/odalaunch.desktop $(RESDIR)/applications
+-
+-uninstall-res:
+-	rm $(RESDIR)/pixmaps/odalaunch.png
+-	rm $(RESDIR)/pixmaps/odamex.png
+-	rm $(RESDIR)/pixmaps/odasrv.png
+-	rm $(RESDIR)/applications/odamex.desktop
+-	rm $(RESDIR)/applications/odalaunch.desktop
+-
+-# Clean
+-clean:
+-	@rm -rf $(COMMON_OBJS_CLIENT) $(COMMON_OBJS_SERVER) $(SERVER_OBJS) $(CLIENT_OBJS) $(MASTER_OBJS)
+-	@rm -rf $(CLIENT_TARGET)
+-	@rm -rf $(SERVER_TARGET)
+-	@rm -rf $(MASTER_TARGET)
+-
+-# Help
+-help:
+-	@echo ============================
+-	@echo Odamex Makefile help
+-	@echo	============================
+-	@echo To build EVERYTHING: make
+-	@echo To build $(SERVER_TARGET): make server
+-	@echo To build $(CLIENT_TARGET): make client
+-	@echo To build $(MASTER_TARGET): make master
+-	@echo To remove built files: make clean
+-	@echo To install built binaries: make install
+-	@echo To install resources: make install-res
+-	@echo To uninstall resources: make uninstall-res
+-	@echo To uninstall binaries: make uninstall
+-	@echo	----------------------------
+-	@echo Binaries will be built in: $(BINDIR)
+-	@echo Object files will be located in: $(OBJDIR) 
+-	@echo Binaries will be installed on the system in: $(INSTALLDIR)
+-	@echo Resources will be installed in: $(RESDIR)
+-
++# Setup tools
++SHELL = /bin/sh
++OBJDIR = obj
++# denis - fixme - remove mkdir -p
++MKDIR = mkdir -p
++CC = g++
++LD = g++
++INSTALL = cp
++DEUTEX = deutex
++
++# Detect OS
++win32     := false
++freebsd   := false
++linux     := false
++mingw	  := false
++bigendian := false
++cygwin	  := false
++osx     := false
++solaris	:= false
++
++ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "FreeBSD")),)
++ freebsd = true
++endif
++
++ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "Linux")),)
++ linux = true
++endif
++
++ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "linux")),)
++ linux = true
++endif
++
++ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "mingw")),)
++ win32 = true
++ mingw = true
++endif
++
++ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "target=powerpc")),)
++ bigendian = true
++endif
++
++ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "Apple Computer, Inc")),)
++ osx = true
++endif
++
++ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "cygming")),)
++ cygwin = true
++endif
++
++ifneq ($(strip $(shell $(CC) -v 2>&1 |grep "solaris")),)
++ solaris = true
++endif
++
++# warn if using non-gnu make
++
++ifeq ($(strip $(shell make -v |grep "GNU")),)
++ $(warning WARNING: You are using non-gnu make, try "gmake" if build fails)
++endif
++
++# Flags to deutex
++
++DEUTEX_FLAGS = -rgb 0 255 255 
++
++# Platform and sdl-config flags
++X11_LFLAGS = -L/usr/X11R6/lib -lX11
++
++SDL_CFLAGS_COMMAND = sdl-config --cflags
++SDL_LFLAGS_COMMAND = sdl-config --libs
++
++SDL_DETECT = sdl-config --version
++SDL_CFLAGS = $(shell $(SDL_CFLAGS_COMMAND))
++SDL_LFLAGS = $(shell $(SDL_LFLAGS_COMMAND)) $(X11_LFLAGS)
++
++CFLAGS_PLATFORM = -DUNIX
++LFLAGS_PLATFORM =
++
++ifeq ($(strip $(osx)), true)
++# osx does not use X11 for copy&paste, it uses Carbon
++CFLAGS_PLATFORM = -DUNIX -DOSX
++LFLAGS_PLATFORM =
++OSX_FRAMEWORKS = -framework Carbon -framework AudioToolbox -framework AudioUnit
++SDL_LFLAGS := $(SDL_LFLAGS) $(OSX_FRAMEWORKS)
++X11_LFLAGS = 
++endif
++
++ifeq ($(strip $(freebsd)), true)
++ifeq ($(SDL_CFLAGS),)
++SDL_CFLAGS_COMMAND = sdl11-config --cflags
++SDL_LFLAGS_COMMAND = sdl11-config --libs
++SDL_CFLAGS = $(shell $(SDL_CFLAGS_COMMAND))
++SDL_LFLAGS = $(shell $(SDL_LFLAGS_COMMAND)) $(X11_LFLAGS)
++endif
++endif
++
++ifeq ($(strip $(cygwin)), true)
++SDL_CFLAGS = $(shell $(SDL_CFLAGS_COMMAND))
++SDL_LFLAGS = $(shell $(SDL_LFLAGS_COMMAND))
++LFLAGS_PLATFORM = -mno-cygwin -lwsock32 -lwinmm
++CFLAGS_PLATFORM = -mno-cygwin -DWIN32 -D_WIN32
++endif
++
++ifeq ($(strip $(win32)), true)
++LFLAGS_PLATFORM = -lwsock32
++CFLAGS_PLATFORM = -DWIN32 -D_WIN32
++endif
++
++ifeq ($(strip $(linux)), true)
++CFLAGS_PLATFORM = -DUNIX -DLINUX
++endif
++
++ifeq ($(strip $(solaris)), true)
++LFLAGS_PLATFORM = -lsocket -lnsl
++CFLAGS_PLATFORM = -DSOLARIS -DUNIX -DBSD_COMP -gstabs+
++endif
++
++ifeq ($(strip $(bigendian)), true)
++CFLAGS_PLATFORM := $(CFLAGS_PLATFORM) -D__BIG_ENDIAN__
++endif
++
++# Directories
++BINDIR = .
++#INSTALLDIR = /usr/local/bin
++#RESDIR = /usr/local/share
++INSTALLDIR = $(PWD)/debian/odamex/usr/games
++RESDIR = $(PWD)/debian/odamex/usr/share
++
++# Textscreen
++TEXTSCREEN_DIR = textscreen
++TEXTSCREEN_HEADERS = $(wildcard $(TEXTSCREEN_DIR)/*.h)
++TEXTSCREEN_SOURCES = $(wildcard $(TEXTSCREEN_DIR)/*.cpp)
++TEXTSCREEN_OBJS = $(patsubst $(TEXTSCREEN_DIR)/%.cpp,$(OBJDIR)/$(TEXTSCREEN_DIR)/%.o,$(TEXTSCREEN_SOURCES))
++
++# Common
++COMMON_DIR = common
++COMMON_HEADERS = $(wildcard $(COMMON_DIR)/*.h)
++COMMON_SOURCES = $(wildcard $(COMMON_DIR)/*.cpp)
++COMMON_OBJS = $(patsubst $(COMMON_DIR)/%.cpp,$(OBJDIR)/$(COMMON_DIR)/%.o,$(COMMON_SOURCES))
++COMMON_OBJS_SERVER = $(patsubst $(COMMON_DIR)/%.cpp,$(OBJDIR)/$(COMMON_DIR)/server_%.o,$(COMMON_SOURCES))
++COMMON_OBJS_CLIENT = $(patsubst $(COMMON_DIR)/%.cpp,$(OBJDIR)/$(COMMON_DIR)/client_%.o,$(COMMON_SOURCES))
++
++# Server
++SERVER_DIR = server/src
++SERVER_HEADERS = $(wildcard $(SERVER_DIR)/*.h)
++SERVER_SOURCES = $(wildcard $(SERVER_DIR)/*.cpp)
++SERVER_OBJS = $(patsubst $(SERVER_DIR)/%.cpp,$(OBJDIR)/$(SERVER_DIR)/%.o,$(SERVER_SOURCES))
++SERVER_TARGET = $(BINDIR)/odasrv
++SERVER_CFLAGS = -I../server/src -Iserver/src
++SERVER_LFLAGS =
++
++# Client
++CLIENT_DIR = client/src
++CLIENT_HEADERS = $(wildcard $(CLIENT_DIR)/*.h)
++CLIENT_SOURCES = $(wildcard $(CLIENT_DIR)/*.cpp)
++CLIENT_OBJS = $(patsubst $(CLIENT_DIR)/%.cpp,$(OBJDIR)/$(CLIENT_DIR)/%.o,$(CLIENT_SOURCES))
++CLIENT_TARGET = $(BINDIR)/odamex
++CLIENT_CFLAGS = -I../client/src -Iclient/src
++CLIENT_LFLAGS =
++
++# Master
++MASTER_DIR = master
++MASTER_HEADERS = master/i_net.h
++MASTER_SOURCES = master/i_net.cpp master/main.cpp
++MASTER_OBJS = $(patsubst $(MASTER_DIR)/%.cpp,$(OBJDIR)/$(MASTER_DIR)/%.o,$(MASTER_SOURCES))
++MASTER_TARGET = $(BINDIR)/odamaster
++MASTER_CFLAGS =
++
++# WAD file
++
++WADFILE_TARGET = $(BINDIR)/odamex.wad
++
++# Fix cygwin targets, as they will be postfixed with ".EXE"
++ifeq ($(strip $(cygwin)), true)
++SERVER_TARGET := $(SERVER_TARGET).exe
++CLIENT_TARGET := $(CLIENT_TARGET).exe
++MASTER_TARGET := $(MASTER_TARGET).exe
++endif
++
++# Targets
++TARGETS = $(SERVER_TARGET) $(CLIENT_TARGET) $(MASTER_TARGET) $(WADFILE_TARGET)
++
++# denis - fixme - cflags are quite messy, but removing these is a very delicate act, also use -Wall -Werror
++CFLAGS = $(CFLAGS_PLATFORM) -DNOASM -Icommon -g -Wall -O2
++LFLAGS = $(LFLAGS_PLATFORM)
++
++CFLAGS_RELEASE = $(CFLAGS_PLATFORM) -DNOASM -Icommon -O3
++LFLAGS_RELEASE = $(LFLAGS_PLATFORM)
++
++# denis - fixme - mingw32 hack
++ifeq ("$(findstring mingw32, $(MAKE))","mingw32")
++SERVER_HEADERS_2 = $(wildcard $(SERVER_DIR)/*.h)
++SERVER_HEADERS_WIN32 = $(wildcard $(SERVER_DIR)/../win32/*.h)
++SERVER_SOURCES_2 = $(wildcard $(SERVER_DIR)/*.cpp)
++SERVER_SOURCES_WIN32 = $(wildcard $(SERVER_DIR)/../win32/*.cpp)
++SERVER_OBJS = $(patsubst $(SERVER_DIR)/%.cpp,$(OBJDIR)/$(SERVER_DIR)/%.o,$(SERVER_SOURCES_2)) $(patsubst $(SERVER_DIR)/../win32/%.cpp,$(OBJDIR)/$(SERVER_DIR)/../win32/%.o,$(SERVER_SOURCES_WIN32))
++SERVER_SOURCES = $(SERVER_SOURCES_2) $(SERVER_SOURCES_WIN32)
++SERVER_HEADERS = $(SERVER_HEADERS_2) $(SERVER_HEADERS_WIN32)
++SERVER_CFLAGS = -I../server/win32 -Iserver/win32 -I../server/src -Iserver/src
++MKDIR = echo *** PLEASE CREATE THIS DIRECTORY: 
++CFLAGS = -D_WIN32 -D_CONSOLE -DNOASM -Icommon -ggdb
++LFLAGS = -lwsock32 -lwinmm 
++endif
++# denis - end fixme - mingw32 hack
++
++# denis - fixme - sdl client hack for linux
++CLIENT_HEADERS_2 = $(wildcard $(CLIENT_DIR)/*.h)
++CLIENT_HEADERS_WIN32 = $(wildcard $(CLIENT_DIR)/../sdl/*.h)
++CLIENT_SOURCES_2 = $(wildcard $(CLIENT_DIR)/*.cpp)
++CLIENT_SOURCES_WIN32 = $(wildcard $(CLIENT_DIR)/../sdl/*.cpp)
++CLIENT_OBJS = $(patsubst $(CLIENT_DIR)/%.cpp,$(OBJDIR)/$(CLIENT_DIR)/%.o,$(CLIENT_SOURCES_2)) $(patsubst $(CLIENT_DIR)/../sdl/%.cpp,$(OBJDIR)/$(CLIENT_DIR)/../sdl/%.o,$(CLIENT_SOURCES_WIN32))
++CLIENT_SOURCES = $(CLIENT_SOURCES_2) $(CLIENT_SOURCES_WIN32)
++CLIENT_HEADERS = $(CLIENT_HEADERS_2) $(CLIENT_HEADERS_WIN32)
++CLIENT_CFLAGS = -Itextscreen -I../client/sdl -Iclient/sdl -I../client/src -Iclient/src $(SDL_CFLAGS)
++CLIENT_LFLAGS =  $(SDL_LFLAGS) -lSDL_mixer
++#-ldmalloc
++# denis - end fixme
++
++# All
++all: $(SERVER_TARGET) $(CLIENT_TARGET) $(WADFILE_TARGET)
++
++# Textscreen
++$(OBJDIR)/$(TEXTSCREEN_DIR)/%.o: $(TEXTSCREEN_DIR)/%.cpp $(TEXTSCREEN_HEADERS) $(COMMON_HEADERS)
++	@$(MKDIR) $(dir $@)
++	$(CC) $(CFLAGS) $(CLIENT_CFLAGS) -c $< -o $@
++
++# Common for server
++$(OBJDIR)/$(COMMON_DIR)/server_%.o: $(COMMON_DIR)/%.cpp $(COMMON_HEADERS) $(SERVER_HEADERS)
++	@$(MKDIR) $(dir $@)
++	$(CC) $(CFLAGS) $(SERVER_CFLAGS) -c $< -o $@
++
++# Common for client
++$(OBJDIR)/$(COMMON_DIR)/client_%.o: $(COMMON_DIR)/%.cpp $(COMMON_HEADERS) $(CLIENT_HEADERS)
++	@$(MKDIR) $(dir $@)
++	$(CC) $(CFLAGS) $(CLIENT_CFLAGS) -c $< -o $@
++
++# Client
++client: $(CLIENT_TARGET)
++	@echo Detected SDL: $(shell $(SDL_DETECT))
++
++$(CLIENT_TARGET): $(TEXTSCREEN_OBJS) $(COMMON_OBJS_CLIENT) $(CLIENT_OBJS)
++	$(LD) $(CLIENT_OBJS) $(TEXTSCREEN_OBJS) $(COMMON_OBJS_CLIENT) $(CLIENT_LFLAGS) $(LFLAGS) -o $(CLIENT_TARGET)
++
++$(OBJDIR)/$(CLIENT_DIR)/%.o: $(CLIENT_DIR)/%.cpp $(CLIENT_HEADERS) $(COMMON_HEADERS) $(TEXTSCREEN_HEADERS)
++ifeq ($(SDL_CFLAGS),)
++	@echo Make sure SDL is installed and sdl-config is accessible
++	@exit 2
++endif
++	@$(MKDIR) $(dir $@)
++	$(CC) $(CFLAGS) $(CLIENT_CFLAGS) -c $< -o $@
++
++# Server
++server: $(SERVER_TARGET)
++$(SERVER_TARGET): $(COMMON_OBJS_SERVER) $(SERVER_OBJS)
++	$(LD) $(SERVER_OBJS) $(COMMON_OBJS_SERVER) $(SERVER_LFLAGS) $(LFLAGS) -o $(SERVER_TARGET)
++
++$(OBJDIR)/$(SERVER_DIR)/%.o: $(SERVER_DIR)/%.cpp $(SERVER_HEADERS) $(COMMON_HEADERS)
++	@$(MKDIR) $(dir $@)
++	$(CC) $(CFLAGS) $(SERVER_CFLAGS) -c $< -o $@
++
++# Master
++master: $(MASTER_TARGET)
++$(MASTER_TARGET): $(MASTER_OBJS)
++	$(LD) $(LFLAGS) $(MASTER_OBJS) -o $(MASTER_TARGET)
++
++$(OBJDIR)/$(MASTER_DIR)/%.o: $(MASTER_DIR)/%.cpp
++	@$(MKDIR) $(dir $@)
++	$(CC) $(MASTER_CFLAGS) $(CFLAGS) -c $< -o $@
++
++$(WADFILE_TARGET) :
++	(cd wad; $(DEUTEX) $(DEUTEX_FLAGS) -doom2 bootstrap -build wadinfo.txt ../$@)
++
++odalaunch/odalaunch:
++	cd odalaunch && make && cd ..
++
++# Checker
++check: test
++test: server client
++	tests/all.tcl
++
++# Installer
++install: $(CLIENT_TARGET) $(SERVER_TARGET) odalaunch/odalaunch
++	$(MKDIR) $(INSTALLDIR)
++	$(INSTALL) $(SERVER_TARGET) $(INSTALLDIR)
++	$(INSTALL) $(CLIENT_TARGET) $(INSTALLDIR)
++ifneq ($(wildcard $(MASTER_TARGET)),)
++	$(INSTALL) $(MASTER_TARGET) $(INSTALLDIR)
++endif
++	$(INSTALL) odalaunch/odalaunch $(INSTALLDIR)
++	$(MKDIR) -p $(RESDIR)/games/doom
++	cp odamex.wad $(RESDIR)/games/doom
++
++uninstall:
++	rm $(INSTALLDIR)/$(CLIENT_TARGET)
++	rm $(INSTALLDIR)/$(SERVER_TARGET)
++ifneq ($(wildcard $(INSTALLDIR)/$(MASTER_TARGET)),)
++	rm $(INSTALLDIR)/$(MASTER_TARGET)
++endif
++	rm $(INSTALLDIR)/odalaunch
++	rm $(RESDIR)/doom/odamex.wad
++
++install-res: 
++	$(MKDIR) $(RESDIR)
++	$(INSTALL) $(BINDIR)/media/icon_odamex_96.png $(RESDIR)/pixmaps/odamex.png
++	$(INSTALL) $(BINDIR)/media/icon_odasrv_96.png $(RESDIR)/pixmaps/odasrv.png
++	$(INSTALL) $(BINDIR)/media/icon_odalaunch_96.png $(RESDIR)/pixmaps/odalaunch.png
++	$(INSTALL) $(BINDIR)/installer/arch/odamex.desktop $(RESDIR)/applications
++	$(INSTALL) $(BINDIR)/installer/arch/odalaunch.desktop $(RESDIR)/applications
++
++uninstall-res:
++	rm $(RESDIR)/pixmaps/odalaunch.png
++	rm $(RESDIR)/pixmaps/odamex.png
++	rm $(RESDIR)/pixmaps/odasrv.png
++	rm $(RESDIR)/applications/odamex.desktop
++	rm $(RESDIR)/applications/odalaunch.desktop
++
++# Clean
++clean:
++	@rm -rf $(COMMON_OBJS_CLIENT) $(COMMON_OBJS_SERVER) $(SERVER_OBJS) $(CLIENT_OBJS) $(MASTER_OBJS)
++	@rm -rf $(CLIENT_TARGET)
++	@rm -rf $(SERVER_TARGET)
++	@rm -rf $(MASTER_TARGET)
++
++# Help
++help:
++	@echo ============================
++	@echo Odamex Makefile help
++	@echo	============================
++	@echo To build EVERYTHING: make
++	@echo To build $(SERVER_TARGET): make server
++	@echo To build $(CLIENT_TARGET): make client
++	@echo To build $(MASTER_TARGET): make master
++	@echo To remove built files: make clean
++	@echo To install built binaries: make install
++	@echo To install resources: make install-res
++	@echo To uninstall resources: make uninstall-res
++	@echo To uninstall binaries: make uninstall
++	@echo	----------------------------
++	@echo Binaries will be built in: $(BINDIR)
++	@echo Object files will be located in: $(OBJDIR) 
++	@echo Binaries will be installed on the system in: $(INSTALLDIR)
++	@echo Resources will be installed in: $(RESDIR)
++
+--- odamex-0.5.1.orig/odalaunch/src/dlg_main.cpp
++++ odamex-0.5.1/odalaunch/src/dlg_main.cpp
+@@ -1,1052 +1,1051 @@
+-// Emacs style mode select   -*- C++ -*- 
+-//-----------------------------------------------------------------------------
+-//
+-// $Id: dlg_main.cpp 2025 2010-12-10 03:45:39Z mike $
+-//
+-// Copyright (C) 2006-2010 by The Odamex Team.
+-//
+-// This program is free software; you can redistribute it and/or
+-// modify it under the terms of the GNU General Public License
+-// as published by the Free Software Foundation; either version 2
+-// of the License, or (at your option) any later version.
+-//
+-// This program is distributed in the hope that it will be useful,
+-// but WITHOUT ANY WARRANTY; without even the implied warranty of
+-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-// GNU General Public License for more details.
+-//
+-// DESCRIPTION:
+-//	User interface
+-//	AUTHOR:	Russell Rice, John D Corrado
+-//
+-//-----------------------------------------------------------------------------
+-
+-
+-#include "dlg_main.h"
+-#include "query_thread.h"
+-
+-#include "md5.h"
+-
+-#include <wx/settings.h>
+-#include <wx/menu.h>
+-#include <wx/statusbr.h>
+-#include <wx/msgdlg.h>
+-#include <wx/utils.h>
+-#include <wx/tipwin.h>
+-#include <wx/app.h>
+-#include <wx/imaglist.h>
+-#include <wx/artprov.h>
+-#include <wx/iconbndl.h>
+-#include <wx/regex.h>
+-
+-#ifdef __WXMSW__
+-    #include <windows.h>
+-    #include <winsock.h>
+-#else
+-    #include <sys/socket.h>
+-    #include <netinet/in.h>
+-    #include <arpa/inet.h>
+-    #include <sys/wait.h>
+-    #include <netdb.h>
+-#endif
+-
+-// Control ID assignments for events
+-// application icon
+-
+-// lists
+-static wxInt32 Id_LstCtrlServers = XRCID("Id_LstCtrlServers");
+-static wxInt32 Id_LstCtrlPlayers = XRCID("Id_LstCtrlPlayers");
+-static wxInt32 Id_LstCtrlServerDetails = XRCID("Id_LstCtrlServerDetails");
+-
+-static wxInt32 Id_MnuItmLaunch = XRCID("Id_MnuItmLaunch");
+-
+-static wxInt32 Id_MnuItmGetList = XRCID("Id_MnuItmGetList");
+-
+-// custom events
+-DEFINE_EVENT_TYPE(wxEVT_THREAD_MONITOR_SIGNAL)
+-DEFINE_EVENT_TYPE(wxEVT_THREAD_WORKER_SIGNAL)
+-
+-// Event handlers
+-BEGIN_EVENT_TABLE(dlgMain, wxFrame)
+-	EVT_MENU(wxID_EXIT, dlgMain::OnExit)
+-	
+-	// menu item events
+-    EVT_MENU(XRCID("Id_MnuItmCustomServers"), dlgMain::OnMenuServers)
+-    EVT_MENU(XRCID("Id_MnuItmManualConnect"), dlgMain::OnManualConnect)
+-
+-	EVT_MENU(Id_MnuItmLaunch, dlgMain::OnLaunch)
+-	EVT_MENU(XRCID("Id_MnuItmRunOffline"), dlgMain::OnQuickLaunch)
+-
+-	EVT_MENU(Id_MnuItmGetList, dlgMain::OnGetList)
+-	EVT_MENU(XRCID("Id_MnuItmRefreshServer"), dlgMain::OnRefreshServer)
+-	EVT_MENU(XRCID("Id_MnuItmRefreshAll"), dlgMain::OnRefreshAll)
+-
+-    EVT_MENU(XRCID("Id_MnuItmDownloadWad"), dlgMain::OnOpenOdaGet)
+-
+-	EVT_MENU(XRCID("Id_MnuItmSettings"), dlgMain::OnOpenSettingsDialog)
+-
+-	EVT_MENU(XRCID("Id_MnuItmVisitWebsite"), dlgMain::OnOpenWebsite)
+-	EVT_MENU(XRCID("Id_MnuItmVisitForum"), dlgMain::OnOpenForum)
+-	EVT_MENU(XRCID("Id_MnuItmVisitWiki"), dlgMain::OnOpenWiki)
+-    EVT_MENU(XRCID("Id_MnuItmViewChangelog"), dlgMain::OnOpenChangeLog)
+-    EVT_MENU(XRCID("Id_MnuItmSubmitBugReport"), dlgMain::OnOpenReportBug)
+-	EVT_MENU(XRCID("Id_MnuItmAboutOdamex"), dlgMain::OnAbout)
+-	
+-	EVT_SHOW(dlgMain::OnShow)
+-	EVT_CLOSE(dlgMain::OnClose)
+-	
+-    // thread events
+-    EVT_COMMAND(-1, wxEVT_THREAD_MONITOR_SIGNAL, dlgMain::OnMonitorSignal)    
+-    EVT_COMMAND(-1, wxEVT_THREAD_WORKER_SIGNAL, dlgMain::OnWorkerSignal)  
+-
+-    // misc events
+-    EVT_LIST_ITEM_SELECTED(Id_LstCtrlServers, dlgMain::OnServerListClick)
+-    EVT_LIST_ITEM_ACTIVATED(Id_LstCtrlServers, dlgMain::OnServerListDoubleClick)
+-END_EVENT_TABLE()
+-
+-// Main window creation
+-dlgMain::dlgMain(wxWindow* parent, wxWindowID id)
+-{
+-    wxFileConfig ConfigInfo;   
+-    wxInt32 WindowPosX, WindowPosY, WindowWidth, WindowHeight;
+-    bool WindowMaximized;
+-    wxString Version;
+-
+-    // Loads the frame from the xml resource file
+-	wxXmlResource::Get()->LoadFrame(this, parent, wxT("dlgMain")); 
+-    
+-    // Sets the title of the application with a version string to boot
+-    Version = wxString::Format(
+-        wxT("The Odamex Launcher v%d.%d.%d"), 
+-        VERSIONMAJOR(VERSION), VERSIONMINOR(VERSION), VERSIONPATCH(VERSION));
+-    
+-    SetLabel(Version);
+-    
+-    // Sets the window size
+-    ConfigInfo.Read(wxT("MainWindowWidth"), 
+-                    &WindowWidth, 
+-                    0);
+-                    
+-    ConfigInfo.Read(wxT("MainWindowHeight"), 
+-                    &WindowHeight, 
+-                    0);
+-    
+-    if (WindowWidth >= 0 && WindowHeight >= 0)
+-        SetClientSize(WindowWidth, WindowHeight);
+-    
+-    // Set Window position
+-    ConfigInfo.Read(wxT("MainWindowPosX"), 
+-                    &WindowPosX, 
+-                    0);
+-                    
+-    ConfigInfo.Read(wxT("MainWindowPosY"), 
+-                    &WindowPosY, 
+-                    0);
+-    
+-    if (WindowPosX >= 0 && WindowPosY >= 0)
+-        Move(WindowPosX, WindowPosY);
+-    
+-    // Set whether this window is maximized or not
+-    ConfigInfo.Read(wxT("MainWindowMaximized"), &WindowMaximized, false);
+-
+-    Maximize(WindowMaximized);
+-
+-    launchercfg_s.get_list_on_start = 1;
+-    launchercfg_s.show_blocked_servers = 1;
+-    launchercfg_s.wad_paths = wxGetCwd();
+-    launchercfg_s.odamex_directory = wxGetCwd();
+-
+-    // Set up icons, this is a hack because wxwidgets does not have an xml
+-    // handler for wxIconBundle :(
+-    wxIconBundle IconBundle;
+-    
+-    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon16x16x32")));
+-    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon32x32x32")));
+-    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon48x48x32")));
+-    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon16x16x8")));
+-    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon32x32x8")));
+-    
+-    SetIcons(IconBundle);
+-    
+-    m_LstCtrlServers = wxDynamicCast(FindWindow(Id_LstCtrlServers), LstOdaServerList);
+-    m_LstCtrlPlayers = wxDynamicCast(FindWindow(Id_LstCtrlPlayers), LstOdaPlayerList);
+-    m_LstOdaSrvDetails = wxDynamicCast(FindWindow(Id_LstCtrlServerDetails), LstOdaSrvDetails);
+-
+-    m_LstCtrlServers->SetupServerListColumns();
+-    m_LstCtrlPlayers->SetupPlayerListColumns();
+-
+-	// set up the master server information
+-    MServer.AddMaster(_T("master1.odamex.net"), 15000);
+-    MServer.AddMaster(_T("voxelsoft.com"), 15000);
+-    
+-    /* Init sub dialogs and load settings */
+-    config_dlg = new dlgConfig(&launchercfg_s, this);
+-    server_dlg = new dlgServers(&MServer, this);
+-    AboutDialog = new dlgAbout(this);
+-    
+-    /* Get the first directory for wad downloading */
+-    wxInt32 Pos = launchercfg_s.wad_paths.Find(wxT(PATH_DELIMITER), false);
+-    wxString FirstDirectory = launchercfg_s.wad_paths.Mid(0, Pos);
+-    
+-    OdaGet = new frmOdaGet(this, -1, FirstDirectory);
+-    
+-    QServer = NULL;
+-
+-    // get master list on application start
+-    if (launchercfg_s.get_list_on_start)
+-    {
+-        wxCommandEvent event(wxEVT_COMMAND_TOOL_CLICKED, Id_MnuItmGetList);
+-    
+-        wxPostEvent(this, event);
+-    }
+-}
+-
+-// Window Destructor
+-dlgMain::~dlgMain()
+-{
+-    // Cleanup
+-    delete[] QServer;
+-    
+-    QServer = NULL;
+-    
+-    if (config_dlg != NULL)
+-        config_dlg->Destroy();
+-
+-    if (server_dlg != NULL)
+-        server_dlg->Destroy();
+-
+-    if (OdaGet != NULL)
+-        OdaGet->Destroy();
+-}
+-
+-// Called when the menu exit item or exit button is clicked
+-void dlgMain::OnExit(wxCommandEvent& event)
+-{
+-    Close();
+-}
+-
+-// Called when the window X button or Close(); function is called
+-void dlgMain::OnClose(wxCloseEvent &event)
+-{
+-    if (GetThread() && GetThread()->IsRunning())
+-        GetThread()->Wait();
+-
+-    // Save GUI layout
+-    wxFileConfig ConfigInfo;
+-
+-    ConfigInfo.Write(wxT("MainWindowWidth"), GetClientSize().GetWidth());
+-    ConfigInfo.Write(wxT("MainWindowHeight"), GetClientSize().GetHeight());
+-    ConfigInfo.Write(wxT("MainWindowPosX"), GetPosition().x);
+-    ConfigInfo.Write(wxT("MainWindowPosY"), GetPosition().y);
+-    ConfigInfo.Write(wxT("MainWindowMaximized"), IsMaximized());
+-
+-    ConfigInfo.Flush();
+-
+-    event.Skip();
+-}
+-
+-// Called when the window is shown
+-void dlgMain::OnShow(wxShowEvent &event)
+-{
+-
+-}
+-
+-// manually connect to a server
+-void dlgMain::OnManualConnect(wxCommandEvent &event)
+-{
+-    wxString ped_result;
+-    wxString ted_result;
+-    
+-    const char *HelpText = "Please enter an IP Address or Hostname. \n\nAn "
+-                            "optional port number can exist for IPs or Hosts\n"
+-                            "by putting a : after the address.";
+-
+-    wxTextEntryDialog ted(this, wxT(HelpText), wxT("Manual Connect"), 
+-        wxT("0.0.0.0:0"));
+-
+-    wxPasswordEntryDialog ped(this, wxT("Enter a password (optional)"), 
+-        wxT("Manual Connect"), wxT(""));
+-
+-    // Keep asking for a valid ip/port number
+-    while (1)
+-    {
+-        bool good = false;
+-
+-        if (ted.ShowModal() == wxID_CANCEL)
+-            return;
+-    
+-        ted_result = ted.GetValue();
+-
+-        switch (IsAddressValid(ted_result))
+-        {
+-            // Correct address
+-            case _oda_iav_SUCCESS:
+-            {
+-                good = true;
+-            }
+-            break;
+-
+-            // Empty string
+-            case _oda_iav_emptystr:
+-            {
+-                continue;
+-            }
+-
+-            // Colon syntax bad
+-            case _oda_iav_colerr:
+-            {
+-                wxMessageBox(wxT("A number > 0 must exist after the :"));
+-                continue;
+-            }
+-
+-            // Internal error
+-            case _oda_iav_interr:
+-            {
+-                wxMessageBox(wxT("Regex compiler failure"));
+-                return;
+-            }
+-
+-            // Unknown error (usually bad regex match)
+-            case _oda_iav_FAILURE:
+-            {
+-                wxMessageBox(wxT("Invalid IP address/hostname format"));
+-                continue;
+-            }
+-        }
+-        
+-        // Address is good to use
+-        if (good == true)
+-            break;
+-    }
+-
+-    // Show password entry dialog
+-    if (ped.ShowModal() == wxID_CANCEL)
+-        return;
+-    
+-    LaunchGame(ted_result, launchercfg_s.odamex_directory, 
+-        launchercfg_s.wad_paths, ped.GetValue());
+-}
+-
+-// Posts a message from the main thread to the monitor thread
+-bool dlgMain::MainThrPostEvent(mtcs_t CommandSignal, wxInt32 Index, 
+-    wxInt32 ListIndex)
+-{
+-    if (GetThread() && GetThread()->IsRunning())
+-        return false;
+-
+-    // Create monitor thread
+-    if (this->wxThreadHelper::Create() != wxTHREAD_NO_ERROR)
+-    {
+-        wxMessageBox(_T("Could not create monitor thread!"), 
+-                     _T("Error"), 
+-                     wxOK | wxICON_ERROR);
+-                     
+-        wxExit();
+-    }
+-    
+-	mtcs_Request.Signal = CommandSignal;
+-    mtcs_Request.Index = Index;
+-    mtcs_Request.ServerListIndex = ListIndex;
+-
+-    GetThread()->Run();
+-    
+-    return true;
+-}
+-
+-// Posts a thread message to the main thread
+-void dlgMain::MonThrPostEvent(wxEventType EventType, int win_id, mtrs_t Signal, 
+-    wxInt32 Index, wxInt32 ListIndex)
+-{
+-    static wxCommandEvent event(EventType, win_id);
+-    
+-    mtrs_struct_t *Result = new mtrs_struct_t;
+-    
+-    Result->Signal = Signal;                
+-    Result->Index = Index;
+-    Result->ServerListIndex = ListIndex;
+-    
+-    event.SetClientData(Result);
+-    
+-    wxPostEvent(this, event);
+-}
+-
+-bool dlgMain::MonThrGetMasterList()
+-{
+-    wxFileConfig ConfigInfo;
+-    wxInt32 MasterTimeout;
+-    size_t ServerCount;
+-    mtrs_t Signal;
+-
+-    // Get the masters timeout from the config file
+-    ConfigInfo.Read(wxT(MASTERTIMEOUT), &MasterTimeout, 500);
+-
+-    // Query the masters with the timeout
+-    MServer.QueryMasters(MasterTimeout);
+-   
+-    // Get the amount of servers found
+-    ServerCount = MServer.GetServerCount();
+-
+-    // Check if we timed out or we were successful
+-    Signal = (ServerCount > 0) ? mtrs_master_success : mtrs_master_timeout;
+-
+-    // Free the server list array (if it exists) and reallocate a new sized
+-    // array of server objects
+-    delete[] QServer;
+-    QServer = NULL;
+-
+-    if (ServerCount > 0)
+-        QServer = new Server [ServerCount];
+-
+-    // Post the result to our main thread and exit
+-    MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, -1, Signal, -1, -1);
+-    
+-    return (Signal == mtrs_master_success) ? true : false;
+-}
+-
+-void dlgMain::MonThrGetServerList()
+-{
+-    wxFileConfig ConfigInfo;
+-    wxInt32 ServerTimeout;
+-    
+-    size_t count = 0;
+-    size_t serverNum = 0;
+-    wxString Address = _T("");
+-    wxUint16 Port = 0;
+-
+-    // [Russell] - This includes custom servers.
+-    if (!MServer.GetServerCount())
+-    {
+-        MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, -1, 
+-            mtrs_server_noservers, -1, -1);
+-        
+-        return;
+-    }
+-
+-    ConfigInfo.Read(wxT(SERVERTIMEOUT), &ServerTimeout, 500);
+-    
+-    /* 
+-        Thread pool manager:
+-        Executes a number of threads that contain the same amount of
+-        servers, when a thread finishes, it gets deleted and another
+-        gets executed with a different server, eventually all the way
+-        down to 0 servers.
+-    */
+-    while(count < MServer.GetServerCount())
+-    {
+-        for(size_t i = 0; i < NUM_THREADS; i++)
+-        {
+-            if((threadVector.size() != 0) && ((threadVector.size() - 1) >= i))
+-            {
+-                // monitor our thread vector, delete ONLY if the thread is
+-                // finished
+-                if(threadVector[i]->IsRunning())
+-                    continue;
+-                else
+-                {
+-                    threadVector[i]->Wait();
+-                    delete threadVector[i];
+-                    threadVector.erase(threadVector.begin() + i);
+-                    count++;
+-                }
+-            }
+-            if(serverNum < MServer.GetServerCount())
+-            {
+-                MServer.GetServerAddress(serverNum, Address, Port);
+-                QServer[serverNum].SetAddress(Address, Port);
+-
+-                // add the thread to the vector
+-                threadVector.push_back(new QueryThread(this, 
+-                    &QServer[serverNum], serverNum, ServerTimeout));
+-
+-                // create and run the thread
+-                if(threadVector[threadVector.size() - 1]->Create() == 
+-                   wxTHREAD_NO_ERROR)
+-                {
+-                    threadVector[threadVector.size() - 1]->Run();
+-                }
+-
+-                // DUMB: our next server will be this incremented value
+-                serverNum++;
+-            }          
+-        }
+-    }
+-
+-    MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, -1, 
+-        mtrs_servers_querydone, -1, -1);  
+-}
+-
+-void dlgMain::MonThrGetSingleServer()
+-{
+-    wxFileConfig ConfigInfo;
+-    wxInt32 ServerTimeout;
+-
+-    if (!MServer.GetServerCount())
+-        return;
+-
+-    ConfigInfo.Read(wxT(SERVERTIMEOUT), &ServerTimeout, 500);
+-
+-    if (QServer[mtcs_Request.Index].Query(ServerTimeout))
+-    {
+-        MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, -1, 
+-            mtrs_server_singlesuccess, mtcs_Request.Index, 
+-            mtcs_Request.ServerListIndex);     
+-    }
+-    else
+-    {
+-        MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, 
+-            mtrs_server_singletimeout, mtrs_server_singletimeout, 
+-            mtcs_Request.Index, mtcs_Request.ServerListIndex);
+-    }     
+-}
+-
+-// [Russell] - Monitor thread entry point
+-void *dlgMain::Entry()
+-{
+-    switch (mtcs_Request.Signal)
+-    {
+-        // Retrieve server data from all available master servers and then fall
+-        // through to querying those servers
+-        case mtcs_getmaster:
+-        {
+-            if (MonThrGetMasterList() == false)
+-                break;
+-        }
+-
+-        // Query the current list of servers that are available to us
+-        case mtcs_getservers:
+-        {
+-            MonThrGetServerList();
+-        }
+-        break;
+-
+-        // Query a single server
+-        case mtcs_getsingleserver:
+-        {
+-            MonThrGetSingleServer();
+-        }
+-        break;
+-        
+-        default:
+-            break;
+-    }
+-
+-    // Reset the signal and then exit out
+-    mtcs_Request.Signal = mtcs_none;
+-    
+-    return NULL;
+-}
+-
+-void dlgMain::OnMonitorSignal(wxCommandEvent& event)
+-{
+-    mtrs_struct_t *Result = (mtrs_struct_t *)event.GetClientData();
+-    wxInt32 i;
+-    
+-    switch (Result->Signal)
+-    {
+-        case mtrs_master_timeout:
+-        {
+-            // We use multiple masters you see, if one fails and the others are
+-            // working, atleast we can get some useful data
+-            if (!MServer.GetServerCount())
+-            {
+-                wxMessageBox(wxT("No master servers could be contacted"), 
+-                    wxT("Error"), wxOK | wxICON_ERROR);
+-                
+-                break;
+-            }
+-        }
+-        
+-        case mtrs_master_success:
+-            break;
+-        case mtrs_server_noservers:
+-        {
+-            wxMessageBox(wxT("There are no servers to query"), 
+-                wxT("Error"), wxOK | wxICON_ERROR);
+-        }
+-        break;
+-        
+-        case mtrs_server_singletimeout:
+-        {
+-            i = FindServerInList(QServer[Result->Index].GetAddress());
+-
+-            m_LstOdaSrvDetails->LoadDetailsFromServer(NullServer);
+-            
+-            QServer[Result->Index].ResetData();
+-            
+-            if (launchercfg_s.show_blocked_servers == false)
+-                break;
+-
+-            if (i == -1)
+-                m_LstCtrlServers->AddServerToList(QServer[Result->Index], Result->Index);
+-            else
+-                m_LstCtrlServers->AddServerToList(QServer[Result->Index], i, false);
+-        }
+-        break;
+-        
+-        case mtrs_server_singlesuccess:           
+-        {
+-            m_LstCtrlServers->AddServerToList(QServer[Result->Index], Result->ServerListIndex, false);
+-            
+-            m_LstCtrlPlayers->AddPlayersToList(QServer[Result->Index]);
+-            
+-            m_LstOdaSrvDetails->LoadDetailsFromServer(QServer[Result->Index]);
+-            
+-            TotalPlayers += QServer[Result->Index].Info.Players.size();
+-        }
+-        break;
+-
+-        case mtrs_servers_querydone:
+-        {            
+-            // Sort server list after everything has been queried
+-            m_LstCtrlServers->Sort();
+-        }
+-        break;
+-        
+-        default:
+-            break;
+-    }
+-
+-    GetStatusBar()->SetStatusText(wxString::Format(_T("Master Ping: %u"), MServer.GetPing()), 1);
+-    GetStatusBar()->SetStatusText(wxString::Format(_T("Total Players: %d"), TotalPlayers), 3);
+-
+-    delete Result;
+-}
+-
+-// worker threads post to this callback
+-void dlgMain::OnWorkerSignal(wxCommandEvent& event)
+-{
+-    wxInt32 i;
+-    switch (event.GetId())
+-    {
+-        case 0: // server query timed out
+-        {
+-            i = FindServerInList(QServer[event.GetInt()].GetAddress());
+-
+-            m_LstCtrlPlayers->DeleteAllItems();
+-            
+-            QServer[event.GetInt()].ResetData();
+-            
+-            if (launchercfg_s.show_blocked_servers == false)
+-                break;
+-
+-            if (i == -1)
+-                m_LstCtrlServers->AddServerToList(QServer[event.GetInt()], event.GetInt());
+-            else
+-                m_LstCtrlServers->AddServerToList(QServer[event.GetInt()], i, false);
+-            
+-            break;                 
+-        }
+-        case 1: // server queried successfully
+-        {
+-            m_LstCtrlServers->AddServerToList(QServer[event.GetInt()], event.GetInt());
+-            
+-            TotalPlayers += QServer[event.GetInt()].Info.Players.size();
+-            
+-            break;      
+-        }
+-    }
+-
+-    ++QueriedServers;
+-    
+-    GetStatusBar()->SetStatusText(wxString::Format(_T("Queried Server %d of %d"), 
+-                                                   QueriedServers, 
+-                                                   MServer.GetServerCount()), 
+-                                                   2);
+-                                                   
+-    GetStatusBar()->SetStatusText(wxString::Format(_T("Total Players: %d"), 
+-                                                   TotalPlayers), 
+-                                                   3);   
+-}
+-
+-// Custom Servers menu item
+-void dlgMain::OnMenuServers(wxCommandEvent &event)
+-{
+-    if (server_dlg)
+-        server_dlg->Show();
+-}
+-
+-
+-void dlgMain::OnOpenSettingsDialog(wxCommandEvent &event)
+-{
+-    if (config_dlg)
+-        config_dlg->Show();
+-}
+-
+-void dlgMain::OnOpenOdaGet(wxCommandEvent &event)
+-{
+-    if (OdaGet)
+-        OdaGet->Show();
+-}
+-
+-// Quick-Launch button click
+-void dlgMain::OnQuickLaunch(wxCommandEvent &event)
+-{
+-	LaunchGame(_T(""), 
+-				launchercfg_s.odamex_directory, 
+-				launchercfg_s.wad_paths);
+-}
+-
+-// Launch button click
+-void dlgMain::OnLaunch(wxCommandEvent &event)
+-{
+-    wxString Password;
+-    wxString UsrPwHash;
+-    wxString SrvPwHash;
+-    wxInt32 i;
+-    
+-    i = GetSelectedServerArrayIndex();
+-    
+-    if (i == -1)
+-        return;
+-
+-    // If the server is passworded, pop up a password entry dialog for them to
+-    // specify one before going any further
+-    SrvPwHash = QServer[i].Info.PasswordHash;
+-
+-    if (SrvPwHash.IsEmpty() == false)
+-    {                           
+-        wxPasswordEntryDialog ped(this, wxT("Please enter a password"),
+-            wxT("This server is passworded"), wxT(""));
+-        
+-        SrvPwHash.MakeUpper();
+-        
+-        while (1)
+-        {          
+-            // Show the dialog box and get the resulting value
+-            ped.ShowModal();
+-        
+-            Password = ped.GetValue();
+-        
+-            // User possibly hit cancel or did not enter anything, just exit
+-            if (Password.IsEmpty())
+-                return;
+-            
+-            UsrPwHash = MD5SUM(Password);
+-            UsrPwHash.MakeUpper();
+-            
+-            // Do an MD5 comparison of the password with the servers one, if it
+-            // fails, keep asking the user to enter a valid password, otherwise 
+-            // dive out and connect to the server
+-            if (SrvPwHash != UsrPwHash)
+-            {
+-                wxMessageDialog Message(this, wxT("Incorrect password"), 
+-                    wxT("Incorrect password"), wxOK | wxICON_HAND);
+-                
+-                Message.ShowModal();
+-                
+-                // Reset the text so weird things don't happen
+-                ped.SetValue(wxT(""));
+-            }
+-            else
+-                break;
+-        }
+-    }
+-    
+-    LaunchGame(QServer[i].GetAddress(), launchercfg_s.odamex_directory,
+-        launchercfg_s.wad_paths, Password);
+-}
+-
+-// Get Master List button click
+-void dlgMain::OnGetList(wxCommandEvent &event)
+-{
+-    m_LstCtrlServers->DeleteAllItems();
+-    m_LstCtrlPlayers->DeleteAllItems();
+-        
+-    QueriedServers = 0;
+-    TotalPlayers = 0;
+-    
+-    MainThrPostEvent(mtcs_getmaster);
+-}
+-
+-void dlgMain::OnRefreshServer(wxCommandEvent &event)
+-{   
+-    wxInt32 li, ai;
+-
+-    li = GetSelectedServerListIndex();    
+-    ai = GetSelectedServerArrayIndex();
+-    
+-    if (li == -1 || ai == -1)
+-        return;
+-    
+-    m_LstCtrlPlayers->DeleteAllItems();
+-                
+-    TotalPlayers -= QServer[ai].Info.Players.size();
+-    
+-    MainThrPostEvent(mtcs_getsingleserver, ai, li);
+-}
+-
+-void dlgMain::OnRefreshAll(wxCommandEvent &event)
+-{
+-    if (!MServer.GetServerCount())
+-        return;
+-
+-    m_LstCtrlServers->DeleteAllItems();
+-    m_LstCtrlPlayers->DeleteAllItems();
+-    
+-    QueriedServers = 0;
+-    TotalPlayers = 0;
+-    
+-    MainThrPostEvent(mtcs_getservers, -1, -1); 
+-}
+-
+-// when the user clicks on the server list
+-void dlgMain::OnServerListClick(wxListEvent& event)
+-{   
+-    wxInt32 i;
+-    
+-    i = GetSelectedServerArrayIndex();
+-    
+-    if (i == -1)
+-        return;
+-    
+-    m_LstCtrlPlayers->DeleteAllItems();
+-        
+-    m_LstCtrlPlayers->AddPlayersToList(QServer[i]);
+-            
+-    if (QServer[i].GotResponse() == false)
+-        m_LstOdaSrvDetails->LoadDetailsFromServer(NullServer);
+-    else
+-        m_LstOdaSrvDetails->LoadDetailsFromServer(QServer[i]);
+-}
+-
+-void dlgMain::LaunchGame(const wxString &Address, const wxString &ODX_Path, 
+-    const wxString &waddirs, const wxString &Password)
+-{
+-    wxFileConfig ConfigInfo;
+-    wxString ExtraCmdLineArgs;
+-    
+-    if (ODX_Path.IsEmpty())
+-    {
+-        wxMessageBox(wxT("Your Odamex path is empty!"));
+-        
+-        return;
+-    }
+-    
+-    #ifdef __WXMSW__
+-      wxString binname = ODX_Path + wxT('\\') + wxT("odamex");
+-    #elif __WXMAC__
+-      wxString binname = ODX_Path + wxT("/odamex.app/Contents/MacOS/odamex");
+-    #else
+-      wxString binname = ODX_Path + wxT("/odamex");
+-    #endif
+-
+-    wxString cmdline = wxT("");
+-
+-    wxString dirs = waddirs.Mid(0, waddirs.Length());
+-    
+-    cmdline += wxString::Format(wxT("%s"), binname.c_str());
+-    
+-    if (!Address.IsEmpty())
+-		cmdline += wxString::Format(wxT(" -connect %s"),
+-									Address.c_str());
+-	
+-	if (!Password.IsEmpty())
+-        cmdline += wxString::Format(wxT(" %s"),
+-									Password.c_str());
+-	
+-	// this is so the client won't mess up parsing
+-	if (!dirs.IsEmpty())
+-        cmdline += wxString::Format(wxT(" -waddir \"%s\""), 
+-                                    dirs.c_str());
+-
+-    // Check for any user command line arguments
+-    ConfigInfo.Read(wxT(EXTRACMDLINEARGS), &ExtraCmdLineArgs, wxT(""));
+-    
+-    if (!ExtraCmdLineArgs.IsEmpty())
+-        cmdline += wxString::Format(wxT(" %s"), 
+-                                    ExtraCmdLineArgs.c_str());
+-
+-    // wxWidgets likes to spit out its own message box on msw after our one
+-    #ifndef __WXMSW__
+-	if (wxExecute(cmdline, wxEXEC_ASYNC, NULL) <= 0)
+-        wxMessageBox(wxString::Format(wxT("Could not start %s!"), 
+-                                        binname.c_str()));
+-    #else
+-    wxExecute(cmdline, wxEXEC_ASYNC, NULL);
+-    #endif
+-}
+-
+-
+-// when the user double clicks on the server list
+-void dlgMain::OnServerListDoubleClick(wxListEvent& event)
+-{
+-    wxCommandEvent LaunchEvent(wxEVT_COMMAND_TOOL_CLICKED, Id_MnuItmLaunch);
+-    
+-    wxPostEvent(this, LaunchEvent);
+-}
+-
+-// returns a index of the server address as the internal array index
+-wxInt32 dlgMain::FindServer(wxString Address)
+-{
+-    for (size_t i = 0; i < MServer.GetServerCount(); i++)
+-        if (QServer[i].GetAddress().IsSameAs(Address))
+-            return i;
+-    
+-    return -1;
+-}
+-
+-// Finds an index in the server list, via Address
+-wxInt32 dlgMain::FindServerInList(wxString Address)
+-{
+-    if (!m_LstCtrlServers->GetItemCount())
+-        return -1;
+-    
+-    for (wxInt32 i = 0; i < m_LstCtrlServers->GetItemCount(); i++)
+-    {
+-        wxListItem item;
+-        item.SetId(i);
+-        item.SetColumn(7);
+-        item.SetMask(wxLIST_MASK_TEXT);
+-        
+-        m_LstCtrlServers->GetItem(item);
+-        
+-        if (item.GetText().IsSameAs(Address))
+-            return i;
+-    }
+-    
+-    return -1;
+-}
+-
+-// Retrieves the currently selected server in list index form
+-wxInt32 dlgMain::GetSelectedServerListIndex()
+-{
+-    wxInt32 i;
+-
+-    if (!m_LstCtrlServers->GetItemCount() || 
+-        !m_LstCtrlServers->GetSelectedItemCount())
+-    {
+-        return -1;
+-    }
+-        
+-    i = m_LstCtrlServers->GetNextItem(-1, wxLIST_NEXT_ALL, 
+-        wxLIST_STATE_SELECTED);
+-        
+-    return i;
+-}
+-
+-// Retrieves the currently selected server in array index form
+-wxInt32 dlgMain::GetSelectedServerArrayIndex()
+-{
+-    wxListItem item;
+-    wxInt32 i;
+-
+-    i = GetSelectedServerListIndex();
+-
+-    if (i == -1)
+-        return -1;
+-
+-    item.SetId(i);
+-    item.SetColumn(7);
+-    item.SetMask(wxLIST_MASK_TEXT);
+-        
+-    m_LstCtrlServers->GetItem(item);
+-        
+-    i = FindServer(item.GetText()); 
+-    
+-    return i;
+-}
+-
+-// Checks whether an odamex-style address format is valid
+-_oda_iav_err_t dlgMain::IsAddressValid(wxString Address)
+-{
+-    wxInt32 Colon;
+-    wxString RegEx;
+-    wxRegEx ReValIP;
+-    wxString IPHost;
+-    long Port;
+-
+-    // Get rid of any whitespace on either side of the string
+-    Address.Trim(false);
+-    Address.Trim(true);
+-
+-    // Don't accept nothing
+-    if (Address.IsEmpty() == true)
+-    {
+-        return _oda_iav_emptystr;
+-    }
+-
+-    // Set the regular expression and load it in
+-    RegEx = wxT("^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4]"
+-                    "[0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]"
+-                    "[0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+-
+-    ReValIP.Compile(RegEx);
+-
+-    if (ReValIP.IsValid() == false)
+-    {
+-        return _oda_iav_interr;
+-    }
+-
+-    // Find the colon that separates the address and the port number
+-    Colon = Address.Find(wxT(':'), true);
+-
+-    if (Colon != wxNOT_FOUND)
+-    {
+-        wxString PortStr;
+-        bool IsGood;
+-
+-        // Try to convert the substring after the : to a port number
+-        PortStr = Address.Mid(Colon + 1);
+-
+-        IsGood = PortStr.ToLong(&Port);
+-
+-        // Check if there is something after the colon and if its actually a 
+-        // numeric value
+-        if ((Colon + 1 >= Address.Len()) || (IsGood == false) || (Port <= 0))
+-        {
+-            return _oda_iav_colerr;
+-        }
+-
+-    }
+-
+-    // Finally get the address portion from the main string
+-    IPHost = Address.Mid(0, Colon);
+-
+-    // Finally do the comparison
+-    if (ReValIP.Matches(IPHost) == true)
+-        return _oda_iav_SUCCESS;
+-    else
+-    {
+-        struct hostent *he;
+-
+-        // Check to see if its a hostname rather than an IP address
+-        he = gethostbyname((const char *)IPHost.char_str());
+-
+-        if (he != NULL)
+-            return _oda_iav_SUCCESS;
+-        else
+-            return _oda_iav_FAILURE;
+-    }
+-}
+-
+-// About information
+-void dlgMain::OnAbout(wxCommandEvent& event)
+-{
+-    if (AboutDialog)
+-        AboutDialog->Show();
+-}
+-
+-void dlgMain::OnOpenWebsite(wxCommandEvent &event)
+-{
+-    wxLaunchDefaultBrowser(_T("http://odamex.net"));
+-}
+-
+-void dlgMain::OnOpenForum(wxCommandEvent &event)
+-{
+-    wxLaunchDefaultBrowser(_T("http://odamex.net/boards"));
+-}
+-
+-void dlgMain::OnOpenWiki(wxCommandEvent &event)
+-{
+-    wxLaunchDefaultBrowser(_T("http://odamex.net/wiki"));
+-}
+-
+-void dlgMain::OnOpenChangeLog(wxCommandEvent &event)
+-{
+-    wxLaunchDefaultBrowser(_T("http://odamex.net/changelog"));
+-}
+-
+-void dlgMain::OnOpenReportBug(wxCommandEvent &event)
+-{
+-    wxLaunchDefaultBrowser(_T("http://odamex.net/bugs/enter_bug.cgi"));
+-}
++// Emacs style mode select   -*- C++ -*- 
++//-----------------------------------------------------------------------------
++//
++// $Id: dlg_main.cpp 2025 2010-12-10 03:45:39Z mike $
++//
++// Copyright (C) 2006-2010 by The Odamex Team.
++//
++// This program is free software; you can redistribute it and/or
++// modify it under the terms of the GNU General Public License
++// as published by the Free Software Foundation; either version 2
++// of the License, or (at your option) any later version.
++//
++// This program is distributed in the hope that it will be useful,
++// but WITHOUT ANY WARRANTY; without even the implied warranty of
++// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++// GNU General Public License for more details.
++//
++// DESCRIPTION:
++//	User interface
++//	AUTHOR:	Russell Rice, John D Corrado
++//
++//-----------------------------------------------------------------------------
++
++
++#include "dlg_main.h"
++#include "query_thread.h"
++
++#include "md5.h"
++
++#include <wx/settings.h>
++#include <wx/menu.h>
++#include <wx/statusbr.h>
++#include <wx/msgdlg.h>
++#include <wx/utils.h>
++#include <wx/tipwin.h>
++#include <wx/app.h>
++#include <wx/imaglist.h>
++#include <wx/artprov.h>
++#include <wx/iconbndl.h>
++#include <wx/regex.h>
++
++#ifdef __WXMSW__
++    #include <windows.h>
++    #include <winsock.h>
++#else
++    #include <sys/socket.h>
++    #include <netinet/in.h>
++    #include <arpa/inet.h>
++    #include <sys/wait.h>
++    #include <netdb.h>
++#endif
++
++// Control ID assignments for events
++// application icon
++
++// lists
++static wxInt32 Id_LstCtrlServers = XRCID("Id_LstCtrlServers");
++static wxInt32 Id_LstCtrlPlayers = XRCID("Id_LstCtrlPlayers");
++static wxInt32 Id_LstCtrlServerDetails = XRCID("Id_LstCtrlServerDetails");
++
++static wxInt32 Id_MnuItmLaunch = XRCID("Id_MnuItmLaunch");
++
++static wxInt32 Id_MnuItmGetList = XRCID("Id_MnuItmGetList");
++
++// custom events
++DEFINE_EVENT_TYPE(wxEVT_THREAD_MONITOR_SIGNAL)
++DEFINE_EVENT_TYPE(wxEVT_THREAD_WORKER_SIGNAL)
++
++// Event handlers
++BEGIN_EVENT_TABLE(dlgMain, wxFrame)
++	EVT_MENU(wxID_EXIT, dlgMain::OnExit)
++	
++	// menu item events
++    EVT_MENU(XRCID("Id_MnuItmCustomServers"), dlgMain::OnMenuServers)
++    EVT_MENU(XRCID("Id_MnuItmManualConnect"), dlgMain::OnManualConnect)
++
++	EVT_MENU(Id_MnuItmLaunch, dlgMain::OnLaunch)
++	EVT_MENU(XRCID("Id_MnuItmRunOffline"), dlgMain::OnQuickLaunch)
++
++	EVT_MENU(Id_MnuItmGetList, dlgMain::OnGetList)
++	EVT_MENU(XRCID("Id_MnuItmRefreshServer"), dlgMain::OnRefreshServer)
++	EVT_MENU(XRCID("Id_MnuItmRefreshAll"), dlgMain::OnRefreshAll)
++
++    EVT_MENU(XRCID("Id_MnuItmDownloadWad"), dlgMain::OnOpenOdaGet)
++
++	EVT_MENU(XRCID("Id_MnuItmSettings"), dlgMain::OnOpenSettingsDialog)
++
++	EVT_MENU(XRCID("Id_MnuItmVisitWebsite"), dlgMain::OnOpenWebsite)
++	EVT_MENU(XRCID("Id_MnuItmVisitForum"), dlgMain::OnOpenForum)
++	EVT_MENU(XRCID("Id_MnuItmVisitWiki"), dlgMain::OnOpenWiki)
++    EVT_MENU(XRCID("Id_MnuItmViewChangelog"), dlgMain::OnOpenChangeLog)
++    EVT_MENU(XRCID("Id_MnuItmSubmitBugReport"), dlgMain::OnOpenReportBug)
++	EVT_MENU(XRCID("Id_MnuItmAboutOdamex"), dlgMain::OnAbout)
++	
++	EVT_SHOW(dlgMain::OnShow)
++	EVT_CLOSE(dlgMain::OnClose)
++	
++    // thread events
++    EVT_COMMAND(-1, wxEVT_THREAD_MONITOR_SIGNAL, dlgMain::OnMonitorSignal)    
++    EVT_COMMAND(-1, wxEVT_THREAD_WORKER_SIGNAL, dlgMain::OnWorkerSignal)  
++
++    // misc events
++    EVT_LIST_ITEM_SELECTED(Id_LstCtrlServers, dlgMain::OnServerListClick)
++    EVT_LIST_ITEM_ACTIVATED(Id_LstCtrlServers, dlgMain::OnServerListDoubleClick)
++END_EVENT_TABLE()
++
++// Main window creation
++dlgMain::dlgMain(wxWindow* parent, wxWindowID id)
++{
++    wxFileConfig ConfigInfo;   
++    wxInt32 WindowPosX, WindowPosY, WindowWidth, WindowHeight;
++    bool WindowMaximized;
++    wxString Version;
++
++    // Loads the frame from the xml resource file
++	wxXmlResource::Get()->LoadFrame(this, parent, wxT("dlgMain")); 
++    
++    // Sets the title of the application with a version string to boot
++    Version = wxString::Format(
++        wxT("The Odamex Launcher v%d.%d.%d"), 
++        VERSIONMAJOR(VERSION), VERSIONMINOR(VERSION), VERSIONPATCH(VERSION));
++    
++    SetLabel(Version);
++    
++    // Sets the window size
++    ConfigInfo.Read(wxT("MainWindowWidth"), 
++                    &WindowWidth, 
++                    0);
++                    
++    ConfigInfo.Read(wxT("MainWindowHeight"), 
++                    &WindowHeight, 
++                    0);
++    
++    if (WindowWidth >= 0 && WindowHeight >= 0)
++        SetClientSize(WindowWidth, WindowHeight);
++    
++    // Set Window position
++    ConfigInfo.Read(wxT("MainWindowPosX"), 
++                    &WindowPosX, 
++                    0);
++                    
++    ConfigInfo.Read(wxT("MainWindowPosY"), 
++                    &WindowPosY, 
++                    0);
++    
++    if (WindowPosX >= 0 && WindowPosY >= 0)
++        Move(WindowPosX, WindowPosY);
++    
++    // Set whether this window is maximized or not
++    ConfigInfo.Read(wxT("MainWindowMaximized"), &WindowMaximized, false);
++
++    Maximize(WindowMaximized);
++
++    launchercfg_s.get_list_on_start = 1;
++    launchercfg_s.show_blocked_servers = 1;
++    launchercfg_s.wad_paths = wxGetCwd();
++    launchercfg_s.odamex_directory = wxGetCwd();
++
++    // Set up icons, this is a hack because wxwidgets does not have an xml
++    // handler for wxIconBundle :(
++    wxIconBundle IconBundle;
++    
++    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon16x16x32")));
++    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon32x32x32")));
++    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon48x48x32")));
++    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon16x16x8")));
++    IconBundle.AddIcon(wxXmlResource::Get()->LoadIcon(wxT("icon32x32x8")));
++    
++    SetIcons(IconBundle);
++    
++    m_LstCtrlServers = wxDynamicCast(FindWindow(Id_LstCtrlServers), LstOdaServerList);
++    m_LstCtrlPlayers = wxDynamicCast(FindWindow(Id_LstCtrlPlayers), LstOdaPlayerList);
++    m_LstOdaSrvDetails = wxDynamicCast(FindWindow(Id_LstCtrlServerDetails), LstOdaSrvDetails);
++
++    m_LstCtrlServers->SetupServerListColumns();
++    m_LstCtrlPlayers->SetupPlayerListColumns();
++
++	// set up the master server information
++    MServer.AddMaster(_T("master1.odamex.net"), 15000);
++    MServer.AddMaster(_T("voxelsoft.com"), 15000);
++    
++    /* Init sub dialogs and load settings */
++    config_dlg = new dlgConfig(&launchercfg_s, this);
++    server_dlg = new dlgServers(&MServer, this);
++    AboutDialog = new dlgAbout(this);
++    
++    /* Get the first directory for wad downloading */
++    wxInt32 Pos = launchercfg_s.wad_paths.Find(wxT(PATH_DELIMITER), false);
++    wxString FirstDirectory = launchercfg_s.wad_paths.Mid(0, Pos);
++    
++    OdaGet = new frmOdaGet(this, -1, FirstDirectory);
++    
++    QServer = NULL;
++
++    // get master list on application start
++    if (launchercfg_s.get_list_on_start)
++    {
++        wxCommandEvent event(wxEVT_COMMAND_TOOL_CLICKED, Id_MnuItmGetList);
++    
++        wxPostEvent(this, event);
++    }
++}
++
++// Window Destructor
++dlgMain::~dlgMain()
++{
++    // Cleanup
++    delete[] QServer;
++    
++    QServer = NULL;
++    
++    if (config_dlg != NULL)
++        config_dlg->Destroy();
++
++    if (server_dlg != NULL)
++        server_dlg->Destroy();
++
++    if (OdaGet != NULL)
++        OdaGet->Destroy();
++}
++
++// Called when the menu exit item or exit button is clicked
++void dlgMain::OnExit(wxCommandEvent& event)
++{
++    Close();
++}
++
++// Called when the window X button or Close(); function is called
++void dlgMain::OnClose(wxCloseEvent &event)
++{
++    if (GetThread() && GetThread()->IsRunning())
++        GetThread()->Wait();
++
++    // Save GUI layout
++    wxFileConfig ConfigInfo;
++
++    ConfigInfo.Write(wxT("MainWindowWidth"), GetClientSize().GetWidth());
++    ConfigInfo.Write(wxT("MainWindowHeight"), GetClientSize().GetHeight());
++    ConfigInfo.Write(wxT("MainWindowPosX"), GetPosition().x);
++    ConfigInfo.Write(wxT("MainWindowPosY"), GetPosition().y);
++    ConfigInfo.Write(wxT("MainWindowMaximized"), IsMaximized());
++
++    ConfigInfo.Flush();
++
++    event.Skip();
++}
++
++// Called when the window is shown
++void dlgMain::OnShow(wxShowEvent &event)
++{
++
++}
++
++// manually connect to a server
++void dlgMain::OnManualConnect(wxCommandEvent &event)
++{
++    wxString ped_result;
++    wxString ted_result;
++    
++/*
++    const char *HelpText = "Please enter an IP Address or Hostname. \n\nAn optional port number can exist for IPs or Hosts\nby putting a : after the address.";
++*/
++    wxTextEntryDialog ted(this, wxT("Please enter an IP Address or Hostname. \n\nAn optional port number can exist for IPs or Hosts\nby putting a : after the address."), wxT("Manual Connect"), 
++        wxT("0.0.0.0:0"));
++
++    wxPasswordEntryDialog ped(this, wxT("Enter a password (optional)"), 
++        wxT("Manual Connect"), wxT(""));
++
++    // Keep asking for a valid ip/port number
++    while (1)
++    {
++        bool good = false;
++
++        if (ted.ShowModal() == wxID_CANCEL)
++            return;
++    
++        ted_result = ted.GetValue();
++
++        switch (IsAddressValid(ted_result))
++        {
++            // Correct address
++            case _oda_iav_SUCCESS:
++            {
++                good = true;
++            }
++            break;
++
++            // Empty string
++            case _oda_iav_emptystr:
++            {
++                continue;
++            }
++
++            // Colon syntax bad
++            case _oda_iav_colerr:
++            {
++                wxMessageBox(wxT("A number > 0 must exist after the :"));
++                continue;
++            }
++
++            // Internal error
++            case _oda_iav_interr:
++            {
++                wxMessageBox(wxT("Regex compiler failure"));
++                return;
++            }
++
++            // Unknown error (usually bad regex match)
++            case _oda_iav_FAILURE:
++            {
++                wxMessageBox(wxT("Invalid IP address/hostname format"));
++                continue;
++            }
++        }
++        
++        // Address is good to use
++        if (good == true)
++            break;
++    }
++
++    // Show password entry dialog
++    if (ped.ShowModal() == wxID_CANCEL)
++        return;
++    
++    LaunchGame(ted_result, launchercfg_s.odamex_directory, 
++        launchercfg_s.wad_paths, ped.GetValue());
++}
++
++// Posts a message from the main thread to the monitor thread
++bool dlgMain::MainThrPostEvent(mtcs_t CommandSignal, wxInt32 Index, 
++    wxInt32 ListIndex)
++{
++    if (GetThread() && GetThread()->IsRunning())
++        return false;
++
++    // Create monitor thread
++    if (this->wxThreadHelper::Create() != wxTHREAD_NO_ERROR)
++    {
++        wxMessageBox(_T("Could not create monitor thread!"), 
++                     _T("Error"), 
++                     wxOK | wxICON_ERROR);
++                     
++        wxExit();
++    }
++    
++	mtcs_Request.Signal = CommandSignal;
++    mtcs_Request.Index = Index;
++    mtcs_Request.ServerListIndex = ListIndex;
++
++    GetThread()->Run();
++    
++    return true;
++}
++
++// Posts a thread message to the main thread
++void dlgMain::MonThrPostEvent(wxEventType EventType, int win_id, mtrs_t Signal, 
++    wxInt32 Index, wxInt32 ListIndex)
++{
++    static wxCommandEvent event(EventType, win_id);
++    
++    mtrs_struct_t *Result = new mtrs_struct_t;
++    
++    Result->Signal = Signal;                
++    Result->Index = Index;
++    Result->ServerListIndex = ListIndex;
++    
++    event.SetClientData(Result);
++    
++    wxPostEvent(this, event);
++}
++
++bool dlgMain::MonThrGetMasterList()
++{
++    wxFileConfig ConfigInfo;
++    wxInt32 MasterTimeout;
++    size_t ServerCount;
++    mtrs_t Signal;
++
++    // Get the masters timeout from the config file
++    ConfigInfo.Read(wxT(MASTERTIMEOUT), &MasterTimeout, 500);
++
++    // Query the masters with the timeout
++    MServer.QueryMasters(MasterTimeout);
++   
++    // Get the amount of servers found
++    ServerCount = MServer.GetServerCount();
++
++    // Check if we timed out or we were successful
++    Signal = (ServerCount > 0) ? mtrs_master_success : mtrs_master_timeout;
++
++    // Free the server list array (if it exists) and reallocate a new sized
++    // array of server objects
++    delete[] QServer;
++    QServer = NULL;
++
++    if (ServerCount > 0)
++        QServer = new Server [ServerCount];
++
++    // Post the result to our main thread and exit
++    MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, -1, Signal, -1, -1);
++    
++    return (Signal == mtrs_master_success) ? true : false;
++}
++
++void dlgMain::MonThrGetServerList()
++{
++    wxFileConfig ConfigInfo;
++    wxInt32 ServerTimeout;
++    
++    size_t count = 0;
++    size_t serverNum = 0;
++    wxString Address = _T("");
++    wxUint16 Port = 0;
++
++    // [Russell] - This includes custom servers.
++    if (!MServer.GetServerCount())
++    {
++        MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, -1, 
++            mtrs_server_noservers, -1, -1);
++        
++        return;
++    }
++
++    ConfigInfo.Read(wxT(SERVERTIMEOUT), &ServerTimeout, 500);
++    
++    /* 
++        Thread pool manager:
++        Executes a number of threads that contain the same amount of
++        servers, when a thread finishes, it gets deleted and another
++        gets executed with a different server, eventually all the way
++        down to 0 servers.
++    */
++    while(count < MServer.GetServerCount())
++    {
++        for(size_t i = 0; i < NUM_THREADS; i++)
++        {
++            if((threadVector.size() != 0) && ((threadVector.size() - 1) >= i))
++            {
++                // monitor our thread vector, delete ONLY if the thread is
++                // finished
++                if(threadVector[i]->IsRunning())
++                    continue;
++                else
++                {
++                    threadVector[i]->Wait();
++                    delete threadVector[i];
++                    threadVector.erase(threadVector.begin() + i);
++                    count++;
++                }
++            }
++            if(serverNum < MServer.GetServerCount())
++            {
++                MServer.GetServerAddress(serverNum, Address, Port);
++                QServer[serverNum].SetAddress(Address, Port);
++
++                // add the thread to the vector
++                threadVector.push_back(new QueryThread(this, 
++                    &QServer[serverNum], serverNum, ServerTimeout));
++
++                // create and run the thread
++                if(threadVector[threadVector.size() - 1]->Create() == 
++                   wxTHREAD_NO_ERROR)
++                {
++                    threadVector[threadVector.size() - 1]->Run();
++                }
++
++                // DUMB: our next server will be this incremented value
++                serverNum++;
++            }          
++        }
++    }
++
++    MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, -1, 
++        mtrs_servers_querydone, -1, -1);  
++}
++
++void dlgMain::MonThrGetSingleServer()
++{
++    wxFileConfig ConfigInfo;
++    wxInt32 ServerTimeout;
++
++    if (!MServer.GetServerCount())
++        return;
++
++    ConfigInfo.Read(wxT(SERVERTIMEOUT), &ServerTimeout, 500);
++
++    if (QServer[mtcs_Request.Index].Query(ServerTimeout))
++    {
++        MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, -1, 
++            mtrs_server_singlesuccess, mtcs_Request.Index, 
++            mtcs_Request.ServerListIndex);     
++    }
++    else
++    {
++        MonThrPostEvent(wxEVT_THREAD_MONITOR_SIGNAL, 
++            mtrs_server_singletimeout, mtrs_server_singletimeout, 
++            mtcs_Request.Index, mtcs_Request.ServerListIndex);
++    }     
++}
++
++// [Russell] - Monitor thread entry point
++void *dlgMain::Entry()
++{
++    switch (mtcs_Request.Signal)
++    {
++        // Retrieve server data from all available master servers and then fall
++        // through to querying those servers
++        case mtcs_getmaster:
++        {
++            if (MonThrGetMasterList() == false)
++                break;
++        }
++
++        // Query the current list of servers that are available to us
++        case mtcs_getservers:
++        {
++            MonThrGetServerList();
++        }
++        break;
++
++        // Query a single server
++        case mtcs_getsingleserver:
++        {
++            MonThrGetSingleServer();
++        }
++        break;
++        
++        default:
++            break;
++    }
++
++    // Reset the signal and then exit out
++    mtcs_Request.Signal = mtcs_none;
++    
++    return NULL;
++}
++
++void dlgMain::OnMonitorSignal(wxCommandEvent& event)
++{
++    mtrs_struct_t *Result = (mtrs_struct_t *)event.GetClientData();
++    wxInt32 i;
++    
++    switch (Result->Signal)
++    {
++        case mtrs_master_timeout:
++        {
++            // We use multiple masters you see, if one fails and the others are
++            // working, atleast we can get some useful data
++            if (!MServer.GetServerCount())
++            {
++                wxMessageBox(wxT("No master servers could be contacted"), 
++                    wxT("Error"), wxOK | wxICON_ERROR);
++                
++                break;
++            }
++        }
++        
++        case mtrs_master_success:
++            break;
++        case mtrs_server_noservers:
++        {
++            wxMessageBox(wxT("There are no servers to query"), 
++                wxT("Error"), wxOK | wxICON_ERROR);
++        }
++        break;
++        
++        case mtrs_server_singletimeout:
++        {
++            i = FindServerInList(QServer[Result->Index].GetAddress());
++
++            m_LstOdaSrvDetails->LoadDetailsFromServer(NullServer);
++            
++            QServer[Result->Index].ResetData();
++            
++            if (launchercfg_s.show_blocked_servers == false)
++                break;
++
++            if (i == -1)
++                m_LstCtrlServers->AddServerToList(QServer[Result->Index], Result->Index);
++            else
++                m_LstCtrlServers->AddServerToList(QServer[Result->Index], i, false);
++        }
++        break;
++        
++        case mtrs_server_singlesuccess:           
++        {
++            m_LstCtrlServers->AddServerToList(QServer[Result->Index], Result->ServerListIndex, false);
++            
++            m_LstCtrlPlayers->AddPlayersToList(QServer[Result->Index]);
++            
++            m_LstOdaSrvDetails->LoadDetailsFromServer(QServer[Result->Index]);
++            
++            TotalPlayers += QServer[Result->Index].Info.Players.size();
++        }
++        break;
++
++        case mtrs_servers_querydone:
++        {            
++            // Sort server list after everything has been queried
++            m_LstCtrlServers->Sort();
++        }
++        break;
++        
++        default:
++            break;
++    }
++
++    GetStatusBar()->SetStatusText(wxString::Format(_T("Master Ping: %u"), MServer.GetPing()), 1);
++    GetStatusBar()->SetStatusText(wxString::Format(_T("Total Players: %d"), TotalPlayers), 3);
++
++    delete Result;
++}
++
++// worker threads post to this callback
++void dlgMain::OnWorkerSignal(wxCommandEvent& event)
++{
++    wxInt32 i;
++    switch (event.GetId())
++    {
++        case 0: // server query timed out
++        {
++            i = FindServerInList(QServer[event.GetInt()].GetAddress());
++
++            m_LstCtrlPlayers->DeleteAllItems();
++            
++            QServer[event.GetInt()].ResetData();
++            
++            if (launchercfg_s.show_blocked_servers == false)
++                break;
++
++            if (i == -1)
++                m_LstCtrlServers->AddServerToList(QServer[event.GetInt()], event.GetInt());
++            else
++                m_LstCtrlServers->AddServerToList(QServer[event.GetInt()], i, false);
++            
++            break;                 
++        }
++        case 1: // server queried successfully
++        {
++            m_LstCtrlServers->AddServerToList(QServer[event.GetInt()], event.GetInt());
++            
++            TotalPlayers += QServer[event.GetInt()].Info.Players.size();
++            
++            break;      
++        }
++    }
++
++    ++QueriedServers;
++    
++    GetStatusBar()->SetStatusText(wxString::Format(_T("Queried Server %d of %d"), 
++                                                   QueriedServers, 
++                                                   MServer.GetServerCount()), 
++                                                   2);
++                                                   
++    GetStatusBar()->SetStatusText(wxString::Format(_T("Total Players: %d"), 
++                                                   TotalPlayers), 
++                                                   3);   
++}
++
++// Custom Servers menu item
++void dlgMain::OnMenuServers(wxCommandEvent &event)
++{
++    if (server_dlg)
++        server_dlg->Show();
++}
++
++
++void dlgMain::OnOpenSettingsDialog(wxCommandEvent &event)
++{
++    if (config_dlg)
++        config_dlg->Show();
++}
++
++void dlgMain::OnOpenOdaGet(wxCommandEvent &event)
++{
++    if (OdaGet)
++        OdaGet->Show();
++}
++
++// Quick-Launch button click
++void dlgMain::OnQuickLaunch(wxCommandEvent &event)
++{
++	LaunchGame(_T(""), 
++				launchercfg_s.odamex_directory, 
++				launchercfg_s.wad_paths);
++}
++
++// Launch button click
++void dlgMain::OnLaunch(wxCommandEvent &event)
++{
++    wxString Password;
++    wxString UsrPwHash;
++    wxString SrvPwHash;
++    wxInt32 i;
++    
++    i = GetSelectedServerArrayIndex();
++    
++    if (i == -1)
++        return;
++
++    // If the server is passworded, pop up a password entry dialog for them to
++    // specify one before going any further
++    SrvPwHash = QServer[i].Info.PasswordHash;
++
++    if (SrvPwHash.IsEmpty() == false)
++    {                           
++        wxPasswordEntryDialog ped(this, wxT("Please enter a password"),
++            wxT("This server is passworded"), wxT(""));
++        
++        SrvPwHash.MakeUpper();
++        
++        while (1)
++        {          
++            // Show the dialog box and get the resulting value
++            ped.ShowModal();
++        
++            Password = ped.GetValue();
++        
++            // User possibly hit cancel or did not enter anything, just exit
++            if (Password.IsEmpty())
++                return;
++            
++            UsrPwHash = MD5SUM(Password);
++            UsrPwHash.MakeUpper();
++            
++            // Do an MD5 comparison of the password with the servers one, if it
++            // fails, keep asking the user to enter a valid password, otherwise 
++            // dive out and connect to the server
++            if (SrvPwHash != UsrPwHash)
++            {
++                wxMessageDialog Message(this, wxT("Incorrect password"), 
++                    wxT("Incorrect password"), wxOK | wxICON_HAND);
++                
++                Message.ShowModal();
++                
++                // Reset the text so weird things don't happen
++                ped.SetValue(wxT(""));
++            }
++            else
++                break;
++        }
++    }
++    
++    LaunchGame(QServer[i].GetAddress(), launchercfg_s.odamex_directory,
++        launchercfg_s.wad_paths, Password);
++}
++
++// Get Master List button click
++void dlgMain::OnGetList(wxCommandEvent &event)
++{
++    m_LstCtrlServers->DeleteAllItems();
++    m_LstCtrlPlayers->DeleteAllItems();
++        
++    QueriedServers = 0;
++    TotalPlayers = 0;
++    
++    MainThrPostEvent(mtcs_getmaster);
++}
++
++void dlgMain::OnRefreshServer(wxCommandEvent &event)
++{   
++    wxInt32 li, ai;
++
++    li = GetSelectedServerListIndex();    
++    ai = GetSelectedServerArrayIndex();
++    
++    if (li == -1 || ai == -1)
++        return;
++    
++    m_LstCtrlPlayers->DeleteAllItems();
++                
++    TotalPlayers -= QServer[ai].Info.Players.size();
++    
++    MainThrPostEvent(mtcs_getsingleserver, ai, li);
++}
++
++void dlgMain::OnRefreshAll(wxCommandEvent &event)
++{
++    if (!MServer.GetServerCount())
++        return;
++
++    m_LstCtrlServers->DeleteAllItems();
++    m_LstCtrlPlayers->DeleteAllItems();
++    
++    QueriedServers = 0;
++    TotalPlayers = 0;
++    
++    MainThrPostEvent(mtcs_getservers, -1, -1); 
++}
++
++// when the user clicks on the server list
++void dlgMain::OnServerListClick(wxListEvent& event)
++{   
++    wxInt32 i;
++    
++    i = GetSelectedServerArrayIndex();
++    
++    if (i == -1)
++        return;
++    
++    m_LstCtrlPlayers->DeleteAllItems();
++        
++    m_LstCtrlPlayers->AddPlayersToList(QServer[i]);
++            
++    if (QServer[i].GotResponse() == false)
++        m_LstOdaSrvDetails->LoadDetailsFromServer(NullServer);
++    else
++        m_LstOdaSrvDetails->LoadDetailsFromServer(QServer[i]);
++}
++
++void dlgMain::LaunchGame(const wxString &Address, const wxString &ODX_Path, 
++    const wxString &waddirs, const wxString &Password)
++{
++    wxFileConfig ConfigInfo;
++    wxString ExtraCmdLineArgs;
++    
++    if (ODX_Path.IsEmpty())
++    {
++        wxMessageBox(wxT("Your Odamex path is empty!"));
++        
++        return;
++    }
++    
++    #ifdef __WXMSW__
++      wxString binname = ODX_Path + wxT('\\') + wxT("odamex");
++    #elif __WXMAC__
++      wxString binname = ODX_Path + wxT("/odamex.app/Contents/MacOS/odamex");
++    #else
++      wxString binname = ODX_Path + wxT("/odamex");
++    #endif
++
++    wxString cmdline = wxT("");
++
++    wxString dirs = waddirs.Mid(0, waddirs.Length());
++    
++    cmdline += wxString::Format(wxT("%s"), binname.c_str());
++    
++    if (!Address.IsEmpty())
++		cmdline += wxString::Format(wxT(" -connect %s"),
++									Address.c_str());
++	
++	if (!Password.IsEmpty())
++        cmdline += wxString::Format(wxT(" %s"),
++									Password.c_str());
++	
++	// this is so the client won't mess up parsing
++	if (!dirs.IsEmpty())
++        cmdline += wxString::Format(wxT(" -waddir \"%s\""), 
++                                    dirs.c_str());
++
++    // Check for any user command line arguments
++    ConfigInfo.Read(wxT(EXTRACMDLINEARGS), &ExtraCmdLineArgs, wxT(""));
++    
++    if (!ExtraCmdLineArgs.IsEmpty())
++        cmdline += wxString::Format(wxT(" %s"), 
++                                    ExtraCmdLineArgs.c_str());
++
++    // wxWidgets likes to spit out its own message box on msw after our one
++    #ifndef __WXMSW__
++	if (wxExecute(cmdline, wxEXEC_ASYNC, NULL) <= 0)
++        wxMessageBox(wxString::Format(wxT("Could not start %s!"), 
++                                        binname.c_str()));
++    #else
++    wxExecute(cmdline, wxEXEC_ASYNC, NULL);
++    #endif
++}
++
++
++// when the user double clicks on the server list
++void dlgMain::OnServerListDoubleClick(wxListEvent& event)
++{
++    wxCommandEvent LaunchEvent(wxEVT_COMMAND_TOOL_CLICKED, Id_MnuItmLaunch);
++    
++    wxPostEvent(this, LaunchEvent);
++}
++
++// returns a index of the server address as the internal array index
++wxInt32 dlgMain::FindServer(wxString Address)
++{
++    for (size_t i = 0; i < MServer.GetServerCount(); i++)
++        if (QServer[i].GetAddress().IsSameAs(Address))
++            return i;
++    
++    return -1;
++}
++
++// Finds an index in the server list, via Address
++wxInt32 dlgMain::FindServerInList(wxString Address)
++{
++    if (!m_LstCtrlServers->GetItemCount())
++        return -1;
++    
++    for (wxInt32 i = 0; i < m_LstCtrlServers->GetItemCount(); i++)
++    {
++        wxListItem item;
++        item.SetId(i);
++        item.SetColumn(7);
++        item.SetMask(wxLIST_MASK_TEXT);
++        
++        m_LstCtrlServers->GetItem(item);
++        
++        if (item.GetText().IsSameAs(Address))
++            return i;
++    }
++    
++    return -1;
++}
++
++// Retrieves the currently selected server in list index form
++wxInt32 dlgMain::GetSelectedServerListIndex()
++{
++    wxInt32 i;
++
++    if (!m_LstCtrlServers->GetItemCount() || 
++        !m_LstCtrlServers->GetSelectedItemCount())
++    {
++        return -1;
++    }
++        
++    i = m_LstCtrlServers->GetNextItem(-1, wxLIST_NEXT_ALL, 
++        wxLIST_STATE_SELECTED);
++        
++    return i;
++}
++
++// Retrieves the currently selected server in array index form
++wxInt32 dlgMain::GetSelectedServerArrayIndex()
++{
++    wxListItem item;
++    wxInt32 i;
++
++    i = GetSelectedServerListIndex();
++
++    if (i == -1)
++        return -1;
++
++    item.SetId(i);
++    item.SetColumn(7);
++    item.SetMask(wxLIST_MASK_TEXT);
++        
++    m_LstCtrlServers->GetItem(item);
++        
++    i = FindServer(item.GetText()); 
++    
++    return i;
++}
++
++// Checks whether an odamex-style address format is valid
++_oda_iav_err_t dlgMain::IsAddressValid(wxString Address)
++{
++    wxInt32 Colon;
++    wxString RegEx;
++    wxRegEx ReValIP;
++    wxString IPHost;
++    long Port;
++
++    // Get rid of any whitespace on either side of the string
++    Address.Trim(false);
++    Address.Trim(true);
++
++    // Don't accept nothing
++    if (Address.IsEmpty() == true)
++    {
++        return _oda_iav_emptystr;
++    }
++
++    // Set the regular expression and load it in
++    RegEx = wxT("^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4]"
++                    "[0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]"
++                    "[0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
++
++    ReValIP.Compile(RegEx);
++
++    if (ReValIP.IsValid() == false)
++    {
++        return _oda_iav_interr;
++    }
++
++    // Find the colon that separates the address and the port number
++    Colon = Address.Find(wxT(':'), true);
++
++    if (Colon != wxNOT_FOUND)
++    {
++        wxString PortStr;
++        bool IsGood;
++
++        // Try to convert the substring after the : to a port number
++        PortStr = Address.Mid(Colon + 1);
++
++        IsGood = PortStr.ToLong(&Port);
++
++        // Check if there is something after the colon and if its actually a 
++        // numeric value
++        if ((Colon + 1 >= Address.Len()) || (IsGood == false) || (Port <= 0))
++        {
++            return _oda_iav_colerr;
++        }
++
++    }
++
++    // Finally get the address portion from the main string
++    IPHost = Address.Mid(0, Colon);
++
++    // Finally do the comparison
++    if (ReValIP.Matches(IPHost) == true)
++        return _oda_iav_SUCCESS;
++    else
++    {
++        struct hostent *he;
++
++        // Check to see if its a hostname rather than an IP address
++        he = gethostbyname((const char *)IPHost.char_str());
++
++        if (he != NULL)
++            return _oda_iav_SUCCESS;
++        else
++            return _oda_iav_FAILURE;
++    }
++}
++
++// About information
++void dlgMain::OnAbout(wxCommandEvent& event)
++{
++    if (AboutDialog)
++        AboutDialog->Show();
++}
++
++void dlgMain::OnOpenWebsite(wxCommandEvent &event)
++{
++    wxLaunchDefaultBrowser(_T("http://odamex.net"));
++}
++
++void dlgMain::OnOpenForum(wxCommandEvent &event)
++{
++    wxLaunchDefaultBrowser(_T("http://odamex.net/boards"));
++}
++
++void dlgMain::OnOpenWiki(wxCommandEvent &event)
++{
++    wxLaunchDefaultBrowser(_T("http://odamex.net/wiki"));
++}
++
++void dlgMain::OnOpenChangeLog(wxCommandEvent &event)
++{
++    wxLaunchDefaultBrowser(_T("http://odamex.net/changelog"));
++}
++
++void dlgMain::OnOpenReportBug(wxCommandEvent &event)
++{
++    wxLaunchDefaultBrowser(_T("http://odamex.net/bugs/enter_bug.cgi"));
++}
+--- odamex-0.5.1.orig/debian/changelog
++++ odamex-0.5.1/debian/changelog
+@@ -0,0 +1,18 @@
++odamex (0.5.1-1) unstable; urgency=low
++
++  * New upѕtream version
++
++ -- Brian Manning <brian@portaboom.com>  Mon, 07 Feb 2011 00:10:36 -0800
++
++odamex (0.5.0-1) unstable; urgency=low
++
++  * New upstream version
++
++ -- Brian Manning <brian@portaboom.com>  Fri, 01 Oct 2010 01:22:52 -0700
++
++odamex (0.4.4-1) unstable; urgency=low
++
++  * Initial packaging
++
++ -- Brian Manning <brian@portaboom.com>  Thu, 24 Jun 2010 00:29:52 -0700
++
+--- odamex-0.5.1.orig/debian/compat
++++ odamex-0.5.1/debian/compat
+@@ -0,0 +1 @@
++7
+--- odamex-0.5.1.orig/debian/dirs
++++ odamex-0.5.1/debian/dirs
+@@ -0,0 +1 @@
++usr/games
+--- odamex-0.5.1.orig/debian/copyright
++++ odamex-0.5.1/debian/copyright
+@@ -0,0 +1,34 @@
++This package was debianized by Brian Manning <brian@portaboom.com> on
++Thu, 24 Jun 2010 00:29:52 -0700.
++
++It was downloaded from <http://odamex.net/wiki/Main_Page>
++
++Upstream Author(s):
++
++    deathz0r <deathz0r@odamex.net>
++    denis <denis@voxelsoft.com>
++    GhostlyDeath <ghostlydeath@gmail.com>
++    Hyper_Eye <mwoodj@knology.net>
++    joe <joejkennedy@gmail.com>
++
++License:
++
++    This package is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This package is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this package; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
++
++On Debian systems, the complete text of the GNU General
++Public License can be found in `/usr/share/common-licenses/GPL'.
++
++The Debian packaging is (C) 2010, Brian Manning <brian@portaboom.com> and
++is licensed under the GPL, see above.
+--- odamex-0.5.1.orig/debian/control
++++ odamex-0.5.1/debian/control
+@@ -0,0 +1,35 @@
++Source: odamex
++Section: games
++Priority: optional
++Maintainer: Brian Manning <brian@portaboom.com>
++Build-Depends: debhelper (>= 7),  libsdl-mixer1.2-dev, libsdl-net1.2-dev, libogg-dev, libvorbis-dev, libvorbisfile3, zlib1g-dev, libwxgtk2.8-dev, wx-common
++Standards-Version: 3.8.1
++Homepage: http://edge.sourceforge.net
++
++Package: odamex
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}, libgl1-mesa-glx | libgl1, libglu1-mesa | libglu1, libpng12-0, libjpeg62, zlib1g, libsdl-mixer1.2, libsdl-net1.2
++Description: A port of the DOOM engine
++ Odamex is a free and open source port for the classic first-person-shooter
++ Doom. Odamex's goal is to emulate the feel of and retain many aspects of the
++ original Doom executables while offering a broader expanse of security
++ features, personal configuration, gameplay options, and editing features.
++ Odamex can run on a wide range of operating systems and hardware, so players
++ should be able to play on almost any platform.
++ .
++ - Client and Server environment with in-game joining
++ - Theoretical support for up to 255 players
++ - New Team Deathmatch and Capture the Flag game modes
++ - Automatic downloading and verification of WAD files from the server
++ - Map cycling support
++ - On-the-fly WAD loading:
++   - When combined with map cycling, you can create a map AND wad rotation
++     server!
++   - Wads can be loaded in single player mode too, no need to restart the
++     client.
++ - RCON (Remote Console) Support
++ - Cheating and exploitation redundancy, no longer do you have to put up with
++   cheaters!
++ - Additional higher-resolution video modes. In addition, a possible
++   "accelerated" renderer is in the works, using OpenGL to deliver an
++   experience identical to the original software renderer.
+--- odamex-0.5.1.orig/debian/rules
++++ odamex-0.5.1/debian/rules
+@@ -0,0 +1,84 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++# Sample debian/rules that uses debhelper.
++# This file was originally written by Joey Hess and Craig Small.
++# As a special exception, when this file is copied by dh-make into a
++# dh-make output file, you may use that output file without restriction.
++# This special exception was added by Craig Small in version 0.37 of dh-make.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++configure: configure-stamp
++configure-stamp:
++	dh_testdir
++	# Add here commands to configure the package.
++
++	touch configure-stamp
++
++build: build-stamp
++
++build-stamp: configure-stamp  
++	dh_testdir
++
++	# Add here commands to compile the package.
++	$(MAKE)
++	touch $@
++
++clean: 
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp configure-stamp
++
++	# Add here commands to clean up after the build process.
++	$(MAKE) clean; find . -type f -name *.o -exec rm '{}' \; ; rm -rf odalaunch/odalaunch.app/; rm -f odalaunch/odalaunch
++
++	dh_clean 
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_clean -k 
++	dh_installdirs
++
++	# Add here commands to install the package into debian/odamex.
++	$(MAKE) DESTDIR=$(CURDIR)/debian/odamex install
++
++
++# Build architecture-independent files here.
++binary-indep: build install
++# We have nothing to do by default.
++
++# Build architecture-dependent files here.
++binary-arch: build install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs CHANGELOG
++	dh_installdocs
++	dh_installexamples
++#	dh_install
++#	dh_installmenu
++#	dh_installdebconf	
++#	dh_installlogrotate
++#	dh_installemacsen
++#	dh_installpam
++#	dh_installmime
++#	dh_python
++#	dh_installinit
++#	dh_installcron
++#	dh_installinfo
++	dh_installman
++	dh_link
++	dh_strip
++	dh_compress
++	dh_fixperms
++#	dh_perl
++#	dh_makeshlibs
++	dh_installdeb
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install configure
+--- odamex-0.5.1.orig/debian/docs
++++ odamex-0.5.1/debian/docs
+@@ -0,0 +1,3 @@
++README
++TODO
++doc/*
+--- odamex-0.5.1.orig/debian/odamex.doc-base.EX
++++ odamex-0.5.1/debian/odamex.doc-base.EX
+@@ -0,0 +1,22 @@
++Document: odamex
++Title: Debian odamex Manual
++Author: <insert document author here>
++Abstract: This manual describes what odamex is
++ and how it can be used to
++ manage online manuals on Debian systems.
++Section: unknown
++
++Format: debiandoc-sgml
++Files: /usr/share/doc/odamex/odamex.sgml.gz
++
++Format: postscript
++Files: /usr/share/doc/odamex/odamex.ps.gz
++
++Format: text
++Files: /usr/share/doc/odamex/odamex.text.gz
++
++Format: HTML
++Index: /usr/share/doc/odamex/html/index.html
++Files: /usr/share/doc/odamex/html/*.html
++
++
+--- odamex-0.5.1.orig/debian/menu
++++ odamex-0.5.1/debian/menu
+@@ -0,0 +1,2 @@
++?package(odamex):needs="X11|text|vc|wm" section="Applications/see-menu-manual"\
++  title="odamex" command="/usr/bin/odamex"
+--- odamex-0.5.1.orig/debian/watch
++++ odamex-0.5.1/debian/watch
+@@ -0,0 +1,23 @@
++# Example watch control file for uscan
++# Rename this file to "watch" and then you can run the "uscan" command
++# to check for upstream updates and more.
++# See uscan(1) for format
++
++# Compulsory line, this is a version 3 file
++version=3
++
++# Uncomment to examine a Webpage
++# <Webpage URL> <string match>
++#http://www.example.com/downloads.php odamex-(.*)\.tar\.gz
++
++# Uncomment to examine a Webserver directory
++#http://www.example.com/pub/odamex-(.*)\.tar\.gz
++
++# Uncommment to examine a FTP server
++#ftp://ftp.example.com/pub/odamex-(.*)\.tar\.gz debian uupdate
++
++# Uncomment to find new files on sourceforge, for devscripts >= 2.9
++ http://sf.net/odamex/odamex-src-(.*)\.tar\.gz
++
++# Uncomment to find new files on GooglePages
++# http://example.googlepages.com/foo.html odamex-(.*)\.tar\.gz
