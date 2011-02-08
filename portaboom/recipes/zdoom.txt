@@ -17,7 +17,7 @@ dir /usr 0755 0 0
 dir /usr/games 0755 0 0
 file /usr/games/zdoom /usr/games/zdoom 755 0 0
 dir /usr/share 0755 0 0
-dir /usr/share/zdoom 755 0 0
-file /usr/share/zdoom/zdoom.pk3 /usr/share/zdoom/zdoom.pk3 644 0 0
-slink /usr/share/games/doom/zdoom.pk3 /usr/share/zdoom/zdoom.pk3 644 0 0
+dir /usr/share/games 755 0 0
+dir /usr/share/games/doom 755 0 0
+file /usr/share/games/doom/zdoom.pk3 /usr/share/games/doom/zdoom.pk3 644 0 0
 # vi: set sw=4 ts=4 paste:

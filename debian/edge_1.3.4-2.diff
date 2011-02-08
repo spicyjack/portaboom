@@ -1,0 +1,229 @@
+--- edge-1.34.orig/debian/compat
++++ edge-1.34/debian/compat
+@@ -0,0 +1 @@
++7
+--- edge-1.34.orig/debian/menu
++++ edge-1.34/debian/menu
+@@ -0,0 +1,2 @@
++?package(edge):needs="X11|text|vc|wm" section="Applications/see-menu-manual"\
++  title="edge" command="/usr/bin/edge"
+--- edge-1.34.orig/debian/rules
++++ edge-1.34/debian/rules
+@@ -0,0 +1,85 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++# Sample debian/rules that uses debhelper.
++# This file was originally written by Joey Hess and Craig Small.
++# As a special exception, when this file is copied by dh-make into a
++# dh-make output file, you may use that output file without restriction.
++# This special exception was added by Craig Small in version 0.37 of dh-make.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++configure: configure-stamp
++configure-stamp:
++	dh_testdir
++	# Add here commands to configure the package.
++
++	touch configure-stamp
++
++build: build-stamp
++
++build-stamp: configure-stamp  
++	dh_testdir
++
++	# Add here commands to compile the package.
++	scons
++	touch $@
++
++clean: 
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp configure-stamp
++
++	# Add here commands to clean up after the build process.
++	scons -c
++
++	dh_clean 
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_prep  
++	dh_installdirs
++
++	# Add here commands to install the package into debian/edge.
++	#$(MAKE) DESTDIR=$(CURDIR)/debian/edge install
++	/bin/cp edge_raw $(CURDIR)/debian/edge/usr/games/edge
++	/bin/cp data/doom/*.ddf $(CURDIR)/debian/edge/usr/share/edge
++
++# Build architecture-independent files here.
++binary-indep: install
++# We have nothing to do by default.
++
++# Build architecture-dependent files here.
++binary-arch: install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs 
++	dh_installdocs
++	dh_installexamples
++#	dh_install
++#	dh_installmenu
++#	dh_installdebconf
++#	dh_installlogrotate
++#	dh_installemacsen
++#	dh_installpam
++#	dh_installmime
++#	dh_python
++#	dh_installinit
++#	dh_installcron
++#	dh_installinfo
++	dh_installman
++	dh_link
++	dh_strip
++	dh_compress
++	dh_fixperms
++#	dh_perl
++#	dh_makeshlibs
++	dh_installdeb
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install configure
+--- edge-1.34.orig/debian/dirs
++++ edge-1.34/debian/dirs
+@@ -0,0 +1,2 @@
++usr/games
++usr/share/edge
+--- edge-1.34.orig/debian/copyright
++++ edge-1.34/debian/copyright
+@@ -0,0 +1,46 @@
++This package was debianized by:
++
++    Brian Manning <brian@portaboom.com> on Thu, 17 Jun 2010 18:15:16 -0700
++
++It was downloaded from:
++
++    <http://sourceforge.net/projects/edge/files>
++
++Upstream Author(s):
++
++    <Andrew Apted (aka "andrewj")>
++    <Luke Brennan (aka "Lobo")>
++
++Copyright:
++
++    <Copyright (C) 2009 Andrew Apted>
++    <Copyright (C) 2009 Luke Brennan>
++
++License:
++
++    This package is free software; you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation; either version 2 of the License, or
++    (at your option) any later version.
++
++    This package is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this package; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
++
++On Debian systems, the complete text of the GNU General
++Public License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
++
++The Debian packaging is:
++
++    Copyright (C) 2010 Brian Manning <brian@portaboom.com>
++
++and is licensed under the GPL version 2, 
++see `/usr/share/common-licenses/GPL-2'.
++
++# Please also look if there are files or directories which have a
++# different copyright/license attached and list them here.
+--- edge-1.34.orig/debian/control
++++ edge-1.34/debian/control
+@@ -0,0 +1,28 @@
++Source: edge
++Section: games
++Priority: optional
++Maintainer: Brian Manning <brian@portaboom.com>
++Build-Depends: debhelper (>= 7), scons, libpng12-dev, libjpeg62-dev, libogg-dev, libvorbis-dev, libvorbisfile3, libglew1.5-dev, libfltk1.1-dev, zlib1g-dev
++Standards-Version: 3.8.1
++Homepage: http://edge.sourceforge.net
++
++Package: edge
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}, libgl1-mesa-glx | libgl1, libglu1-mesa | libglu1, libpng12-0, libjpeg62, zlib1g, libexpat1
++Description: a DOOM engine for the total conversion developer
++ Notable EDGE Features:
++ - Extrafloors (3D floors), removing the original DOOM limitation which didn't
++ allow rooms over rooms. EDGE supports real 3D room-over-room, bridges, and
++ liquids.
++ - DDF (Doom Definition Files), allow Mod/TC/PC creators to completely
++ customise monsters, attacks, weapons, pickup and scenery items, linetypes,
++ sectortypes, intermissions, and so forth... using fairly simple to
++ understand text files.
++ - RTS (Radius Trigger Scripting), provides per-level scripting support,
++ allowing custom scripts to run when the player enters certain parts of the
++ map, or performs certain actions, or when certain monsters have been killed
++ (to name a few possibilities).
++ - GLEDGE takes advantage of hardware 3D acceleration via the OpenGL library.
++ - Jumping, Looking up/down, Flying (JetPack), Zooming.
++ - Many limits and bugs from original DOOM removed (e.g. no more visplane
++ overflow or medusa effect). 
+--- edge-1.34.orig/debian/changelog
++++ edge-1.34/debian/changelog
+@@ -0,0 +1,11 @@
++edge (1.34-2) unstable; urgency=low
++
++  * Missed packaging ddf files
++
++ -- Brian Manning <brian@portaboom.com>  Mon, 07 Feb 2011 22:27:14 -0800
++
++edge (1.34-1) unstable; urgency=low
++
++  * Initial packaging
++
++ -- Brian Manning <brian@portaboom.com>  Thu, 17 Jun 2010 18:15:16 -0700
+--- edge-1.34.orig/debian/watch
++++ edge-1.34/debian/watch
+@@ -0,0 +1,23 @@
++# Example watch control file for uscan
++# Rename this file to "watch" and then you can run the "uscan" command
++# to check for upstream updates and more.
++# See uscan(1) for format
++
++# Compulsory line, this is a version 3 file
++version=3
++
++# Uncomment to examine a Webpage
++# <Webpage URL> <string match>
++#http://www.example.com/downloads.php edge-(.*)\.tar\.gz
++
++# Uncomment to examine a Webserver directory
++#http://www.example.com/pub/edge-(.*)\.tar\.gz
++
++# Uncommment to examine a FTP server
++#ftp://ftp.example.com/pub/edge-(.*)\.tar\.gz debian uupdate
++
++# Uncomment to find new files on sourceforge, for devscripts >= 2.9
++# http://sf.net/edge/edge-(.*)\.tar\.gz
++
++# Uncomment to find new files on GooglePages
++# http://example.googlepages.com/foo.html edge-(.*)\.tar\.gz
+--- edge-1.34.orig/debian/docs
++++ edge-1.34/debian/docs
+@@ -0,0 +1,4 @@
++GPL.txt
++INSTALL.txt
++README.txt
++docs/
