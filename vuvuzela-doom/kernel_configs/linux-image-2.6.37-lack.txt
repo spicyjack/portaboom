@@ -119,8 +119,41 @@ file /lib/modules/2.6.37-lack/kernel/drivers/ieee802154/fakehard.ko /lib/modules
 dir /lib/modules/2.6.37-lack/kernel/drivers/input 755 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/input/evdev.ko /lib/modules/2.6.37-lack/kernel/drivers/input/evdev.ko 644 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/input/ff-memless.ko /lib/modules/2.6.37-lack/kernel/drivers/input/ff-memless.ko 644 0 0
+dir /lib/modules/2.6.37-lack/kernel/drivers/input/gameport 755 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/emu10k1-gp.ko /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/emu10k1-gp.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/fm801-gp.ko /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/fm801-gp.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/gameport.ko /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/gameport.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/lightning.ko /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/lightning.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/ns558.ko /lib/modules/2.6.37-lack/kernel/drivers/input/gameport/ns558.ko 644 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/input/input-polldev.ko /lib/modules/2.6.37-lack/kernel/drivers/input/input-polldev.ko 644 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/input/joydev.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joydev.ko 644 0 0
+dir /lib/modules/2.6.37-lack/kernel/drivers/input/joystick 755 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/a3d.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/a3d.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/adi.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/adi.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/analog.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/analog.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/cobra.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/cobra.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/db9.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/db9.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/gamecon.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/gamecon.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/gf2k.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/gf2k.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/grip.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/grip.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/grip_mp.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/grip_mp.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/guillemot.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/guillemot.ko 644 0 0
+dir /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/iforce 755 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/iforce/iforce.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/iforce/iforce.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/interact.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/interact.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/joydump.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/joydump.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/magellan.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/magellan.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/sidewinder.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/sidewinder.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/spaceball.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/spaceball.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/spaceorb.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/spaceorb.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/stinger.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/stinger.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/tmdc.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/tmdc.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/turbografx.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/turbografx.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/twidjoy.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/twidjoy.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/walkera0701.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/walkera0701.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/warrior.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/warrior.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/xpad.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/xpad.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/zhenhua.ko /lib/modules/2.6.37-lack/kernel/drivers/input/joystick/zhenhua.ko 644 0 0
 dir /lib/modules/2.6.37-lack/kernel/drivers/input/keyboard 755 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/input/keyboard/adp5588-keys.ko /lib/modules/2.6.37-lack/kernel/drivers/input/keyboard/adp5588-keys.ko 644 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/input/keyboard/gpio_keys.ko /lib/modules/2.6.37-lack/kernel/drivers/input/keyboard/gpio_keys.ko 644 0 0

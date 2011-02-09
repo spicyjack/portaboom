@@ -19,8 +19,6 @@ kernel/drivers/i2c
 kernel/drivers/ide
 kernel/drivers/ieee1394
 kernel/drivers/infiniband
-kernel/drivers/input/gameport
-kernel/drivers/input/joystick
 kernel/drivers/input/misc
 kernel/drivers/input/serio
 kernel/drivers/isdn
