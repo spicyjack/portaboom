@@ -9,7 +9,7 @@
 # License: GPL v2 (see licence blurb at the bottom of the file)
 #
 # requires sudo; screen is SUID root; also has lsof, pv, ldd, strace
-debug: debug-tools lspci.lenny usbutils
+debug: debug-tools lspci.lenny usbutils lshw
 audio: libasound.lenny aumix alsa-utils
 fs-tools: xfs lvm2.lenny e2fsprogs extfs-common
 network: openssl wget dhclient shellinabox
