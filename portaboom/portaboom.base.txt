@@ -25,7 +25,7 @@ file /etc/hosts :PROJECT_DIR:/etcfiles/hosts 0644 0 0
 file /etc/passwd :PROJECT_DIR:/etcfiles/passwd 0644 0 0
 file /etc/profile :PROJECT_DIR:/etcfiles/profile 0644 0 0
 file /etc/shadow :PROJECT_DIR:/etcfiles/shadow 0640 0 0
-file /etc/sudoers :BASE_DIR:/common/etcfiles/sudoers 0440 0 0
+file /etc/sudoers :BUILD_BASE:/common/etcfiles/sudoers 0440 0 0
 file /etc/sysctl.conf /etc/sysctl.conf 0644 0 0
 file /etc/inittab :PROJECT_DIR:/etcfiles/inittab 0644 0 0
 file /etc/modules :PROJECT_DIR:/etcfiles/modules 0644 0 0
