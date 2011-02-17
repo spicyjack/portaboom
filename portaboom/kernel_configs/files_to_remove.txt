@@ -47,7 +47,6 @@ kernel/drivers/scsi/scsi_transport_sas.ko
 kernel/drivers/scsi/scsi_transport_spi.ko
 kernel/drivers/scsi/scsi_transport_srp.ko
 kernel/drivers/scsi/scsi_wait_scan.ko
-kernel/drivers/scsi/sd_mod.ko
 kernel/drivers/scsi/ses.ko
 kernel/drivers/scsi/stex.ko
 kernel/drivers/scsi/st.ko

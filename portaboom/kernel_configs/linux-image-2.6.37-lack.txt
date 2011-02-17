@@ -733,6 +733,7 @@ file /lib/modules/2.6.37-lack/kernel/drivers/scsi/cxgbi/cxgb4i/cxgb4i.ko /lib/mo
 file /lib/modules/2.6.37-lack/kernel/drivers/scsi/cxgbi/libcxgbi.ko /lib/modules/2.6.37-lack/kernel/drivers/scsi/cxgbi/libcxgbi.ko 644 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/scsi/iscsi_boot_sysfs.ko /lib/modules/2.6.37-lack/kernel/drivers/scsi/iscsi_boot_sysfs.ko 644 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/scsi/scsi_mod.ko /lib/modules/2.6.37-lack/kernel/drivers/scsi/scsi_mod.ko 644 0 0
+file /lib/modules/2.6.37-lack/kernel/drivers/scsi/sd_mod.ko /lib/modules/2.6.37-lack/kernel/drivers/scsi/sd_mod.ko 644 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/scsi/sg.ko /lib/modules/2.6.37-lack/kernel/drivers/scsi/sg.ko 644 0 0
 file /lib/modules/2.6.37-lack/kernel/drivers/scsi/sr_mod.ko /lib/modules/2.6.37-lack/kernel/drivers/scsi/sr_mod.ko 644 0 0
 dir /lib/modules/2.6.37-lack/kernel/drivers/serial 755 0 0
