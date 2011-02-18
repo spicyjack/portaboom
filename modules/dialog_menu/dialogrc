@@ -38,15 +38,12 @@ use_shadow = ON
 use_colors = ON
 
 # Attribute  -  (foreground,background,highlight?)
-# Screen color
 #screen_color = (CYAN,BLUE,ON)
 screen_color = (CYAN,BLACK,ON)
 
-# Shadow color
 #shadow_color = (BLACK,BLACK,ON)
-shadow_color = (BLACK,WHITE,ON)
+shadow_color = (BLACK,BLUE,ON)
 
-# Dialog box color
 #dialog_color = (BLACK,WHITE,OFF)
 dialog_color = (WHITE,BLACK,OFF)
 
@@ -62,19 +59,19 @@ border_color = (GREEN,BLACK,ON)
 button_active_color = (WHITE,BLUE,ON)
 
 # Inactive button color
-button_inactive_color = (BLACK,WHITE,OFF)
+button_inactive_color = (WHITE,BLACK,OFF)
 
 # Active button key color
 button_key_active_color = (WHITE,BLUE,ON)
 
 # Inactive button key color
-button_key_inactive_color = (RED,WHITE,OFF)
+button_key_inactive_color = (RED,BLACK,OFF)
 
 # Active button label color
 button_label_active_color = (YELLOW,BLUE,ON)
 
 # Inactive button label color
-button_label_inactive_color = (BLACK,WHITE,ON)
+button_label_inactive_color = (WHITE,BLACK,ON)
 
 # Input box color
 inputbox_color = (BLACK,WHITE,OFF)
