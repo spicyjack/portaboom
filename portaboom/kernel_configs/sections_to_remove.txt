@@ -1,7 +1,7 @@
 kernel/arch
 kernel/crypto
 kernel/drivers/acpi
-kernel/drivers/ata
+#kernel/drivers/ata
 kernel/drivers/atm
 kernel/drivers/block
 kernel/drivers/bluetooth
