@@ -43,7 +43,7 @@ cat <<'LEGACY'
 LEGACY
 
 sleep 5
-legacy
+doom-legacy
 center
 
 cat <<'EDGE'
