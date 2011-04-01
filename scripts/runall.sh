@@ -120,7 +120,7 @@ cat <<'VAVOOM'
 VAVOOM
 
 sleep 5
-vavoom -iwaddri /usr/share/games/doom -doom
+vavoom -iwaddir /usr/share/games/doom -doom
 center
 
 cat <<'ZDOOM'
