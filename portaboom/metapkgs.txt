@@ -29,7 +29,7 @@ xapps: xroot-toys xwm-windowlab mrxvt xterm
 doom-shareware: doom-shareware
 libsdl:  libsdl1.2debian-alsa libsdl-image1.2 libsdl-mixer1.2 libsdl-net1.2
   libx86-1.lenny libsvga1.lenny
-sfx-libs: libmikmod2.lenny timidity
+sfx-libs: audiolibs.lenny timidity
 libgl-mesa: libglu1-mesa.lenny libgl1-mesa-glx.lenny libglew.lenny
 
 vim: vim vim-common vim-runtime
