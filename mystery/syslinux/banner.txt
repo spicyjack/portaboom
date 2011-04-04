@@ -1,0 +1,19 @@
+40
+                          _____       ______
+     _______________________  /______ ___  /____________________ ___
+     ___  __ _  __ __  ____  ___  __ `__  __ _  __ _  __ __  __ `__ \
+     __  /_/ / /_/ _  /   / /_ / /_/ /_  /_/ / /_/ / /_/ _  / / / / /
+     _  .___/\____//_/    \__/ \__,_/ /_.___/\____/\____//_/ /_/ /_/
+     /_/
+0f
+      http://code.google.com/p/portaboom/ | <portaboom@googlegroups.com>
+
+Portaboom - 0a2009.00f (0b05Aug2009)0f
+
+A self-contained first person shooter launcher/player.
+
+<0eF20f>: list the current system cheat codes
+<0eF10f>: return to this screen
+
+Hit the <0aEnter0f> key to boot the system with the default options.
+

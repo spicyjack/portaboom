@@ -1,0 +1,26 @@
+# $Id: generate_recipe.sh,v 1.8 2009-07-31 23:47:23 brian Exp $
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+#
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# 
+file /usr/bin/yadex-1.7.0 /usr/local/stow/yadex-1.7.0/bin/yadex-1.7.0 755 0 0
+file /usr/bin/yadex /usr/bin/yadex-1.7.0 755 0 0
+file /etc/yadex.cfg /usr/local/stow/yadex-1.7.0/etc/yadex.cfg 644 0 0
+file /usr/share/doom/doom.ygd /usr/local/stow/yadex-1.7.0/share/doom.ygd 644 0 0
+file /usr/share/doom/doom02.ygd /usr/local/stow/yadex-1.7.0/share/doom02.ygd 644 0 0
+file /usr/share/doom/doompr.ygd /usr/local/stow/yadex-1.7.0/share/doompr.ygd 644 0 0
+file /usr/share/doom/strife10.ygd /usr/local/stow/yadex-1.7.0/share/strife10.ygd 644 0 0
+file /usr/share/doom/doom04.ygd /usr/local/stow/yadex-1.7.0/share/doom04.ygd 644 0 0
+file /usr/share/doom/heretic.ygd /usr/local/stow/yadex-1.7.0/share/heretic.ygd 644 0 0
+file /usr/share/doom/hexen.ygd /usr/local/stow/yadex-1.7.0/share/hexen.ygd 644 0 0
+file /usr/share/doom/strife.ygd /usr/local/stow/yadex-1.7.0/share/strife.ygd 644 0 0
+file /usr/share/doom/doom2.ygd /usr/local/stow/yadex-1.7.0/share/doom2.ygd 644 0 0
+file /usr/share/doom/doom05.ygd /usr/local/stow/yadex-1.7.0/share/doom05.ygd 644 0 0
+# vi: set sw=4 ts=4 paste:

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# xsession script for 'lack' user
+
+# set a black background
+/usr/bin/xsetroot -solid black
+# set the image of the moon on top of it
+/usr/games/xphoon
+# start an xterm in the lower left corner of the screen
+exec xterm +sb -geometry +0-0 -e /etc/scripts/runall.sh
+#exec xterm +sb -geometry +0-0
+#exec perl /etc/scripts/helloworld.pl

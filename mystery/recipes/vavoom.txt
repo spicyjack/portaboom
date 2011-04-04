@@ -1,0 +1,60 @@
+# name: vavoom
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+
+# Depends: libc6, libflac++6, libflac8, libgcc1, libgl1-mesa-glx | libgl1,
+# libjpeg62, libmikmod2, libogg0, libpng12-0, libsdl-mixer1.2,
+# libsdl1.2debian, libstdc++6, libvorbis0a, libwxbase2.8-0, libwxgtk2.8-0,
+# zlib1g
+
+#
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# vavoom
+dir /usr 755 0 0
+dir /usr/games 755 0 0
+file /usr/games/vavoom /usr/games/vavoom 755 0 0
+file /usr/games/vavoom.bin /usr/games/vavoom.bin 755 0 0
+file /usr/games/vavoom-dedicated /usr/games/vavoom-dedicated 755 0 0
+file /usr/games/vavoom-dedicated.bin /usr/games/vavoom-dedicated.bin 755 0 0
+#file /usr/games/vlaunch /usr/games/vlaunch 755 0 0
+dir /usr/share 755 0 0
+dir /usr/share/vavoom 755 0 0
+file /usr/share/vavoom/vavoom.png /usr/share/vavoom/vavoom.png 644 0 0
+dir /usr/share/vavoom/basev 755 0 0
+file /usr/share/vavoom/basev/games.txt /usr/share/vavoom/basev/games.txt 644 0 0
+dir /usr/share/vavoom/basev/common 755 0 0
+file /usr/share/vavoom/basev/common/basepak.pk3 /usr/share/vavoom/basev/common/basepak.pk3 644 0 0
+dir /usr/share/vavoom/basev/doom 755 0 0
+file /usr/share/vavoom/basev/doom/basepak.pk3 /usr/share/vavoom/basev/doom/basepak.pk3 644 0 0
+dir /usr/share/vavoom/basev/doom1 755 0 0
+file /usr/share/vavoom/basev/doom1/basepak.pk3 /usr/share/vavoom/basev/doom1/basepak.pk3 644 0 0
+file /usr/share/vavoom/basev/doom1/base.txt /usr/share/vavoom/basev/doom1/base.txt 644 0 0
+dir /usr/share/vavoom/basev/doom2 755 0 0
+file /usr/share/vavoom/basev/doom2/basepak.pk3 /usr/share/vavoom/basev/doom2/basepak.pk3 644 0 0
+file /usr/share/vavoom/basev/doom2/base.txt /usr/share/vavoom/basev/doom2/base.txt 644 0 0
+dir /usr/share/vavoom/basev/heretic 755 0 0
+file /usr/share/vavoom/basev/heretic/basepak.pk3 /usr/share/vavoom/basev/heretic/basepak.pk3 644 0 0
+dir /usr/share/vavoom/basev/hexen 755 0 0
+file /usr/share/vavoom/basev/hexen/basepak.pk3 /usr/share/vavoom/basev/hexen/basepak.pk3 644 0 0
+dir /usr/share/vavoom/basev/plutonia 755 0 0
+file /usr/share/vavoom/basev/plutonia/basepak.pk3 /usr/share/vavoom/basev/plutonia/basepak.pk3 644 0 0
+file /usr/share/vavoom/basev/plutonia/base.txt /usr/share/vavoom/basev/plutonia/base.txt 644 0 0
+dir /usr/share/vavoom/basev/strife 755 0 0
+file /usr/share/vavoom/basev/strife/basepak.pk3 /usr/share/vavoom/basev/strife/basepak.pk3 644 0 0
+dir /usr/share/vavoom/basev/tnt 755 0 0
+file /usr/share/vavoom/basev/tnt/basepak.pk3 /usr/share/vavoom/basev/tnt/basepak.pk3 644 0 0
+file /usr/share/vavoom/basev/tnt/base.txt /usr/share/vavoom/basev/tnt/base.txt 644 0 0
+# libflac++6
+dir /usr/lib 755 0 0
+file /usr/lib/libFLAC++.so.6.2.0 /usr/lib/libFLAC++.so.6.2.0 644 0 0
+slink /usr/lib/libFLAC++.so.6 /usr/lib/libFLAC++.so.6.2.0 777 0 0
+# libflac8
+file /usr/lib/libFLAC.so.8.2.0 /usr/lib/libFLAC.so.8.2.0 644 0 0
+slink /usr/lib/libFLAC.so.8 /usr/lib/libFLAC.so.8.2.0 777 0 0
+# vi: set shiftwidth=4 tabstop=4 paste:

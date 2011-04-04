@@ -1,0 +1,24 @@
+# $Id: generate_recipe.sh,v 1.8 2009-07-31 23:47:23 brian Exp $
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+
+# Depends: libc6, libgl1-mesa-glx | libgl1, libglu1-mesa | libglu1,
+# libpng12-0, libsdl-mixer1.2, libsdl-net1.2, libsdl1.2debian
+
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# prboom
+dir /usr 755 0 0
+dir /usr/bin 755 0 0
+dir /usr/games 755 0 0
+file /usr/games/prboom /usr/games/prboom 755 0 0
+file /usr/games/prboom-game-server /usr/games/prboom-game-server 755 0 0
+dir /usr/share/games 755 0 0
+dir /usr/share/games/doom 755 0 0
+file /usr/share/games/doom/prboom.wad /usr/share/games/doom/prboom.wad 644 0 0
+# vi: set sw=4 ts=4 paste:

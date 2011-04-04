@@ -1,0 +1,48 @@
+# name: edge
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+
+# Depends: libc6, libgcc1, libgl1-mesa-glx | libgl1, libglew1.5, 
+# libjpeg62, libogg0, libpng12-0, libsdl1.2debian, libstdc++6,
+# libvorbis0a, libvorbisfile3, zlib1g, libglu1-mesa | libglu1, libexpat1
+
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# edge
+dir /usr 755 0 0
+dir /usr/games 755 0 0
+file /usr/games/edge /usr/games/edge 755 0 0
+slink /usr/games/doom_ddf /usr/share/edge 0755 0 0
+dir /usr/share 755 0 0
+dir /usr/share/games 755 0 0
+dir /usr/share/games/doom 755 0 0
+file /usr/share/games/doom/edge.wad /usr/share/games/doom/edge.wad 644 0 0
+dir /usr/share/edge 755 0 0
+file /usr/share/edge/anims.ddf /usr/share/edge/anims.ddf 644 0 0
+file /usr/share/edge/attacks.ddf /usr/share/edge/attacks.ddf 644 0 0
+file /usr/share/edge/coal_api.ec /usr/share/edge/coal_api.ec 644 0 0
+file /usr/share/edge/coal_hud.ec /usr/share/edge/coal_hud.ec 644 0 0
+file /usr/share/edge/colmap.ddf /usr/share/edge/colmap.ddf 644 0 0
+file /usr/share/edge/fonts.ddf /usr/share/edge/fonts.ddf 644 0 0
+file /usr/share/edge/games.ddf /usr/share/edge/games.ddf 644 0 0
+file /usr/share/edge/images.ddf /usr/share/edge/images.ddf 644 0 0
+file /usr/share/edge/lang_plut.ldf /usr/share/edge/lang_plut.ldf 644 0 0
+file /usr/share/edge/lang_tnt.ldf /usr/share/edge/lang_tnt.ldf 644 0 0
+file /usr/share/edge/language.ldf /usr/share/edge/language.ldf 644 0 0
+file /usr/share/edge/levels.ddf /usr/share/edge/levels.ddf 644 0 0
+file /usr/share/edge/lines.ddf /usr/share/edge/lines.ddf 644 0 0
+file /usr/share/edge/playlist.ddf /usr/share/edge/playlist.ddf 644 0 0
+file /usr/share/edge/rscript.rts /usr/share/edge/rscript.rts 644 0 0
+file /usr/share/edge/sectors.ddf /usr/share/edge/sectors.ddf 644 0 0
+file /usr/share/edge/sounds.ddf /usr/share/edge/sounds.ddf 644 0 0
+file /usr/share/edge/styles.ddf /usr/share/edge/styles.ddf 644 0 0
+file /usr/share/edge/switch.ddf /usr/share/edge/switch.ddf 644 0 0
+file /usr/share/edge/things.ddf /usr/share/edge/things.ddf 644 0 0
+file /usr/share/edge/wad_info.txt /usr/share/edge/wad_info.txt 644 0 0
+file /usr/share/edge/weapons.ddf /usr/share/edge/weapons.ddf 644 0 0
+# vi: set shiftwidth=4 tabstop=4 paste:

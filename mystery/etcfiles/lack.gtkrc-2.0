@@ -1,0 +1,2 @@
+include "/usr/share/themes/Nodoka-Fuego/gtk-2.0/gtkrc"
+include "/home/lack/.gtkrc.mine"

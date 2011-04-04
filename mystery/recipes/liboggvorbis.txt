@@ -1,0 +1,29 @@
+# name: libogg0
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+#
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# libogg0
+dir /usr 755 0 0
+dir /usr/lib 755 0 0
+file /usr/lib/libogg.so.0.5.3 /usr/lib/libogg.so.0.5.3 644 0 0
+slink /usr/lib/libogg.so.0 /usr/lib/libogg.so.0.5.3 777 0 0
+# libsmpeg0
+file /usr/lib/libsmpeg-0.4.so.0.1.4 /usr/lib/libsmpeg-0.4.so.0.1.4 644 0 0
+slink /usr/lib/libsmpeg-0.4.so.0 /usr/lib/libsmpeg-0.4.so.0.1.4 777 0 0
+# libvorbis0a
+file /usr/lib/libvorbis.so.0.4.0 /usr/lib/libvorbis.so.0.4.0 644 0 0
+slink /usr/lib/libvorbis.so.0 /usr/lib/libvorbis.so.0.4.0 777 0 0
+# libvorbisenc2
+file /usr/lib/libvorbisenc.so.2.0.3 /usr/lib/libvorbisenc.so.2.0.3 644 0 0
+slink /usr/lib/libvorbisenc.so.2 /usr/lib/libvorbisenc.so.2.0.3 777 0 0
+# libvorbisfile3
+file /usr/lib/libvorbisfile.so.3.2.0 /usr/lib/libvorbisfile.so.3.2.0 644 0 0
+slink /usr/lib/libvorbisfile.so.3 /usr/lib/libvorbisfile.so.3.2.0 777 0 0
+# vi: set shiftwidth=4 tabstop=4 paste:

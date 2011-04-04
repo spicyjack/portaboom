@@ -1,0 +1,51 @@
+# $Id: generate_recipe.sh,v 1.8 2009-07-31 23:47:23 brian Exp $
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+#
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# 
+file /usr/share/doom/attack.txt /home/src/idGames/master_levels_of_doom/master/wads/attack.txt 0644 0 0
+file /usr/share/doom/attack.wad /home/src/idGames/master_levels_of_doom/master/wads/attack.wad 0644 0 0
+file /usr/share/doom/blacktwr.txt /home/src/idGames/master_levels_of_doom/master/wads/blacktwr.txt 0644 0 0
+file /usr/share/doom/blacktwr.wad /home/src/idGames/master_levels_of_doom/master/wads/blacktwr.wad 0644 0 0
+file /usr/share/doom/bloodsea.txt /home/src/idGames/master_levels_of_doom/master/wads/bloodsea.txt 0644 0 0
+file /usr/share/doom/bloodsea.wad /home/src/idGames/master_levels_of_doom/master/wads/bloodsea.wad 0644 0 0
+file /usr/share/doom/canyon.txt /home/src/idGames/master_levels_of_doom/master/wads/canyon.txt 0644 0 0
+file /usr/share/doom/canyon.wad /home/src/idGames/master_levels_of_doom/master/wads/canyon.wad 0644 0 0
+file /usr/share/doom/catwalk.txt /home/src/idGames/master_levels_of_doom/master/wads/catwalk.txt 0644 0 0
+file /usr/share/doom/catwalk.wad /home/src/idGames/master_levels_of_doom/master/wads/catwalk.wad 0644 0 0
+file /usr/share/doom/combine.txt /home/src/idGames/master_levels_of_doom/master/wads/combine.txt 0644 0 0
+file /usr/share/doom/combine.wad /home/src/idGames/master_levels_of_doom/master/wads/combine.wad 0644 0 0
+file /usr/share/doom/fistula.txt /home/src/idGames/master_levels_of_doom/master/wads/fistula.txt 0644 0 0
+file /usr/share/doom/fistula.wad /home/src/idGames/master_levels_of_doom/master/wads/fistula.wad 0644 0 0
+file /usr/share/doom/garrison.txt /home/src/idGames/master_levels_of_doom/master/wads/garrison.txt 0644 0 0
+file /usr/share/doom/garrison.wad /home/src/idGames/master_levels_of_doom/master/wads/garrison.wad 0644 0 0
+file /usr/share/doom/geryon.txt /home/src/idGames/master_levels_of_doom/master/wads/geryon.txt 0644 0 0
+file /usr/share/doom/geryon.wad /home/src/idGames/master_levels_of_doom/master/wads/geryon.wad 0644 0 0
+file /usr/share/doom/mephisto.txt /home/src/idGames/master_levels_of_doom/master/wads/mephisto.txt 0644 0 0
+file /usr/share/doom/mephisto.wad /home/src/idGames/master_levels_of_doom/master/wads/mephisto.wad 0644 0 0
+file /usr/share/doom/minos.txt /home/src/idGames/master_levels_of_doom/master/wads/minos.txt 0644 0 0
+file /usr/share/doom/minos.wad /home/src/idGames/master_levels_of_doom/master/wads/minos.wad 0644 0 0
+file /usr/share/doom/nessus.txt /home/src/idGames/master_levels_of_doom/master/wads/nessus.txt 0644 0 0
+file /usr/share/doom/nessus.wad /home/src/idGames/master_levels_of_doom/master/wads/nessus.wad 0644 0 0
+file /usr/share/doom/paradox.txt /home/src/idGames/master_levels_of_doom/master/wads/paradox.txt 0644 0 0
+file /usr/share/doom/paradox.wad /home/src/idGames/master_levels_of_doom/master/wads/paradox.wad 0644 0 0
+file /usr/share/doom/subspace.txt /home/src/idGames/master_levels_of_doom/master/wads/subspace.txt 0644 0 0
+file /usr/share/doom/subspace.wad /home/src/idGames/master_levels_of_doom/master/wads/subspace.wad 0644 0 0
+file /usr/share/doom/subterra.txt /home/src/idGames/master_levels_of_doom/master/wads/subterra.txt 0644 0 0
+file /usr/share/doom/subterra.wad /home/src/idGames/master_levels_of_doom/master/wads/subterra.wad 0644 0 0
+file /usr/share/doom/teeth.txt /home/src/idGames/master_levels_of_doom/master/wads/teeth.txt 0644 0 0
+file /usr/share/doom/teeth.wad /home/src/idGames/master_levels_of_doom/master/wads/teeth.wad 0644 0 0
+file /usr/share/doom/ttrap.txt /home/src/idGames/master_levels_of_doom/master/wads/ttrap.txt 0644 0 0
+file /usr/share/doom/ttrap.wad /home/src/idGames/master_levels_of_doom/master/wads/ttrap.wad 0644 0 0
+file /usr/share/doom/vesperas.txt /home/src/idGames/master_levels_of_doom/master/wads/vesperas.txt 0644 0 0
+file /usr/share/doom/vesperas.wad /home/src/idGames/master_levels_of_doom/master/wads/vesperas.wad 0644 0 0
+file /usr/share/doom/virgil.txt /home/src/idGames/master_levels_of_doom/master/wads/virgil.txt 0644 0 0
+file /usr/share/doom/virgil.wad /home/src/idGames/master_levels_of_doom/master/wads/virgil.wad 0644 0 0
+# vi: set sw=4 ts=4 paste:

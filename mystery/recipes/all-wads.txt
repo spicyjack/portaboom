@@ -1,0 +1,29 @@
+# $Id: generate_recipe.sh,v 1.8 2009-07-31 23:47:23 brian Exp $
+# description: example package with comments
+# depends: _base otherpackage1 otherpackage2
+# helpcommand: /usr/bin/somebin --help
+# versioncommand: /usr/bin/somebin --version
+# examplecommand: /usr/bin/somebin -x -y -z 10
+#
+# dir <name> <mode> <uid> <gid>
+# file <name> <source> <mode> <uid> <gid>
+# slink <new name> <original file> <mode> <uid> <gid>
+#
+# 
+file /usr/share/doom/doom0_2.wad /home/lack/idGames/doom0_2.wad 644 1000 1000
+file /usr/share/doom/doom0_4.wad /home/lack/idGames/doom0_4.wad 644 1000 1000
+file /usr/share/doom/doom0_5.wad /home/lack/idGames/doom0_5.wad 644 1000 1000
+file /usr/share/doom/doom1.wad /home/lack/idGames/doom1.wad 644 1000 1000
+file /usr/share/doom/doom2.17a.wad /home/lack/idGames/doom2.17a.wad 644 1000 1000
+file /usr/share/doom/doom2.wad /home/lack/idGames/doom2.wad 644 1000 1000
+file /usr/share/doom/doomu.wad /home/lack/idGames/doomu.wad 644 1000 1000
+file /usr/share/doom/doom.wad /home/lack/idGames/doom.wad 644 1000 1000
+file /usr/share/doom/freedoom1.wad /home/lack/idGames/freedoom1.wad 644 1000 1000
+file /usr/share/doom/freedoom2.wad /home/lack/idGames/freedoom2.wad 644 1000 1000
+file /usr/share/doom/heretic_share.wad /home/lack/idGames/heretic_share.wad 644 1000 1000
+file /usr/share/doom/heretic.wad /home/lack/idGames/heretic.wad 644 1000 1000
+file /usr/share/doom/hexen.wad /home/lack/idGames/hexen.wad 644 1000 1000
+file /usr/share/doom/plutonia.wad /home/lack/idGames/plutonia.wad 644 1000 1000
+file /usr/share/doom/prboom.wad /home/lack/idGames/prboom.wad 644 1000 1000
+file /usr/share/doom/tnt.wad /home/lack/idGames/tnt.wad 644 1000 1000
+# vi: set sw=4 ts=4 paste:

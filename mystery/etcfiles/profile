@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# simple systemwide ksh-style profile file
+# busybox sets the below path already
+PATH=$PATH:/usr/games:/sbin
+DOOMWADDIR=/usr/share/games/doom
+GTK2_RC_FILES="/usr/share/themes/Nodoka-Fuego/gtk-2.0/gtkrc"
+LACK_FUNCTIONS="/etc/scripts/lack_functions.sh"
+export PATH DOOMWADDIR GTK2_RC_FILES LACK_FUNCTIONS
