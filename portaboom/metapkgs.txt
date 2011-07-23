@@ -20,10 +20,10 @@ imagelibs: imagelibs.lenny
 gtk2-libs: gtklibs.lenny gtk-chtheme
 gtk2-engines-nodoka: gtk2-engines-nodoka gtk2-engines-nodoka-fuego-rojo
 # *MUST BE RUN AS ROOT* - xserver-xorg
-xserver-xorg: xserver-core.lenny xserver-input.lenny xserver-video.lenny
-   x11libs.lenny x11data.lenny xserver-utils.lenny xserver-bin.lenny
-   xserver-xkb.lenny libdirectfb.lenny fontconfig libxxf86vm1.lenny
-# cpp.lenny <- used for #includes and #ifdefs in Xresources files
+xserver-xorg: xserver-core.squeeze xserver-input.squeeze xserver-video.squeeze
+   x11libs.squeeze x11data.squeeze xserver-utils.squeeze xserver-bin.squeeze
+   xserver-xkb.squeeze libdirectfb.squeeze fontconfig libxxf86vm1.squeeze
+# cpp.squeeze <- used for #includes and #ifdefs in Xresources files
 xfonts: ttf-dejavu-core xfonts-terminus.xlack.lenny xfonts.xlack.lenny
 xapps: xroot-toys xwm-windowlab mrxvt xterm
 doom-shareware: doom-shareware
