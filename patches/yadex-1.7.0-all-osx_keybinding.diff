@@ -1,6 +1,7 @@
-diff -N -p -r -u yadex-1.7.0/GNUmakefile yadex-1.7.0-patched/GNUmakefile
---- yadex-1.7.0/GNUmakefile	2003-12-28 09:23:56.000000000 -0800
-+++ yadex-1.7.0-patched/GNUmakefile	2009-08-18 22:38:56.000000000 -0700
+diff --git a/GNUmakefile b/GNUmakefile
+index ee5b9db..e248985 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
 @@ -160,6 +160,7 @@ MODULES_YADEX =								\
  	s_swapf		s_vertices	sanity		scrnshot	\
  	selbox		selectn		selpath		selrect		\
@@ -17,6 +18,15 @@ diff -N -p -r -u yadex-1.7.0/GNUmakefile yadex-1.7.0-patched/GNUmakefile
  	docsrc/reporting.html		\
  	docsrc/tips.html		\
  	docsrc/trivia.html		\
+@@ -381,7 +383,7 @@ yadex: $(OBJDIR)/yadex
+ 
+ $(OBJDIR)/yadex: $(OBJ_CONFIG) $(OBJ_YADEX) $(OBJ_ATCLIB) $(MAKEFILE)
+ 	@echo "** Linking Yadex"
+-	$(CXX) $(OBJ_CONFIG) $(OBJ_YADEX) $(OBJ_ATCLIB) -o $@		\
++	$(CXX) -m32 $(OBJ_CONFIG) $(OBJ_YADEX) $(OBJ_ATCLIB) -o $@		\
+ 	  -L$(X11LIBDIR) -lX11 -lm -lc $(LDFLAGS)
+ 
+ .PHONY: test
 @@ -609,8 +611,9 @@ showconf:
  #
  ########################################################################
@@ -28,7 +38,7 @@ diff -N -p -r -u yadex-1.7.0/GNUmakefile yadex-1.7.0-patched/GNUmakefile
  	@echo "Sorry guv'nor, but... did you run ./configure ?" >&2
  	@false
  
-@@ -637,7 +640,7 @@ $(OBJDIR)/files_share.man: $(OBJDIR)/con
+@@ -637,7 +640,7 @@ $(OBJDIR)/files_share.man: $(OBJDIR)/config.share $(MAKEFILE)
  # Note: the modules of Atclib are not scanned as they all
  # depend on $(HEADERS_ATCLIB) and nothing else.
  
@@ -37,19 +47,50 @@ diff -N -p -r -u yadex-1.7.0/GNUmakefile yadex-1.7.0-patched/GNUmakefile
  	@echo "Generating $@"
  	@makedepend -f- -Y -Iatclib $(SRC_NON_GEN) 2>/dev/null	\
  		| awk 'sub (/^src/, "") == 1 {				\
-diff -N -p -r -u yadex-1.7.0/README yadex-1.7.0-patched/README
---- yadex-1.7.0/README	2003-12-28 13:38:38.000000000 -0800
-+++ yadex-1.7.0-patched/README	2009-08-26 01:07:27.000000000 -0700
+@@ -730,18 +733,18 @@ src/config.h: $(OBJDIR)/config.h
+ 	cp -p $< $@
+ 
+ $(OBJDIR)/%.o: src/%.cc
+-	$(CXX) -c -Iatclib -Iboost -I$(X11INCLUDEDIR) $(CXXFLAGS) $< -o $@
++	$(CXX) -m32 -c -Iatclib -Iboost -I$(X11INCLUDEDIR) $(CXXFLAGS) $< -o $@
+ 
+ $(DOBJDIR)/%.o: src/%.cc
+-	$(CXX) -c -Iatclib -Iboost -I$(X11INCLUDEDIR) $(DCXXFLAGS) $< -o $@
++	$(CXX) -m32 -c -Iatclib -Iboost -I$(X11INCLUDEDIR) $(DCXXFLAGS) $< -o $@
+ 
+ # To compile the modules of Atclib
+ # (normal and debugging versions)
+ $(OBJDIR_ATCLIB)/%.o: atclib/%.c $(HEADERS_ATCLIB)
+-	$(CC) -c $(CFLAGS) $< -o $@
++	$(CC) -m32 -c $(CFLAGS) $< -o $@
+ 
+ $(DOBJDIR_ATCLIB)/%.o: atclib/%.c $(HEADERS_ATCLIB)
+-	$(CC) -c $(DCFLAGS) $< -o $@
++	$(CC) -m32 -c $(DCFLAGS) $< -o $@
+ 
+ # To see the generated assembly code
+ # for the modules of Yadex
+diff --git a/README b/README
+index 0a40774..72737e6 100644
+--- a/README
++++ b/README
 @@ -1,4 +1,4 @@
 -Yadex 1.7.0 (2003-12-28)
-+Yadex 1.7.0 (2009-08-26)
++Yadex 1.7.0 (2011-09-13)
  
  WHAT IS YADEX ?
      Yadex is a Doom level (wad) editor for Unix systems running X,
-diff -N -p -r -u yadex-1.7.0/atclib/al_adigits.c yadex-1.7.0-patched/atclib/al_adigits.c
---- yadex-1.7.0/atclib/al_adigits.c	1999-08-01 07:52:00.000000000 -0700
-+++ yadex-1.7.0-patched/atclib/al_adigits.c	2009-08-18 22:38:56.000000000 -0700
-@@ -29,5 +29,11 @@ Software Foundation, Inc., 59 Temple Pla
+@@ -138,4 +138,4 @@ LEGAL
+ CONTACT
+     See doc/contact.html for addresses.
+ 
+-AYM 2003-12-28
++AYM 2011-09-13
+diff --git a/atclib/al_adigits.c b/atclib/al_adigits.c
+index e449b7c..b91993b 100644
+--- a/atclib/al_adigits.c
++++ b/atclib/al_adigits.c
+@@ -29,5 +29,11 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  #include "atclib.h"
  
  
@@ -62,23 +103,27 @@ diff -N -p -r -u yadex-1.7.0/atclib/al_adigits.c yadex-1.7.0-patched/atclib/al_a
 +'U', 'V', 'W', 'X', 'Y', 'Z'
 +};
  
-diff -N -p -r -u yadex-1.7.0/cache/srcdate yadex-1.7.0-patched/cache/srcdate
---- yadex-1.7.0/cache/srcdate	2003-12-27 15:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/cache/srcdate	2009-08-26 00:00:00.000000000 -0700
+diff --git a/cache/srcdate b/cache/srcdate
+index 81002ab..61eaa4a 100644
+--- a/cache/srcdate
++++ b/cache/srcdate
 @@ -1 +1 @@
 -2003-12-28
 \ No newline at end of file
 +2009-08-26
 \ No newline at end of file
-diff -N -p -r -u yadex-1.7.0/doc/README yadex-1.7.0-patched/doc/README
---- yadex-1.7.0/doc/README	2003-12-28 13:38:38.000000000 -0800
-+++ yadex-1.7.0-patched/doc/README	1969-12-31 16:00:00.000000000 -0800
+diff --git a/doc/README b/doc/README
+deleted file mode 100644
+index 990668c..0000000
+--- a/doc/README
++++ /dev/null
 @@ -1,2 +0,0 @@
 -To generate the contents of this directory, return to the parent
 -directory and type "make doc".
-diff -N -p -r -u yadex-1.7.0/docsrc/index.html yadex-1.7.0-patched/docsrc/index.html
---- yadex-1.7.0/docsrc/index.html	2002-05-09 06:36:06.000000000 -0700
-+++ yadex-1.7.0-patched/docsrc/index.html	2009-08-18 22:38:56.000000000 -0700
+diff --git a/docsrc/index.html b/docsrc/index.html
+index a28e665..e762121 100644
+--- a/docsrc/index.html
++++ b/docsrc/index.html
 @@ -34,6 +34,7 @@
  
  <ul>
@@ -87,9 +132,11 @@ diff -N -p -r -u yadex-1.7.0/docsrc/index.html yadex-1.7.0-patched/docsrc/index.
  <li><a href="advanced.html">Advanced user's guide</a>
  <li><a href="../TODO"><code>TODO</code></a>
  <li><a href="yadex.6">The man page for Yadex</a>
-diff -N -p -r -u yadex-1.7.0/docsrc/preview.html yadex-1.7.0-patched/docsrc/preview.html
---- yadex-1.7.0/docsrc/preview.html	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/docsrc/preview.html	2009-08-18 22:38:56.000000000 -0700
+diff --git a/docsrc/preview.html b/docsrc/preview.html
+new file mode 100644
+index 0000000..3dda393
+--- /dev/null
++++ b/docsrc/preview.html
 @@ -0,0 +1,108 @@
 +<html>
 +<head>
@@ -199,9 +246,10 @@ diff -N -p -r -u yadex-1.7.0/docsrc/preview.html yadex-1.7.0-patched/docsrc/prev
 +<p><hr>AJA $SELF_DATE
 +</body>
 +</html>
-diff -N -p -r -u yadex-1.7.0/src/editloop.cc yadex-1.7.0-patched/src/editloop.cc
---- yadex-1.7.0/src/editloop.cc	2003-07-05 04:12:32.000000000 -0700
-+++ yadex-1.7.0-patched/src/editloop.cc	2009-08-26 01:24:54.000000000 -0700
+diff --git a/src/editloop.cc b/src/editloop.cc
+index d0cf7ec..cfc1b8c 100644
+--- a/src/editloop.cc
++++ b/src/editloop.cc
 @@ -304,7 +304,8 @@ e.mb_menu[MBM_FILE] = new Menu (NULL,
  
  e.mb_menu[MBM_EDIT] = new Menu (NULL,
@@ -222,9 +270,10 @@ diff -N -p -r -u yadex-1.7.0/src/editloop.cc yadex-1.7.0-patched/src/editloop.cc
  	 {
  	 SelPtr cur;
           int prev_obj_type = e.obj_type;
-diff -N -p -r -u yadex-1.7.0/src/editloop.h yadex-1.7.0-patched/src/editloop.h
---- yadex-1.7.0/src/editloop.h	2000-01-10 05:40:12.000000000 -0800
-+++ yadex-1.7.0-patched/src/editloop.h	2009-08-18 22:38:56.000000000 -0700
+diff --git a/src/editloop.h b/src/editloop.h
+index ea1b75d..01bd84c 100644
+--- a/src/editloop.h
++++ b/src/editloop.h
 @@ -6,6 +6,9 @@
  
  void EditorLoop (const char *); /* SWAP! */
@@ -235,10 +284,11 @@ diff -N -p -r -u yadex-1.7.0/src/editloop.h yadex-1.7.0-patched/src/editloop.h
  
  
  
-diff -N -p -r -u yadex-1.7.0/src/gcolour1.cc yadex-1.7.0-patched/src/gcolour1.cc
---- yadex-1.7.0/src/gcolour1.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/gcolour1.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -127,6 +127,21 @@ game_colours = alloc_colours (rgb_values
+diff --git a/src/gcolour1.cc b/src/gcolour1.cc
+index 4ce297c..3016a9b 100644
+--- a/src/gcolour1.cc
++++ b/src/gcolour1.cc
+@@ -127,6 +127,21 @@ game_colours = alloc_colours (rgb_values, DOOM_COLOURS);
    }
    verbmsg ("colours: colour %d remapped to %d (delta %d)\n",
      IMG_TRANSP, colour0, smallest_delta);
@@ -260,28 +310,31 @@ diff -N -p -r -u yadex-1.7.0/src/gcolour1.cc yadex-1.7.0-patched/src/gcolour1.cc
  }
  
  #endif
-diff -N -p -r -u yadex-1.7.0/src/gcolour2.cc yadex-1.7.0-patched/src/gcolour2.cc
---- yadex-1.7.0/src/gcolour2.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/gcolour2.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -35,4 +35,5 @@ Place, Suite 330, Boston, MA 02111-1307,
+diff --git a/src/gcolour2.cc b/src/gcolour2.cc
+index f958148..74e4f7f 100644
+--- a/src/gcolour2.cc
++++ b/src/gcolour2.cc
+@@ -35,4 +35,5 @@ Place, Suite 330, Boston, MA 02111-1307, USA.
  
  pcolour_t *game_colour = 0;	// Pixel values for the DOOM_COLOURS game clrs.
  int colour0;			// Game colour to which g. colour 0 is remapped
 +int sky_colour;			// Game colour for a medium sky blue
  
-diff -N -p -r -u yadex-1.7.0/src/gcolour2.h yadex-1.7.0-patched/src/gcolour2.h
---- yadex-1.7.0/src/gcolour2.h	2000-08-10 14:18:16.000000000 -0700
-+++ yadex-1.7.0-patched/src/gcolour2.h	2009-08-18 22:38:56.000000000 -0700
+diff --git a/src/gcolour2.h b/src/gcolour2.h
+index 2893613..de7784d 100644
+--- a/src/gcolour2.h
++++ b/src/gcolour2.h
 @@ -10,4 +10,5 @@
  
  extern pcolour_t *game_colour;  // Pixel values for the DOOM_COLOURS game clrs.
  extern int colour0;		// Game colour to which g. colour 0 is remapped
 +extern int sky_colour;		// Game colour for a medium blue sky
  
-diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
---- yadex-1.7.0/src/l_prop.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/l_prop.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -105,13 +105,13 @@ const char *Menu_data_ldt::operator[] (s
+diff --git a/src/l_prop.cc b/src/l_prop.cc
+index 94da2a8..7cddc21 100644
+--- a/src/l_prop.cc
++++ b/src/l_prop.cc
+@@ -105,13 +105,13 @@ const char *Menu_data_ldt::operator[] (size_t n) const
   *	Prototypes of private functions
   */
  static char *GetTaggedLineDefFlag (int linedefnum, int flagndx);
@@ -297,7 +350,7 @@ diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
    char   texname[WAD_TEX_NAME + 1];
    int    n, val;
    SelPtr cur, sdlist;
-@@ -132,9 +132,9 @@ void LinedefProperties (int x0, int y0, 
+@@ -132,9 +132,9 @@ void LinedefProperties (int x0, int y0, SelPtr obj)
    switch (val)
    {
      case 1:
@@ -309,7 +362,7 @@ diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
        sprintf (menustr[0], "Change flags            (Current: %d)",
  	LineDefs[obj->objnum].flags);
        sprintf (menustr[1], "Change type             (Current: %d)",
-@@ -149,7 +149,16 @@ void LinedefProperties (int x0, int y0, 
+@@ -149,7 +149,16 @@ void LinedefProperties (int x0, int y0, SelPtr obj)
  	LineDefs[obj->objnum].sidedef1);
        sprintf (menustr[6], "Change 2nd sidedef ref. (Current: #%d)",
  	LineDefs[obj->objnum].sidedef2);
@@ -327,7 +380,7 @@ diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
  	menustr[0], YK_, 0,
  	menustr[1], YK_, 0,
  	menustr[2], YK_, 0,
-@@ -157,8 +166,22 @@ void LinedefProperties (int x0, int y0, 
+@@ -157,8 +166,22 @@ void LinedefProperties (int x0, int y0, SelPtr obj)
  	menustr[4], YK_, 0,
  	menustr[5], YK_, 0,
  	menustr[6], YK_, 0,
@@ -352,7 +405,7 @@ diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
  	FreeMemory (menustr[n]);
        subsubwin_y0 = subwin_y0 + BOX_BORDER + (2 + val) * FONTH;
        switch (val)
-@@ -267,9 +290,51 @@ void LinedefProperties (int x0, int y0, 
+@@ -267,9 +290,51 @@ void LinedefProperties (int x0, int y0, SelPtr obj)
  	      LineDefs[cur->objnum].sidedef2 = val;
  	    MadeChanges = 1;
  	    MadeMapChanges = 1;
@@ -405,7 +458,7 @@ diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
       break;
  
      // Edit or add the first sidedef
-@@ -475,7 +540,7 @@ static char *GetTaggedLineDefFlag (int l
+@@ -475,7 +540,7 @@ static char *GetTaggedLineDefFlag (int linedefnum, int flagndx)
   *	Let the user select a linedef type number and return it.
   *	Returns 0 if OK, <>0 if cancelled
   */
@@ -414,7 +467,7 @@ diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
  {
    int         r;
    int         ldtgno = 0;
-@@ -547,3 +612,37 @@ static const char *PrintLdtgroup (void *
+@@ -547,3 +612,37 @@ static const char *PrintLdtgroup (void *ptr)
    return ((ldtgroup_t *)ptr)->desc;
  }
  
@@ -452,10 +505,11 @@ diff -N -p -r -u yadex-1.7.0/src/l_prop.cc yadex-1.7.0-patched/src/l_prop.cc
 +   }
 +}
 +
-diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
---- yadex-1.7.0/src/levels.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/levels.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -58,6 +58,8 @@ int NumVertices;		/* number of vertexes 
+diff --git a/src/levels.cc b/src/levels.cc
+index 150d502..d7ebf65 100644
+--- a/src/levels.cc
++++ b/src/levels.cc
+@@ -58,6 +58,8 @@ int NumVertices;		/* number of vertexes */
  VPtr Vertices;			/* vertex data */
  int NumSectors;			/* number of sectors */
  SPtr Sectors;			/* sectors data */
@@ -464,7 +518,7 @@ diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
  
  // FIXME should be somewhere else
  int NumWTexture;		/* number of wall textures */
-@@ -95,6 +97,10 @@ y_file_name_t Level_file_name_saved;  /*
+@@ -95,6 +97,10 @@ y_file_name_t Level_file_name_saved;  /* The name of the file in
  				   the Level has never been saved yet,
  				   an empty string. */
  
@@ -555,7 +609,7 @@ diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
  	    if (wf->error ())
  	       {
  	       err ("%s: error reading linedef #%ld", lump_name, n);
-@@ -907,6 +929,37 @@ else  // Doom alpha--a wholly different 
+@@ -907,6 +929,37 @@ else  // Doom alpha--a wholly different SECTORS format
     }
  }
  
@@ -593,7 +647,7 @@ diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
  /* Sanity checking on sidedefs: the sector must exist. I don't
     make this a fatal error, though, because it's not exceptional
     to find wads with unused sidedefs with a sector# of -1. Well
-@@ -1011,16 +1064,10 @@ int SaveLevelData (const char *outfile, 
+@@ -1011,16 +1064,10 @@ int SaveLevelData (const char *outfile, const char *level_name) /* SWAP! */
  FILE   *file;
  MDirPtr dir;
  int     n;
@@ -665,7 +719,7 @@ diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
     }
  lump_size[l] = ftell (file) - lump_offset[l];
  if (Level)
-@@ -1083,13 +1155,32 @@ lump_offset[WAD_LL_LINEDEFS] = ftell (fi
+@@ -1083,13 +1155,32 @@ lump_offset[WAD_LL_LINEDEFS] = ftell (file);
  ObjectsNeeded (OBJ_LINEDEFS, 0);
  for (n = 0; n < NumLineDefs; n++)
     {
@@ -705,7 +759,7 @@ diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
     }
  lump_size[l] = ftell (file) - lump_offset[l];
  if (Level)
-@@ -1221,9 +1312,20 @@ lump_size[l] = ftell (file) - lump_offse
+@@ -1221,9 +1312,20 @@ lump_size[l] = ftell (file) - lump_offset[l];
  if (Level)
     dir = dir->next;
  
@@ -727,10 +781,11 @@ diff -N -p -r -u yadex-1.7.0/src/levels.cc yadex-1.7.0-patched/src/levels.cc
     {
     file_write_i32 (file, lump_offset[L]);
     file_write_i32 (file, lump_size[L]);
-diff -N -p -r -u yadex-1.7.0/src/levels.h yadex-1.7.0-patched/src/levels.h
---- yadex-1.7.0/src/levels.h	2001-10-13 07:57:33.000000000 -0700
-+++ yadex-1.7.0-patched/src/levels.h	2009-08-18 22:38:56.000000000 -0700
-@@ -28,6 +28,8 @@ extern VPtr  Vertices;		/* vertices data
+diff --git a/src/levels.h b/src/levels.h
+index a40da01..ea5931c 100644
+--- a/src/levels.h
++++ b/src/levels.h
+@@ -28,6 +28,8 @@ extern VPtr  Vertices;		/* vertices data */
  extern int   NumSegs;		/* number of segments */
  extern int   NumSectors;	/* number of sectors */
  extern SPtr  Sectors;		/* sectors data */
@@ -739,9 +794,10 @@ diff -N -p -r -u yadex-1.7.0/src/levels.h yadex-1.7.0-patched/src/levels.h
  
  // FIXME should be somewhere else
  extern int   NumWTexture;	/* number of wall textures */
-diff -N -p -r -u yadex-1.7.0/src/objects.cc yadex-1.7.0-patched/src/objects.cc
---- yadex-1.7.0/src/objects.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/objects.cc	2009-08-18 22:38:56.000000000 -0700
+diff --git a/src/objects.cc b/src/objects.cc
+index b28629b..c5d13d3 100644
+--- a/src/objects.cc
++++ b/src/objects.cc
 @@ -465,12 +465,28 @@ switch (objtype)
  	 Things[last].type  = Things[copyfrom].type;
  	 Things[last].angle = Things[copyfrom].angle;
@@ -793,9 +849,11 @@ diff -N -p -r -u yadex-1.7.0/src/objects.cc yadex-1.7.0-patched/src/objects.cc
  	 }
        LineDefs[last].sidedef1 = OBJ_NO_NONE;
        LineDefs[last].sidedef2 = OBJ_NO_NONE;
-diff -N -p -r -u yadex-1.7.0/src/r_images.cc yadex-1.7.0-patched/src/r_images.cc
---- yadex-1.7.0/src/r_images.cc	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/r_images.cc	2009-08-18 22:38:56.000000000 -0700
+diff --git a/src/r_images.cc b/src/r_images.cc
+new file mode 100644
+index 0000000..3f46446
+--- /dev/null
++++ b/src/r_images.cc
 @@ -0,0 +1,400 @@
 +/*
 + *	r_images.cc
@@ -1197,9 +1255,11 @@ diff -N -p -r -u yadex-1.7.0/src/r_images.cc yadex-1.7.0-patched/src/r_images.cc
 +sprites[type] = result;
 +return result;
 +}
-diff -N -p -r -u yadex-1.7.0/src/r_images.h yadex-1.7.0-patched/src/r_images.h
---- yadex-1.7.0/src/r_images.h	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/r_images.h	2009-08-18 22:38:56.000000000 -0700
+diff --git a/src/r_images.h b/src/r_images.h
+new file mode 100644
+index 0000000..6d6c395
+--- /dev/null
++++ b/src/r_images.h
 @@ -0,0 +1,69 @@
 +/*
 + *	r_images.h
@@ -1270,9 +1330,11 @@ diff -N -p -r -u yadex-1.7.0/src/r_images.h yadex-1.7.0-patched/src/r_images.h
 +
 +
 +#endif  /* DO NOT ADD ANYTHING AFTER THIS LINE */
-diff -N -p -r -u yadex-1.7.0/src/r_render.cc yadex-1.7.0-patched/src/r_render.cc
---- yadex-1.7.0/src/r_render.cc	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/r_render.cc	2009-08-18 23:21:08.000000000 -0700
+diff --git a/src/r_render.cc b/src/r_render.cc
+new file mode 100644
+index 0000000..a6db7fa
+--- /dev/null
++++ b/src/r_render.cc
 @@ -0,0 +1,1275 @@
 +/*
 + *	r_render.cc
@@ -2549,9 +2611,11 @@ diff -N -p -r -u yadex-1.7.0/src/r_render.cc yadex-1.7.0-patched/src/r_render.cc
 +view.thing_floors = 0;
 +}
 +
-diff -N -p -r -u yadex-1.7.0/src/r_render.h yadex-1.7.0-patched/src/r_render.h
---- yadex-1.7.0/src/r_render.h	1969-12-31 16:00:00.000000000 -0800
-+++ yadex-1.7.0-patched/src/r_render.h	2009-08-18 22:38:56.000000000 -0700
+diff --git a/src/r_render.h b/src/r_render.h
+new file mode 100644
+index 0000000..7ea7867
+--- /dev/null
++++ b/src/r_render.h
 @@ -0,0 +1,14 @@
 +/*
 + *	r_render.h
@@ -2567,10 +2631,11 @@ diff -N -p -r -u yadex-1.7.0/src/r_render.h yadex-1.7.0-patched/src/r_render.h
 +
 +
 +#endif  /* DO NOT ADD ANYTHING AFTER THIS LINE */
-diff -N -p -r -u yadex-1.7.0/src/s_misc.cc yadex-1.7.0-patched/src/s_misc.cc
---- yadex-1.7.0/src/s_misc.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/s_misc.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -29,11 +29,15 @@ Place, Suite 330, Boston, MA 02111-1307,
+diff --git a/src/s_misc.cc b/src/s_misc.cc
+index 4b31363..8157598 100644
+--- a/src/s_misc.cc
++++ b/src/s_misc.cc
+@@ -29,11 +29,15 @@ Place, Suite 330, Boston, MA 02111-1307, USA.
  
  
  #include "yadex.h"
@@ -2586,7 +2651,7 @@ diff -N -p -r -u yadex-1.7.0/src/s_misc.cc yadex-1.7.0-patched/src/s_misc.cc
  
  
  /*
-@@ -179,4 +183,340 @@ for (cur = obj; cur != NULL; cur = cur->
+@@ -179,4 +183,340 @@ for (cur = obj; cur != NULL; cur = cur->next)
  MadeChanges = 1;
  }
  
@@ -2927,10 +2992,11 @@ diff -N -p -r -u yadex-1.7.0/src/s_misc.cc yadex-1.7.0-patched/src/s_misc.cc
 +}
 +
  /* end of file */
-diff -N -p -r -u yadex-1.7.0/src/s_prop.cc yadex-1.7.0-patched/src/s_prop.cc
---- yadex-1.7.0/src/s_prop.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/s_prop.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -259,4 +259,67 @@ void SectorProperties (int x0, int y0, S
+diff --git a/src/s_prop.cc b/src/s_prop.cc
+index 35cbaf1..bb58894 100644
+--- a/src/s_prop.cc
++++ b/src/s_prop.cc
+@@ -259,4 +259,67 @@ void SectorProperties (int x0, int y0, SelPtr obj)
    }
  }
  
@@ -2998,10 +3064,11 @@ diff -N -p -r -u yadex-1.7.0/src/s_prop.cc yadex-1.7.0-patched/src/s_prop.cc
 +   }
 +}
  
-diff -N -p -r -u yadex-1.7.0/src/s_split.cc yadex-1.7.0-patched/src/s_split.cc
---- yadex-1.7.0/src/s_split.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/s_split.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -36,6 +36,7 @@ Place, Suite 330, Boston, MA 02111-1307,
+diff --git a/src/s_split.cc b/src/s_split.cc
+index 2b9309d..f809fa4 100644
+--- a/src/s_split.cc
++++ b/src/s_split.cc
+@@ -36,6 +36,7 @@ Place, Suite 330, Boston, MA 02111-1307, USA.
  #include "s_linedefs.h"
  #include "selectn.h"
  #include "x_hover.h"
@@ -3009,9 +3076,10 @@ diff -N -p -r -u yadex-1.7.0/src/s_split.cc yadex-1.7.0-patched/src/s_split.cc
  
  
  /*
-diff -N -p -r -u yadex-1.7.0/src/sanity.cc yadex-1.7.0-patched/src/sanity.cc
---- yadex-1.7.0/src/sanity.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/sanity.cc	2009-08-18 22:38:56.000000000 -0700
+diff --git a/src/sanity.cc b/src/sanity.cc
+index 6a6d814..cd4f7f2 100644
+--- a/src/sanity.cc
++++ b/src/sanity.cc
 @@ -67,10 +67,10 @@ void check_types ()
    assert_size (i16, 2);
    assert_size (u32, 4);
@@ -3025,10 +3093,11 @@ diff -N -p -r -u yadex-1.7.0/src/sanity.cc yadex-1.7.0-patched/src/sanity.cc
    assert_size (struct Vertex,   4);
    assert_wrap (u8,          255,           0);
    assert_wrap (i8,          127,        -128);
-diff -N -p -r -u yadex-1.7.0/src/t_prop.cc yadex-1.7.0-patched/src/t_prop.cc
---- yadex-1.7.0/src/t_prop.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/t_prop.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -36,17 +36,18 @@ Place, Suite 330, Boston, MA 02111-1307,
+diff --git a/src/t_prop.cc b/src/t_prop.cc
+index 9731396..76695e1 100644
+--- a/src/t_prop.cc
++++ b/src/t_prop.cc
+@@ -36,17 +36,18 @@ Place, Suite 330, Boston, MA 02111-1307, USA.
  #include "gfx.h"
  #include "levels.h"
  #include "oldmenus.h"
@@ -3062,7 +3131,7 @@ diff -N -p -r -u yadex-1.7.0/src/t_prop.cc yadex-1.7.0-patched/src/t_prop.cc
  sprintf (menustr[0], "Change type          (Current: %s)",
           get_thing_name (Things[obj->objnum].type));
  sprintf (menustr[1], "Change angle         (Current: %s)",
-@@ -73,14 +74,47 @@ sprintf (menustr[3], "Change X position 
+@@ -73,14 +74,47 @@ sprintf (menustr[3], "Change X position    (Current: %d)",
           Things[obj->objnum].xpos);
  sprintf (menustr[4], "Change Y position    (Current: %d)",
           Things[obj->objnum].ypos);
@@ -3243,19 +3312,21 @@ diff -N -p -r -u yadex-1.7.0/src/t_prop.cc yadex-1.7.0-patched/src/t_prop.cc
 +
 +
  /* end of file */
-diff -N -p -r -u yadex-1.7.0/src/version.cc yadex-1.7.0-patched/src/version.cc
---- yadex-1.7.0/src/version.cc	2003-12-28 11:34:08.000000000 -0800
-+++ yadex-1.7.0-patched/src/version.cc	2009-08-26 01:05:19.000000000 -0700
+diff --git a/src/version.cc b/src/version.cc
+index e8bff0e..2322f63 100644
+--- a/src/version.cc
++++ b/src/version.cc
 @@ -1,4 +1,4 @@
  // DO NOT EDIT -- generated from VERSION
  
 -extern const char *const yadex_source_date = "2003-12-28";
 +extern const char *const yadex_source_date = "2009-08-26";
  extern const char *const yadex_version = "1.7.0";
-diff -N -p -r -u yadex-1.7.0/src/wadlist.cc yadex-1.7.0-patched/src/wadlist.cc
---- yadex-1.7.0/src/wadlist.cc	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/wadlist.cc	2009-08-18 22:38:56.000000000 -0700
-@@ -24,6 +24,9 @@ FOR A PARTICULAR PURPOSE. See the GNU Ge
+diff --git a/src/wadlist.cc b/src/wadlist.cc
+index 266ef0f..9332a28 100644
+--- a/src/wadlist.cc
++++ b/src/wadlist.cc
+@@ -24,6 +24,9 @@ FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  You should have received a copy of the GNU General Public License along with
  this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  Place, Suite 330, Boston, MA 02111-1307, USA.
@@ -3332,9 +3403,10 @@ diff -N -p -r -u yadex-1.7.0/src/wadlist.cc yadex-1.7.0-patched/src/wadlist.cc
 -  }
  }
 -
-diff -N -p -r -u yadex-1.7.0/src/wstructs.h yadex-1.7.0-patched/src/wstructs.h
---- yadex-1.7.0/src/wstructs.h	2003-03-28 04:37:32.000000000 -0800
-+++ yadex-1.7.0-patched/src/wstructs.h	2009-08-18 22:38:56.000000000 -0700
+diff --git a/src/wstructs.h b/src/wstructs.h
+index 13154e1..03fc8dc 100644
+--- a/src/wstructs.h
++++ b/src/wstructs.h
 @@ -84,14 +84,30 @@ typedef i16 wad_tangle_t;
  typedef i16 wad_tflags_t;
  struct Thing
@@ -3415,7 +3487,7 @@ diff -N -p -r -u yadex-1.7.0/src/wstructs.h yadex-1.7.0-patched/src/wstructs.h
  {
    { 0,          0                 },  // Label -- no fixed name
    { "THINGS",   WAD_THING_BYTES   },
-@@ -219,8 +252,8 @@ const wad_level_lump_def_t wad_level_lum
+@@ -219,8 +252,8 @@ const wad_level_lump_def_t wad_level_lump[WAD_LL__] =
    { "NODES",    0                 },
    { "SECTORS",  WAD_SECTOR_BYTES  },
    { "REJECT",   0                 },
@@ -3426,10 +3498,11 @@ diff -N -p -r -u yadex-1.7.0/src/wstructs.h yadex-1.7.0-patched/src/wstructs.h
  };
  
  
-diff -N -p -r -u yadex-1.7.0/src/yadex.h yadex-1.7.0-patched/src/yadex.h
---- yadex-1.7.0/src/yadex.h	2003-12-14 16:37:45.000000000 -0800
-+++ yadex-1.7.0-patched/src/yadex.h	2009-08-18 22:38:56.000000000 -0700
-@@ -479,6 +479,7 @@ void SetLinedefLength (SelPtr obj, int l
+diff --git a/src/yadex.h b/src/yadex.h
+index ecf2ef9..df22fe1 100644
+--- a/src/yadex.h
++++ b/src/yadex.h
+@@ -479,6 +479,7 @@ void SetLinedefLength (SelPtr obj, int length, int move_2nd_vertex);
  
  // l_prop.cc (previously in editobj.cc)
  void LinedefProperties (int x0, int y0, SelPtr obj);
@@ -3437,7 +3510,7 @@ diff -N -p -r -u yadex-1.7.0/src/yadex.h yadex-1.7.0-patched/src/yadex.h
  
  // l_unlink.cc
  void unlink_sidedef (SelPtr linedefs, int side1, int side2);
-@@ -541,13 +542,16 @@ void DistributeSectorFloors (SelPtr); /*
+@@ -541,13 +542,16 @@ void DistributeSectorFloors (SelPtr); /* SWAP! */
  void DistributeSectorCeilings (SelPtr); /* SWAP! */
  void RaiseOrLowerSectors (SelPtr obj);
  void BrightenOrDarkenSectors (SelPtr obj);
@@ -3462,10 +3535,11 @@ diff -N -p -r -u yadex-1.7.0/src/yadex.h yadex-1.7.0-patched/src/yadex.h
  
  // v_merge.cc
  void DeleteVerticesJoinLineDefs (SelPtr ); /* SWAP! */
-diff -N -p -r -u yadex-1.7.0/yadex.dep yadex-1.7.0-patched/yadex.dep
---- yadex-1.7.0/yadex.dep	2003-12-28 11:34:06.000000000 -0800
-+++ yadex-1.7.0-patched/yadex.dep	2009-08-26 01:07:26.000000000 -0700
-@@ -612,8 +612,10 @@ obj/0/s_misc.o: src/yerror.h src/ymemory
+diff --git a/yadex.dep b/yadex.dep
+index 68271cc..7fe13f3 100644
+--- a/yadex.dep
++++ b/yadex.dep
+@@ -612,8 +612,10 @@ obj/0/s_misc.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
  dobj/0/s_misc.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
  obj/0/s_misc.o: src/wstructs.h src/input.h src/entry.h src/gfx.h src/levels.h
  dobj/0/s_misc.o: src/wstructs.h src/input.h src/entry.h src/gfx.h src/levels.h
@@ -3478,7 +3552,7 @@ diff -N -p -r -u yadex-1.7.0/yadex.dep yadex-1.7.0-patched/yadex.dep
  obj/0/s_prop.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  dobj/0/s_prop.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  obj/0/s_prop.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
-@@ -642,8 +644,8 @@ obj/0/s_split.o: src/wstructs.h src/inpu
+@@ -642,8 +644,8 @@ obj/0/s_split.o: src/wstructs.h src/input.h src/dialog.h src/levels.h
  dobj/0/s_split.o: src/wstructs.h src/input.h src/dialog.h src/levels.h
  obj/0/s_split.o: src/things.h src/objects.h src/objid.h src/s_linedefs.h
  dobj/0/s_split.o: src/things.h src/objects.h src/objid.h src/s_linedefs.h
@@ -3489,7 +3563,7 @@ diff -N -p -r -u yadex-1.7.0/yadex.dep yadex-1.7.0-patched/yadex.dep
  obj/0/s_swapf.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  dobj/0/s_swapf.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  obj/0/s_swapf.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
-@@ -734,6 +736,34 @@ obj/0/swapmem.o: src/wstructs.h src/inpu
+@@ -734,6 +736,34 @@ obj/0/swapmem.o: src/wstructs.h src/input.h src/levels.h src/things.h
  dobj/0/swapmem.o: src/wstructs.h src/input.h src/levels.h src/things.h
  obj/0/swapmem.o: src/objid.h
  dobj/0/swapmem.o: src/objid.h
@@ -3524,7 +3598,7 @@ diff -N -p -r -u yadex-1.7.0/yadex.dep yadex-1.7.0-patched/yadex.dep
  obj/0/t_centre.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  dobj/0/t_centre.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  obj/0/t_centre.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
-@@ -756,10 +786,10 @@ obj/0/t_prop.o: src/yerror.h src/ymemory
+@@ -756,10 +786,10 @@ obj/0/t_prop.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
  dobj/0/t_prop.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
  obj/0/t_prop.o: src/wstructs.h src/input.h src/entry.h src/game.h src/rgb.h
  dobj/0/t_prop.o: src/wstructs.h src/input.h src/entry.h src/game.h src/rgb.h
@@ -3539,10 +3613,11 @@ diff -N -p -r -u yadex-1.7.0/yadex.dep yadex-1.7.0-patched/yadex.dep
  obj/0/t_spin.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  dobj/0/t_spin.o: src/yadex.h src/config.h atclib/atclib.h src/bitvec.h
  obj/0/t_spin.o: src/yerror.h src/ymemory.h src/aym.h src/windim.h
-diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
---- yadex-1.7.0/ygd/hexen.ygd	2002-12-30 18:53:33.000000000 -0800
-+++ yadex-1.7.0-patched/ygd/hexen.ygd	2009-08-18 22:38:56.000000000 -0700
-@@ -108,6 +108,7 @@ ldt 100 x "?? Scroll left"   "??  Scroll
+diff --git a/ygd/hexen.ygd b/ygd/hexen.ygd
+index 2c1510c..f64047f 100644
+--- a/ygd/hexen.ygd
++++ b/ygd/hexen.ygd
+@@ -108,6 +108,7 @@ ldt 100 x "?? Scroll left"   "??  Scroll_Texture_Left"
  ldt 101 x "?? Scroll right"  "??  Scroll_Texture_Right"
  ldt 102 x "?? Scroll up"     "??  Scroll_Texture_Up"
  ldt 103 x "?? Scroll down"   "??  Scroll_Texture_Down"
@@ -3550,7 +3625,7 @@ diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
  ldt 110 L "?? Raise light"   "??  Light_RaiseByValue"
  ldt 111 L "?? Lower light"   "??  Light_LowerByValue"
  ldt 112 L "?? Set light"     "??  Light_ChangeToValue"
-@@ -136,25 +137,12 @@ ldt 140 x "?? Change sound"  "??  Sector
+@@ -136,25 +137,12 @@ ldt 140 x "?? Change sound"  "??  Sector_ChangeSound"
  #
  
  st   0 "  Normal"       "Normal"
@@ -3580,7 +3655,7 @@ diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
  st 198 "  Lightning 64" "Indoor lightning, +64 units"
  st 199 "  Lightning 32" "Indoor lightning, +32 units"
  st 200 "  Sky2"         "Use MAPINFO sky2"
-@@ -191,17 +179,21 @@ st 224 "  Scroll SW F"  "Scroll southwes
+@@ -191,17 +179,21 @@ st 224 "  Scroll SW F"  "Scroll southwest fast"
  thinggroup p rgb:4/f/4 "Player"
  thinggroup m rgb:f/0/0 "Monster"
  thinggroup w rgb:f/a/0 "Weapon"
@@ -3646,17 +3721,16 @@ diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
 +thing 10011 m -   40 "Reiver leader"       WRTH
  thing 10030 m -   25 "Ettin"			ETTN
 -thing 10060 m -   20 "Fire demon"		FDMN
--
--thing    10 w -   17 "Serpent staff"		WCSS   # Cleric
--thing    53 w -   17 "Frost chards"		WMCS   # Mage
--thing  8010 w -   17 "Timon's axe"		WFAX   # Fighter
 +thing 10060 m -   20 "Fire gargoyle"       FDMN
 +thing 10080 m -   80 "Heresiarch"      SORC
 +thing 10100 m -   32 "Zedek (fighter)"     PLAYA8
 +thing 10101 m -   32 "Traductus (cleric)"  CLERA8
 +thing 10102 m -   32 "Menelkir (mage)"     MAGEA8
 +thing 10200 m -   20 "Korax"           KORX
-+
+ 
+-thing    10 w -   17 "Serpent staff"		WCSS   # Cleric
+-thing    53 w -   17 "Frost chards"		WMCS   # Mage
+-thing  8010 w -   17 "Timon's axe"		WFAX   # Fighter
 +thing    10 w -   17 "Serpent staff"       WCSS
 +thing    12 w -   20 "Quietus blade"       WFR1
 +thing    13 w -   20 "Quietus guard"       WFR2
@@ -3684,8 +3758,7 @@ diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
 +thing  8006 h -   20 "Falcon shield"       ARM2
  thing  8007 h -   17 "Platinum helmet"		ARM3
 +thing  8008 h -   20 "Amulet of warding"   ARM4
- 
--thing   314 k -   17 "Stone (?) key"		KEY7
++
 +thing    30 A -   20 "Porkalator"      ARTIPORK
 +thing    32 A -   20 "Mystic urn"      ARTISPHL
 +thing    33 A -   20 "Torch"           ARTITRCH
@@ -3719,7 +3792,8 @@ diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
 +thing  9019 q -   20 "Clock gear 2"        ARTIGER2
 +thing  9020 q -   20 "Clock gear 3"        ARTIGER3
 +thing  9021 q -   20 "Clock gear 4"        ARTIGER4
-+
+ 
+-thing   314 k -   17 "Stone (?) key"		KEY7
 +thing  8030 k -   10 "Steel key"       KEY1
 +thing  8031 k -   10 "Cave key"            KEY2
 +thing  8032 k -   10 "Axe key"         KEY3
@@ -3841,11 +3915,8 @@ diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
  
 -thing    54 l -   17 "Torch"			WLTR
 -thing  8061 l -   17 "FIXME"			BRTR
--
--thing   314 e -   17 "Bogus sound"
--
--thing   314 s -   17 "Bogus sound"
  
+-thing   314 e -   17 "Bogus sound"
 +thing    88 d -   20 "Log"         LOGG
 +thing    97 d -   20 "Rock formation (large, brown)"   RKBL
 +thing    98 d -   20 "Rock formation (small, brown)"   RKBS
@@ -3886,7 +3957,8 @@ diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
 +thing 10501 l -   20 "Flame (small, cnt)"  FFSMC0
 +thing 10502 l -   20 "Flame (large, t) *"  FFLG
 +thing 10503 l -   20 "Flame (large, cnt)"  FFLGF0
-+
+ 
+-thing   314 s -   17 "Bogus sound"
 +thing  1400 s -   20 "Stone"           TELE
 +thing  1401 s -   20 "Heavy"           TELE
 +thing  1402 s -   20 "Metal"           TELE
@@ -3898,7 +3970,7 @@ diff -N -p -r -u yadex-1.7.0/ygd/hexen.ygd yadex-1.7.0-patched/ygd/hexen.ygd
 +thing  1408 s -   20 "Earth crack"     TELE
 +thing  1409 s -   20 "Metal2"          TELE
 +thing  1410 s -   20 "Wind blowing"        TELE
-+
+ 
 +thing   118 S -   10 "Magic step"      TLGL
 +thing  3000 S -   20 "Polyobject anchor"   ICPRD0
 +thing  3001 S -   20 "Start spot"      SBFXH0
