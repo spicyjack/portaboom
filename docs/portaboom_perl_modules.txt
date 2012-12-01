@@ -1,5 +1,4 @@
-Portaboom Perl Modules 
-======================
+## Portaboom Perl Modules ##
 
     -altdeath
     -avg (aka -timer 20)
@@ -12,3 +11,5 @@ Doom WAD specs
 
 Perl Module Authors Mailing List (ideas on module names)
 http://www.mail-archive.com/module-authors@perl.org/
+
+# vim: filetype=markdown tabstop=2 shiftwidth=2
