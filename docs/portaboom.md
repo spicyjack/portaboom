@@ -1,5 +1,9 @@
 ## Portaboom Notes ##
 
+## Todos ##
+- Catalog all of the open source software used by this project, so you can
+  create links to source, as specified by the GPL
+
 ### Links to Other Projects ###
 - NaCL Doom - Native Client Chrome extension
   - http://doom.pdox.net/faq.html
